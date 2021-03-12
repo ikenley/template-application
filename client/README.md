@@ -49,6 +49,13 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 ---
 
 ```
-docker build -t react-nginx .
-docker run --rm -it -p 8080:80 react-nginx
+# Build and run image
+docker build -t template-app .
+docker run --rm -it -p 8080:80 template-app
+
+# Publish
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 924586450630.dkr.ecr.us-east-1.amazonaws.com
+docker build -t template-app:dev-0.1 .
+docker tag template-app:dev-0.1 924586450630.dkr.ecr.us-east-1.amazonaws.com/template-app:dev-0.1
+docker push 924586450630.dkr.ecr.us-east-1.amazonaws.com/template-app:dev-0.1
 ```
