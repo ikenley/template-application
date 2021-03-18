@@ -3,6 +3,7 @@ version: 0.2
 env:
   variables:
     IMAGE_REPO_NAME: "template-app"
+    AWS_ACCOUNT_ID: "924586450630"
   # parameter-store:
   #   DOCKER_PASSWORD: /CodeBuild/Docker_Password
 
@@ -14,6 +15,7 @@ phases:
   build:
     commands:
       - echo Build started on `date`
+      - cd client
       - echo Building the Docker image...  
       - IMAGE_TAG=$ENV-$CODEBUILD_BUILD_NUMBER
       - echo "IMAGE_TAG=$IMAGE_TAG"        
