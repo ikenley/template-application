@@ -6,7 +6,8 @@
 # Name the node stage "builder"
 FROM node:15 AS builder
 # Set IMAGE_TAG ENV var
-ENV REACT_APP_IMAGE_TAG=LOREM_IPSUM
+ARG IMAGE_TAG
+ENV REACT_APP_IMAGE_TAG=$IMAGE_TAG
 # Set working directory
 WORKDIR /app
 # Copy all files from current directory to working dir in image
