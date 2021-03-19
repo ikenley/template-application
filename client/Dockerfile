@@ -14,6 +14,8 @@ RUN npm install && npm run build
 
 # nginx state for serving content
 FROM nginx:alpine
+# Set IMAGE_TAG ENV var
+ENV IMAGE_TAG=$IMAGE_TAG
 # Set working directory to nginx asset directory
 WORKDIR /usr/share/nginx/html
 # Remove default nginx static assets
