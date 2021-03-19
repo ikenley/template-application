@@ -5,6 +5,8 @@
 
 # Name the node stage "builder"
 FROM node:15 AS builder
+# Set IMAGE_TAG ENV var
+ENV REACT_APP_IMAGE_TAG=$IMAGE_TAG
 # Set working directory
 WORKDIR /app
 # Copy all files from current directory to working dir in image
@@ -14,8 +16,6 @@ RUN npm install && npm run build
 
 # nginx state for serving content
 FROM nginx:alpine
-# Set IMAGE_TAG ENV var
-ENV REACT_APP_IMAGE_TAG=$IMAGE_TAG
 # Set working directory to nginx asset directory
 WORKDIR /usr/share/nginx/html
 # Remove default nginx static assets
