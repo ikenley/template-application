@@ -2,9 +2,7 @@ version: 0.2
 
 env:
   variables:
-    IMAGE_REPO_NAME: "template-app"
-    AWS_ACCOUNT_ID: "924586450630"
-    ECS_CONTAINER_NAME: "template-app"
+    PLACEHOLDER_ENV_VAR: "TODO"
   # parameter-store:
   #   DOCKER_PASSWORD: /CodeBuild/Docker_Password
 
