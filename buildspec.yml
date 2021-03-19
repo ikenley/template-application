@@ -4,6 +4,7 @@ env:
   variables:
     IMAGE_REPO_NAME: "template-app"
     AWS_ACCOUNT_ID: "924586450630"
+    ECS_CONTAINER_NAME: "template-app"
   # parameter-store:
   #   DOCKER_PASSWORD: /CodeBuild/Docker_Password
 
@@ -26,3 +27,7 @@ phases:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+      - printf '[{"name":"%s","imageUri":"%s"}]' $ECS_CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - cat imagedefinitions.json
+artifacts:
+    files: imagedefinitions.json
