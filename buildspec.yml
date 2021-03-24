@@ -3,14 +3,17 @@ version: 0.2
 env:
   variables:
     PLACEHOLDER_ENV_VAR: "TODO"
-  # parameter-store:
-  #   DOCKER_PASSWORD: /CodeBuild/Docker_Password
+  parameter-store:
+    DOCKER_USERNAME: /docker/username
+    DOCKER_PASSWORD: /docker/password
 
 phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      - echo Logging into DockerHub
+      - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
   build:
     commands:
       - echo Build started on `date`
