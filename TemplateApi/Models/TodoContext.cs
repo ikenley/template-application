@@ -14,7 +14,7 @@ namespace TemplateApi.Models
 
         // The following configures EF to create a Sqlite database file as `C:\blogging.db`.
         // For Mac or Linux, change this to `/tmp/blogging.db` or any other absolute path.
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite(@"Data Source=C:\Users\ikenl\todoitems.db");
+        // protected override void OnConfiguring(DbContextOptionsBuilder options)
+        //     => options.UseNpgsql("Host=my_host;Database=my_db;Username=my_user;Password=my_pw");
     }
 }
