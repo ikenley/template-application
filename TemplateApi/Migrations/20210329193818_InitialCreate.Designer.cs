@@ -10,7 +10,7 @@ using TemplateApi.Models;
 namespace TemplateApi.Migrations
 {
     [DbContext(typeof(TodoContext))]
-    [Migration("20210329141026_InitialCreate")]
+    [Migration("20210329193818_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,25 +21,48 @@ namespace TemplateApi.Migrations
                 .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+            modelBuilder.Entity("TemplateApi.Models.DemoAnimal", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id")
+                        .HasName("pk_demo_animals");
+
+                    b.ToTable("demo_animals");
+                });
+
             modelBuilder.Entity("TemplateApi.Models.TodoItem", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
+                        .HasColumnName("id")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<DateTime>("CreatedTimestamp")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_timestamp");
 
                     b.Property<bool>("IsComplete")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_complete");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("name");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_todo_items");
 
-                    b.ToTable("TodoItems");
+                    b.ToTable("todo_items");
                 });
 #pragma warning restore 612, 618
         }

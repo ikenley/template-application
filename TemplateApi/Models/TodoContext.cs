@@ -11,5 +11,7 @@ namespace TemplateApi.Models
         }
 
         public DbSet<TodoItem> TodoItems { get; set; }
+
+        public DbSet<DemoAnimal> DemoAnimals { get; set; }
     }
 }
