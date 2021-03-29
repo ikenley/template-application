@@ -27,7 +27,14 @@ namespace TemplateApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<TodoContext>(opt => opt.UseSqlite(@"Data Source=C:\Users\ikenl\todo_items.db"));
+            // Fetch SSM parameters that are required during startup
+            AwsParameterStoreClient client = new AwsParameterStoreClient(Amazon.RegionEndpoint.USEast1);
+            string connectionString = client.GetValueAsync("/template-app/main-connection-string").GetAwaiter().GetResult();
+
+            // Configure data contexts
+            //services.AddDbContext<TodoContext>(opt => opt.UseSqlite(@"Data Source=C:\Users\ikenl\todo_items.db"));
+            services.AddDbContext<TodoContext>(options => options.UseNpgsql(connectionString));
+
             services.AddControllers();
         }
 
