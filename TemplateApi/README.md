@@ -11,5 +11,12 @@ Sample .NET Core API to be hosted in a Docker container
 
 ```
 docker build -t template-api .
-docker run --rm -it -p 3000:80 template-api
+docker run --rm -it -p 5000:5000 template-api
 ```
+
+---
+
+## General .NET Core development
+
+- [Create a web API with ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-5.0&tabs=visual-studio-code)
+- [Entity Framework Core Migrations](https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/?tabs=dotnet-core-cli)
