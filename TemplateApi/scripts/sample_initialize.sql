@@ -8,6 +8,17 @@ CREATE schema if not exists base;
 -- AUTHORIZATION template_app_user
 
 -------------------------------------------------------------------------------
+-- todo_items
+
+INSERT INTO public.todo_items
+("name", is_complete, created_timestamp)
+VALUES('DemoName', false, CURRENT_TIMESTAMP);
+
+INSERT INTO public.todo_items
+("name", is_complete, created_timestamp)
+VALUES('DemoName2', false, CURRENT_TIMESTAMP);
+
+-------------------------------------------------------------------------------
 -- demo_animals
 
 DROP table if exists base.demo_animals;

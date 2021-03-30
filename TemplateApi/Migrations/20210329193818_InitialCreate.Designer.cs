@@ -9,7 +9,7 @@ using TemplateApi.Models;
 
 namespace TemplateApi.Migrations
 {
-    [DbContext(typeof(TodoContext))]
+    [DbContext(typeof(DataContext))]
     [Migration("20210329193818_InitialCreate")]
     partial class InitialCreate
     {

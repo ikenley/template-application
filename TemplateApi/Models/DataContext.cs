@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace TemplateApi.Models
 {
-    public class TodoContext : DbContext
+    public class DataContext : DbContext
     {
-        public TodoContext(DbContextOptions<TodoContext> options)
+        public DataContext(DbContextOptions<DataContext> options)
             : base(options)
         {
         }

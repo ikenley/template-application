@@ -32,8 +32,8 @@ namespace TemplateApi
             string connectionString = client.GetValueAsync("/template-app/main-connection-string").GetAwaiter().GetResult();
 
             // Configure data contexts
-            //services.AddDbContext<TodoContext>(opt => opt.UseSqlite(@"Data Source=C:\Users\ikenl\todo_items.db"));
-            services.AddDbContext<TodoContext>(options => 
+            //services.AddDbContext<DataContext>(opt => opt.UseSqlite(@"Data Source=C:\Users\ikenl\todo_items.db"));
+            services.AddDbContext<DataContext>(options => 
                 options.UseNpgsql(connectionString)
                     .UseSnakeCaseNamingConvention()
             );
