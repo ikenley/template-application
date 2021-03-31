@@ -28,6 +28,12 @@ namespace TemplateApi.Models
             result.ObservedPoints = AggreggateByYear(observedPoints);
             result.PredictedPoints = AggreggateByYear(predictedPoints);
 
+            result.RegionRows = null;
+
+            result.ObservedAverageAnnualGrowth = 0;
+            result.PredictedAverageAnnualGrowth = 0;
+            result.ProjectedChange = 0;
+
             return result;
         }
 
