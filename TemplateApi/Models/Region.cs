@@ -9,6 +9,11 @@ namespace TemplateApi.Models
     /// </summary>
     public class Region
     {
+        /// <summary>
+        /// Foreign country region
+        /// </summary>
+        public const int Foreign = 90;
+
         public int Id { get; set; }
 
         public string Name { get; set; }

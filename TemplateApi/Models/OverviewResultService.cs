@@ -27,6 +27,8 @@ namespace TemplateApi.Models
             var observedPoints = await GetObservedPoints(unitId);
             var predictedPoints = await GetPredictedPoints(unitId);
 
+            ImputePredictedForeignDataPoints(observedPoints, predictedPoints);
+
             result.ObservedPoints = AggreggateByYear(observedPoints);
             result.PredictedPoints = AggreggateByYear(predictedPoints);
 
@@ -90,6 +92,39 @@ order by pe.year
                 .ToListAsync();
 
             return dataPoints;
+        }
+
+        /// <summary>
+        /// Generates predicted foreign values using observed foreign data
+        /// </summary>
+        private void ImputePredictedForeignDataPoints(
+            List<DataPoint> observedPoints,
+            List<DataPoint> predictedPoints
+        )
+        {
+            // Get most recent year of foreign data
+            var latest = observedPoints
+                .Where(p => p.RegionId == Region.Foreign)
+                .OrderByDescending(p => p.Year)
+                .First();
+
+            // For each prediction year, add copy of most recent foreign data
+            int[] predictedYears = predictedPoints
+                .Select(p => p.Year)
+                .Distinct()
+                .ToArray();
+            foreach (int year in predictedYears)
+            {
+                predictedPoints.Add(new DataPoint
+                {
+                    Year = year,
+                    RegionId = Region.Foreign,
+                    IsForecast = true,
+                    Enrollment = latest.Enrollment,
+                    MarketShare = latest.MarketShare,
+                    Population = latest.Population
+                });
+            }
         }
 
         /// <summary>
