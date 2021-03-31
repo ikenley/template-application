@@ -21,8 +21,13 @@ namespace TemplateApi.Models
             // TODO get values from session
             string unitId = "194824";
             var result = new OverviewResult();
-            result.ObservedPoints = await GetObservedPoints(unitId);
-            result.PredictedPoints = await GetPredictedPoints(unitId);
+
+            var observedPoints = await GetObservedPoints(unitId);
+            var predictedPoints = await GetPredictedPoints(unitId);
+
+            result.ObservedPoints = AggreggateByYear(observedPoints);
+            result.PredictedPoints = AggreggateByYear(predictedPoints);
+
             return result;
         }
 
@@ -72,6 +77,26 @@ order by pe.year
                 .ToListAsync();
 
             return dataPoints;
+        }
+
+        /// <summary>
+        /// Aggreggates points by year
+        /// </summary>
+        /// <param name="points"></param>
+        /// <returns></returns>
+        private List<DataPoint> AggreggateByYear(List<DataPoint> points)
+        {
+            return points.GroupBy(p => p.Year)
+                .Select(g => new DataPoint
+                {
+                    Year = g.First().Year,
+                    RegionId = -1,
+                    IsForecast = g.First().IsForecast,
+                    Enrollment = g.Sum(f => f.Enrollment),
+                    MarketShare = null, // TODO?
+                    Population = g.Sum(f => f.Population)
+                })
+                .ToList();
         }
     }
 }
