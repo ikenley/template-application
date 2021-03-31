@@ -1,4 +1,7 @@
 /* Top-level styles */
+.some-fake-class {
+    border: 0;
+}
 
 /* Bootstrap overrides */
 $primary:       #00355f;
@@ -7,4 +10,4 @@ $secondary:     #ed8b00;
 // $enable-rounded: false;
 
 /* import bootstrap to set changes */
-@import "~bootstrap/scss/bootstrap";
+@import "bootstrap/scss/bootstrap";
