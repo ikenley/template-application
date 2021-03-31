@@ -18,5 +18,7 @@ namespace TemplateApi.Models
         public DbSet<TodoItem> TodoItems { get; set; }
 
         public DbSet<DataPoint> DataPoints { get; set; }
+
+        public DbSet<Region> Regions { get; set; }
     }
 }

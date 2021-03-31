@@ -5,6 +5,14 @@ namespace TemplateApi.Models
 {
     public class OverviewResult
     {
+        public List<int> Years { get; set; }
+
+        /// <summary>
+        /// Region ids sorted by enrollment descending
+        /// </summary>
+        /// <value></value>
+        public List<int> RegionIds { get; set; }
+
         public List<DataPoint> ObservedPoints { get; set; }
         public List<DataPoint> PredictedPoints { get; set; }
 

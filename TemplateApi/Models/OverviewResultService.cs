@@ -10,10 +10,12 @@ namespace TemplateApi.Models
     public class OverviewResultService : IOverviewResultService
     {
         private readonly DataContext _dataContext;
+        private readonly IRegionService _regionService;
 
-        public OverviewResultService(DataContext dataContext)
+        public OverviewResultService(DataContext dataContext, IRegionService regionService)
         {
             _dataContext = dataContext;
+            _regionService = regionService;
         }
 
         public async Task<OverviewResult> GetOverviewResultAsync()
@@ -28,7 +30,12 @@ namespace TemplateApi.Models
             result.ObservedPoints = AggreggateByYear(observedPoints);
             result.PredictedPoints = AggreggateByYear(predictedPoints);
 
-            result.RegionRows = null;
+            var allDataPoints = observedPoints.Concat(predictedPoints).ToList();
+
+            result.Years = GetYears(allDataPoints);
+            result.RegionIds = GetRegionIdsOrderedByEnrollmentDescending(allDataPoints);
+
+            result.RegionRows = await GetRegionRows(allDataPoints, result.RegionIds);
 
             result.ObservedAverageAnnualGrowth = 0;
             result.PredictedAverageAnnualGrowth = 0;
@@ -102,6 +109,48 @@ order by pe.year
                     MarketShare = null, // TODO?
                     Population = g.Sum(f => f.Population)
                 })
+                .ToList();
+        }
+
+        private async Task<List<RegionRow>> GetRegionRows(List<DataPoint> dataPoints, List<int> regionIds)
+        {
+            ILookup<int, DataPoint> regionDataPointMap = dataPoints.ToLookup(p => p.RegionId);
+
+            var regions = await _regionService.GetRegionsAsync();
+            var regionMap = regions.ToDictionary(r => r.Id);
+
+            List<RegionRow> rows = new List<RegionRow>();
+            foreach (int regionId in regionIds)
+            {
+                var row = new RegionRow { RegionId = regionId };
+
+                row.RegionName = regionMap.ContainsKey(regionId) ? regionMap[regionId].Name : null;
+
+                row.YearDataPointMap = regionDataPointMap[regionId].ToDictionary(p => p.Year);
+
+                rows.Add(row);
+            }
+
+            return rows;
+        }
+
+        private List<int> GetYears(List<DataPoint> dataPoints)
+        {
+            return dataPoints
+                .Select(p => p.Year)
+                .Distinct()
+                .OrderBy(p => p)
+                .ToList();
+        }
+
+        private List<int> GetRegionIdsOrderedByEnrollmentDescending(List<DataPoint> dataPoints)
+        {
+            // TODO determine if Distinct is order-preserving
+            // The docs suggest it is not, but it appears to generally work
+            return dataPoints
+                .OrderByDescending(p => p.Enrollment)
+                .Select(p => p.RegionId)
+                .Distinct()
                 .ToList();
         }
     }

@@ -193,7 +193,6 @@ limit 100
 
 -------------------------------------------------------------------------------
 -- predicted_market_enrollment
--- TODO apply deflator in staging
 
 drop table if exists public.predicted_market_enrollment;
 
@@ -208,7 +207,7 @@ insert into public.predicted_market_enrollment
 select region_id
 	, year
 	, enrollment
-from base.predicted_market_enrollment
+from staging.predicted_market_enrollment
 ;
 
 CLUSTER public.predicted_market_enrollment USING pk_predicted_market_enrollment;
@@ -221,13 +220,8 @@ limit 100
 -------------------------------------------------------------------------------
 -- regions
 
-drop table if exists public.regions;
-
-CREATE TABLE public.regions (
-	id int,
-	name varchar(50) null,
-	constraint pk_regions primary key (id)
-);
+-- schema is maanged by EF Migration
+truncate table public.regions;
 
 insert into public.regions
 select id

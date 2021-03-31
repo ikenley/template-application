@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Nav, Navbar } from "react-bootstrap";
 import axios from "axios";
 import FilterPanel from "./FilterPanel";
+import { OverviewResult } from "./types";
+import ResultGrid from "./ResultGrid";
 
 const ResultPanel = () => {
-    const [result, setResult] = useState(null);
+    const [result, setResult] = useState<OverviewResult | null>(null);
 
     useEffect(() => {
         axios.get("/api/Overview").then(res => {
@@ -29,8 +31,7 @@ const ResultPanel = () => {
                 <FilterPanel />
                 <div>Trend Chart TODO</div>
                 <div>Summary stats TODO</div>
-                <div>Results grid</div>
-                {result ? JSON.stringify(result) : null}
+                <ResultGrid result={result} />
             </main>
         </div>
     )

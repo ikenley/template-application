@@ -225,4 +225,36 @@ from staging.observed_enrollment
 limit 100
 ;
 
+-------------------------------------------------------------------------------
+-- predicted_market_enrollment
+-- TODO apply deflator in staging
+
+drop table if exists staging.predicted_market_enrollment;
+
+CREATE TABLE staging.predicted_market_enrollment (
+	region_id int,	
+	year int,
+	enrollment float null,
+	constraint pk_predicted_market_enrollment primary key (year, region_id)
+);
+
+insert into staging.predicted_market_enrollment
+select region_id
+	, year
+	, enrollment
+from base.predicted_market_enrollment
+where year > (
+		select max(year) 
+		from staging.observed_market_enrollment 
+	) 
+;
+
+CLUSTER staging.predicted_market_enrollment USING pk_predicted_market_enrollment;
+
+select *
+from staging.predicted_market_enrollment
+limit 100
+;
+
+
 
