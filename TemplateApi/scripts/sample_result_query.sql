@@ -16,7 +16,8 @@ from public.observed_enrollment inst
 join public.regions r
 	on inst.region_id = r.id
 where inst.unitid = '194824'
-order by inst.enrollment desc
+order by inst.year
+	, inst.enrollment desc
 ;
 
 -------------------------------------------------------------------------------

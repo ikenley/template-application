@@ -114,6 +114,153 @@ limit 100
 -------------------------------------------------------------------------------
 -- enrollments
 
+drop table if exists base.ef2004c_rv;
+
+CREATE TABLE base.ef2004c_rv (
+	unitid varchar(6),
+	efcstate int,
+	line varchar(3),
+	xefres01 varchar(1),
+	efres01 float,
+	xefres02 varchar(1),
+	efres02 float
+);
+
+SELECT aws_s3.table_import_from_s3(
+   'base.ef2004c_rv',
+   '',
+   'CSV HEADER ENCODING ''WIN1252''',
+   aws_commons.create_s3_uri('924586450630-data-lake', 'template-app/base/EF2004C/ef2004c_rv.csv', 'us-east-1')
+);
+
+---
+
+drop table if exists base.ef2006c_rv;
+
+CREATE TABLE base.ef2006c_rv (
+	unitid varchar(6),
+	efcstate int,
+	line varchar(3),
+	xefres01 varchar(1),
+	efres01 float,
+	xefres02 varchar(1),
+	efres02 float
+);
+
+SELECT aws_s3.table_import_from_s3(
+   'base.ef2006c_rv',
+   '',
+   'CSV HEADER ENCODING ''WIN1252''',
+   aws_commons.create_s3_uri('924586450630-data-lake', 'template-app/base/EF2006C/ef2006c_RV.csv', 'us-east-1')
+);
+
+---
+
+drop table if exists base.ef2008c_rv;
+
+CREATE TABLE base.ef2008c_rv (
+	unitid varchar(6),
+	efcstate int,
+	line varchar(3),
+	xefres01 varchar(1),
+	efres01 float,
+	xefres02 varchar(1),
+	efres02 float
+);
+
+SELECT aws_s3.table_import_from_s3(
+   'base.ef2008c_rv',
+   '',
+   'CSV HEADER ENCODING ''WIN1252''',
+   aws_commons.create_s3_uri('924586450630-data-lake', 'template-app/base/EF2008C/ef2008c_rv.csv', 'us-east-1')
+);
+
+---
+
+drop table if exists base.ef2010c_rv;
+
+CREATE TABLE base.ef2010c_rv (
+	unitid varchar(6),
+	efcstate int,
+	line varchar(3),
+	xefres01 varchar(1),
+	efres01 float null,
+	xefres02 varchar(1),
+	efres02 varchar(10)
+);
+
+SELECT aws_s3.table_import_from_s3(
+   'base.ef2010c_rv',
+   '',
+   'CSV HEADER ENCODING ''WIN1252''',
+   aws_commons.create_s3_uri('924586450630-data-lake', 'template-app/base/EF2010C/ef2010c_rv.csv', 'us-east-1')
+);
+
+---
+
+drop table if exists base.ef2012c_rv;
+
+CREATE TABLE base.ef2012c_rv (
+	unitid varchar(6),
+	efcstate int,
+	line varchar(3),
+	xefres01 varchar(1),
+	efres01 float,
+	xefres02 varchar(1),
+	efres02 float
+);
+
+SELECT aws_s3.table_import_from_s3(
+   'base.ef2012c_rv',
+   '',
+   'CSV HEADER ENCODING ''WIN1252''',
+   aws_commons.create_s3_uri('924586450630-data-lake', 'template-app/base/EF2012C/ef2012c_rv.csv', 'us-east-1')
+);
+
+---
+
+drop table if exists base.ef2014c_rv;
+
+CREATE TABLE base.ef2014c_rv (
+	unitid varchar(6),
+	efcstate int,
+	line varchar(3),
+	xefres01 varchar(1),
+	efres01 float,
+	xefres02 varchar(1),
+	efres02 float
+);
+
+SELECT aws_s3.table_import_from_s3(
+   'base.ef2014c_rv',
+   '',
+   'CSV HEADER ENCODING ''WIN1252''',
+   aws_commons.create_s3_uri('924586450630-data-lake', 'template-app/base/EF2014C/ef2014c_rv.csv', 'us-east-1')
+);
+
+---
+
+drop table if exists base.ef2016c_rv;
+
+CREATE TABLE base.ef2016c_rv (
+	unitid varchar(6),
+	efcstate int,
+	line varchar(3),
+	xefres01 varchar(1),
+	efres01 float,
+	xefres02 varchar(1),
+	efres02 float
+);
+
+SELECT aws_s3.table_import_from_s3(
+   'base.ef2016c_rv',
+   '',
+   'CSV HEADER ENCODING ''WIN1252''',
+   aws_commons.create_s3_uri('924586450630-data-lake', 'template-app/base/EF2016C/ef2016c_rv.csv', 'us-east-1')
+);
+
+---
+
 drop table if exists base.ef2018c_rv;
 
 CREATE TABLE base.ef2018c_rv (
@@ -132,11 +279,6 @@ SELECT aws_s3.table_import_from_s3(
    'CSV HEADER ENCODING ''WIN1252''',
    aws_commons.create_s3_uri('924586450630-data-lake', 'template-app/base/EF2018C/ef2018c_rv.csv', 'us-east-1')
 );
-
-select *
-from base.ef2018c_rv
-limit 100
-;
 
 -------------------------------------------------------------------------------
 -- regions

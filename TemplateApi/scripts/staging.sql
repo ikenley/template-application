@@ -7,106 +7,7 @@ CREATE schema if not exists staging;
 -------------------------------------------------------------------------------
 -- institutions
 
---drop table if exists base.hd2019;
---
---CREATE TABLE base.hd2019 (
---	unitid varchar(6) NULL,
---	instnm varchar(120) NULL,
---	ialias varchar(2000) NULL,
---	addr varchar(100) NULL,
---	city varchar(30) NULL,
---	stabbr varchar(2) NULL,
---	zip varchar(10) NULL,
---	fips varchar(2) NULL,
---	obereg varchar(2) NULL,
---	chfnm varchar(50) NULL,
---	chftitle varchar(100) NULL,
---	gentele varchar(15) NULL,
---	ein varchar(9) NULL,
---	duns varchar(2000) NULL,
---	opeid varchar(8) NULL,
---	opeflag varchar(1) NULL,
---	webaddr varchar(150) NULL,
---	adminurl varchar(200) NULL,
---	faidurl varchar(200) NULL,
---	applurl varchar(200) NULL,
---	npricurl varchar(200) NULL,
---	veturl varchar(200) NULL,
---	athurl varchar(200) NULL,
---	disaurl varchar(200) NULL,
---	sector varchar(2) NULL,
---	iclevel varchar(2) NULL,
---	"control" varchar(2) NULL,
---	hloffer varchar(2) NULL,
---	ugoffer varchar(2) NULL,
---	groffer varchar(2) NULL,
---	hdegofr1 varchar(2) NULL,
---	deggrant varchar(2) NULL,
---	hbcu varchar(2) NULL,
---	hospital varchar(2) NULL,
---	medical varchar(2) NULL,
---	tribal varchar(2) NULL,
---	locale varchar(2) NULL,
---	openpubl varchar(2) NULL,
---	act varchar(1) NULL,
---	newid varchar(6) NULL,
---	deathyr varchar(4) NULL,
---	closedat varchar(10) NULL,
---	cyactive varchar(1) NULL,
---	postsec varchar(2) NULL,
---	pseflag varchar(2) NULL,
---	pset4flg varchar(2) NULL,
---	rptmth varchar(2) NULL,
---	instcat varchar(2) NULL,
---	c18basic varchar(2) NULL,
---	c18ipug varchar(2) NULL,
---	c18ipgrd varchar(2) NULL,
---	c18ugprf varchar(2) NULL,
---	c18enprf varchar(2) NULL,
---	c18szset varchar(2) NULL,
---	c15basic varchar(2) NULL,
---	ccbasic varchar(2) NULL,
---	carnegie varchar(2) NULL,
---	landgrnt varchar(2) NULL,
---	instsize varchar(2) NULL,
---	f1systyp varchar(2) NULL,
---	f1sysnam varchar(80) NULL,
---	f1syscod varchar(6) NULL,
---	cbsa varchar(5) NULL,
---	cbsatype varchar(2) NULL,
---	csa varchar(3) NULL,
---	necta varchar(5) NULL,
---	countycd varchar(5) NULL,
---	countynm varchar(30) NULL,
---	cngdstcd varchar(4) NULL,
---	longitud varchar(12) NULL,
---	latitude varchar(12) NULL,
---	dfrcgid varchar(3) NULL,
---	dfrcuscg varchar(3) NULL
---);
---
---SELECT aws_s3.table_import_from_s3(
---   'base.hd2019',
---   '',
---   'CSV HEADER ENCODING ''WIN1252''',
---   aws_commons.create_s3_uri('924586450630-data-lake', 'template-app/base/hd2019.csv', 'us-east-1')
---);
---
---select *
---from base.hd2019
---limit 100
---;
-
---truncate table public.demo_animals
---;
---
---insert into public.demo_animals 
---select id, name
---from base.demo_animals
---;
---
---select *
---from public.demo_animals da;
+-- TODO
 
 -------------------------------------------------------------------------------
 -- observed_enrollment by institution-fipss
@@ -123,6 +24,55 @@ CREATE TABLE staging.observed_enrollment_unit_fips (
 
 insert into staging.observed_enrollment_unit_fips
 select unitid
+	, 2004 as year
+	, efcstate as state_fips
+	, efres01 as enrollment
+from base.ef2004c_rv
+where efcstate <> 99
+union
+select unitid
+	, 2006 as year
+	, efcstate as state_fips
+	, efres02 as enrollment
+from base.ef2006c_rv
+where efcstate <> 99
+union
+select unitid
+	, 2008 as year
+	, efcstate as state_fips
+	, efres02 as enrollment
+from base.ef2008c_rv
+where efcstate <> 99
+union
+select unitid
+	, 2010 as year
+	, efcstate as state_fips
+	, CASE WHEN efres02~E'^\\d+$' THEN efres02::float ELSE 0 end as enrollment
+from base.ef2010c_rv
+where efcstate <> 99
+union
+select unitid
+	, 2012 as year
+	, efcstate as state_fips
+	, efres02 as enrollment
+from base.ef2012c_rv
+where efcstate <> 99
+union
+select unitid
+	, 2014 as year
+	, efcstate as state_fips
+	, efres02 as enrollment
+from base.ef2014c_rv
+where efcstate <> 99
+union
+select unitid
+	, 2016 as year
+	, efcstate as state_fips
+	, efres02 as enrollment
+from base.ef2016c_rv
+where efcstate <> 99
+union
+select unitid
 	, 2018 as year
 	, efcstate as state_fips
 	, efres02 as enrollment
@@ -130,9 +80,8 @@ from base.ef2018c_rv
 where efcstate <> 99
 ;
 
-select *
+select COUNT(*)
 from staging.observed_enrollment_unit_fips
-limit 100
 ;
 
 -------------------------------------------------------------------------------
@@ -209,7 +158,10 @@ from (
 select inst.unitid
 	, inst."year"
 	, inst.region_id 
-	, inst.enrollment / mk.enrollment as market_share 
+	, case 
+		when mk.enrollment = 0 then 0
+		else inst.enrollment / mk.enrollment
+	  end as market_share 
 from staging.observed_enrollment as inst
 join staging.observed_market_enrollment as mk
 	on inst.year = mk.year
@@ -261,10 +213,6 @@ join
 	where year = (
 			select min(year) 
 			from base.predicted_market_enrollment
-			where year > (
-				select max(year)
-				from staging.observed_market_enrollment 
-			)
 		) 
 ) fp
 	on lo.region_id = fp.region_id
