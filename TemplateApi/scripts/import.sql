@@ -170,7 +170,7 @@ CREATE TABLE base.state_region (
 	abbreviation varchar(2),
 	name varchar(100),
 	region_id int null,
-	is_hidden boolean null,
+	is_hidden boolean null
 );
 
 SELECT aws_s3.table_import_from_s3(
@@ -186,7 +186,7 @@ limit 100
 ;
 
 -------------------------------------------------------------------------------
--- predicted_enrollment
+-- predicted_market_enrollment
 
 drop table if exists base.predicted_market_enrollment;
 
@@ -208,5 +208,6 @@ SELECT aws_s3.table_import_from_s3(
 
 select *
 from base.predicted_market_enrollment
+order by year, region_id
 limit 100
 ;

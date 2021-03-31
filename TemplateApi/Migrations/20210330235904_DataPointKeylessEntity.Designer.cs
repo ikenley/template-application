@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TemplateApi.Models;
@@ -9,9 +10,10 @@ using TemplateApi.Models;
 namespace TemplateApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210330235904_DataPointKeylessEntity")]
+    partial class DataPointKeylessEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,22 +21,33 @@ namespace TemplateApi.Migrations
                 .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("TemplateApi.Models.DemoAnimal", b =>
+            modelBuilder.Entity("TemplateApi.Models.DataPoint", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<double?>("Enrollment")
+                        .HasColumnType("double precision")
+                        .HasColumnName("enrollment");
+
+                    b.Property<bool?>("IsForecast")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_forecast");
+
+                    b.Property<double?>("MarketShare")
+                        .HasColumnType("double precision")
+                        .HasColumnName("market_share");
+
+                    b.Property<double?>("Population")
+                        .HasColumnType("double precision")
+                        .HasColumnName("population");
+
+                    b.Property<int>("RegionId")
                         .HasColumnType("integer")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnName("region_id");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("text")
-                        .HasColumnName("name");
+                    b.Property<int>("Year")
+                        .HasColumnType("integer")
+                        .HasColumnName("year");
 
-                    b.HasKey("Id")
-                        .HasName("pk_demo_animals");
-
-                    b.ToTable("demo_animals");
+                    b.ToTable("data_points");
                 });
 
             modelBuilder.Entity("TemplateApi.Models.TodoItem", b =>

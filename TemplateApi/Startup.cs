@@ -33,10 +33,12 @@ namespace TemplateApi
 
             // Configure data contexts
             //services.AddDbContext<DataContext>(opt => opt.UseSqlite(@"Data Source=C:\Users\ikenl\todo_items.db"));
-            services.AddDbContext<DataContext>(options => 
+            services.AddDbContext<DataContext>(options =>
                 options.UseNpgsql(connectionString)
                     .UseSnakeCaseNamingConvention()
             );
+
+            services.AddScoped<IOverviewResultService, OverviewResultService>();
 
             services.AddControllers();
         }

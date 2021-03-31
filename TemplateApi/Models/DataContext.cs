@@ -10,8 +10,13 @@ namespace TemplateApi.Models
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<DataPoint>().ToTable(nameof(DataPoint), t => t.ExcludeFromMigrations());
+        }
+
         public DbSet<TodoItem> TodoItems { get; set; }
 
-        public DbSet<DemoAnimal> DemoAnimals { get; set; }
+        public DbSet<DataPoint> DataPoints { get; set; }
     }
 }

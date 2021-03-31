@@ -1,0 +1,10 @@
+/* Top-level styles */
+
+/* Bootstrap overrides */
+$primary:       #00355f;
+$secondary:     #ed8b00;
+
+// $enable-rounded: false;
+
+/* import bootstrap to set changes */
+@import "~bootstrap/scss/bootstrap";

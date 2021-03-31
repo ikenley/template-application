@@ -6,9 +6,14 @@
 -------------------------------------------------------------------------------
 -- Observed institution enrollment
 
-select *
-from staging.observed_enrollment inst
-join base.regions r 
+select inst.year
+	, inst.region_id
+    , false as is_forecast
+	, inst.enrollment
+	, inst.enrollment_share as market_share
+    , null as population
+from public.observed_enrollment inst
+join public.regions r
 	on inst.region_id = r.id
 where inst.unitid = '194824'
 order by inst.enrollment desc
@@ -19,20 +24,20 @@ order by inst.enrollment desc
 
 select pe.year
 	, pe.region_id
-	, r.name as region_name
-	, pe.enrollment as market_enrollment
+	, true as is_forecast
+	, pe.enrollment * shr.enrollment_share as enrollment
 	, shr.enrollment_share as market_share
-	, pe.enrollment * shr.enrollment_share as predicted_institution_enrollment
-from base.predicted_market_enrollment pe 
+	, pe.enrollment as population
+from public.predicted_market_enrollment pe 
 join (
 	select x.region_id
 		, x.enrollment_share 
-	from staging.observed_enrollment x
+	from public.observed_enrollment x
 	where x.unitid = '194824'
 		and year = 2018
 ) shr
 	on pe.region_id = shr.region_id
-join base.regions r 
+left join public.regions r 
 	on pe.region_id = r.id 
 order by pe.year
 	, pe.region_id
