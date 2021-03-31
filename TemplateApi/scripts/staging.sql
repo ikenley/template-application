@@ -226,8 +226,59 @@ limit 100
 ;
 
 -------------------------------------------------------------------------------
+-- "Grawe Deflator"
+-- The ratio of most recent observed year / first predicted year
+
+drop table if exists staging.enrollment_deflator;
+
+CREATE TABLE staging.enrollment_deflator (
+	region_id int,	
+	last_observed_enrollment float,
+	fist_predicted_enrollment float,
+	deflator float,
+	constraint pk_enrollment_deflator primary key (region_id)
+);
+
+insert into staging.enrollment_deflator
+select lo.region_id
+	, lo.last_observed_enrollment
+	, fp.fist_predicted_enrollment
+	, lo.last_observed_enrollment / fp.fist_predicted_enrollment as deflator
+from (
+	select obs.region_id 
+		, obs.enrollment as last_observed_enrollment
+	from staging.observed_market_enrollment obs
+	where obs."year" = (
+		select max(year) 
+		from staging.observed_market_enrollment ome 
+	)
+) lo
+join
+(
+	select region_id
+		, enrollment as fist_predicted_enrollment
+	from base.predicted_market_enrollment
+	where year = (
+			select min(year) 
+			from base.predicted_market_enrollment
+			where year > (
+				select max(year)
+				from staging.observed_market_enrollment 
+			)
+		) 
+) fp
+	on lo.region_id = fp.region_id
+;
+
+CLUSTER staging.enrollment_deflator USING pk_enrollment_deflator;
+
+select *
+from staging.enrollment_deflator
+limit 100
+;
+
+-------------------------------------------------------------------------------
 -- predicted_market_enrollment
--- TODO apply deflator in staging
 
 drop table if exists staging.predicted_market_enrollment;
 
@@ -239,11 +290,13 @@ CREATE TABLE staging.predicted_market_enrollment (
 );
 
 insert into staging.predicted_market_enrollment
-select region_id
-	, year
-	, enrollment
-from base.predicted_market_enrollment
-where year > (
+select pme.region_id
+	, pme.year
+	, pme.enrollment * def.deflator as enrollment
+from base.predicted_market_enrollment pme
+join staging.enrollment_deflator def
+	on pme.region_id = def.region_id
+where pme.year > (
 		select max(year) 
 		from staging.observed_market_enrollment 
 	) 
