@@ -16,9 +16,10 @@ const ResultGridRow = ({ row, years }: Props) => {
             <td>{regionName}</td>
             {years.map(y => (
                 <td key={y}>
-                    {yearDataPointMap[y] ?
-                        numeral(yearDataPointMap[y].enrollment).format('0,0')
-                        : null
+                    {
+                        numeral(
+                            yearDataPointMap[y] ? yearDataPointMap[y].enrollment : 0
+                        ).format('0,0')
                     }
                 </td>
             ))}
