@@ -109,7 +109,7 @@ CREATE schema if not exists staging;
 --from public.demo_animals da;
 
 -------------------------------------------------------------------------------
--- observed_enrollment by institution-fips
+-- observed_enrollment by institution-fipss
 
 drop table if exists staging.observed_enrollment_unit_fips;
 
@@ -127,6 +127,7 @@ select unitid
 	, efcstate as state_fips
 	, efres02 as enrollment
 from base.ef2018c_rv
+where efcstate <> 99
 ;
 
 select *

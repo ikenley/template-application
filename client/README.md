@@ -50,8 +50,8 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ```
 # Build and run image
-docker build -t template-app .
-docker run --rm -it -p 8080:80 template-app
+docker build -t template-app-client .
+docker run --rm -it -p 8080:80 template-app-client
 
 # Publish
 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 924586450630.dkr.ecr.us-east-1.amazonaws.com
