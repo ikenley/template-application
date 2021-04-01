@@ -1,8 +1,9 @@
 import React, { useMemo } from "react";
-import { OverviewResult } from "./types";
+import { OverviewResult, emptyOverviewResult } from "./types";
 import { Row, Col } from "react-bootstrap";
 import numeral from "numeral";
 import SummaryStatCard from "./SummaryStatCard";
+import SkeletonCard from "./SkeletonCard";
 
 type Props = {
   result: OverviewResult | null;
@@ -45,41 +46,50 @@ const SummaryStatPanel = ({ result }: Props) => {
     };
   }, [result]);
 
-  if (!result || !yearRanges) {
-    return null;
-  }
-
   const {
     observedAverageAnnualGrowth,
     predictedAverageAnnualGrowth,
     projectedChange,
-  } = result;
-  const { minObserved, maxObserved, minPredicted, maxPredicted } = yearRanges;
+  } = result || emptyOverviewResult;
+  const { minObserved, maxObserved, minPredicted, maxPredicted } =
+    yearRanges || {};
 
   return (
     <div className="summary-stat-panel mt-3">
       <Row>
         <Col lg={true}>
-          <SummaryStatCard
-            title={`Average Annual Growth`}
-            subtitle={`${minObserved}-${maxObserved}`}
-            body={`${numeral(observedAverageAnnualGrowth).format("0.00%")}`}
-            isNegative={observedAverageAnnualGrowth < 0}
-          />
+          {result ? (
+            <SummaryStatCard
+              title={`Average Annual Growth`}
+              subtitle={`${minObserved}-${maxObserved}`}
+              body={`${numeral(observedAverageAnnualGrowth).format("0.00%")}`}
+              isNegative={observedAverageAnnualGrowth < 0}
+            />
+          ) : (
+            <SkeletonCard />
+          )}
         </Col>
         <Col lg={true}>
-          <SummaryStatCard
-            title={`Projected Average Annual Growth ${minPredicted}-${maxPredicted}`}
-            body={`${numeral(predictedAverageAnnualGrowth).format("0.00%")}`}
-            isNegative={predictedAverageAnnualGrowth < 0}
-          />
+          {result ? (
+            <SummaryStatCard
+              title={`Projected Average Annual Growth ${minPredicted}-${maxPredicted}`}
+              body={`${numeral(predictedAverageAnnualGrowth).format("0.00%")}`}
+              isNegative={predictedAverageAnnualGrowth < 0}
+            />
+          ) : (
+            <SkeletonCard />
+          )}
         </Col>
         <Col lg={true}>
-          <SummaryStatCard
-            title={`Projected Change ${maxObserved}-${maxPredicted}`}
-            body={`${numeral(projectedChange).format("0.00%")}`}
-            isNegative={projectedChange < 0}
-          />
+          {result ? (
+            <SummaryStatCard
+              title={`Projected Change ${maxObserved}-${maxPredicted}`}
+              body={`${numeral(projectedChange).format("0.00%")}`}
+              isNegative={projectedChange < 0}
+            />
+          ) : (
+            <SkeletonCard />
+          )}
         </Col>
       </Row>
     </div>

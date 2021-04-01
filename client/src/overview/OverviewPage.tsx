@@ -12,7 +12,7 @@ const ResultPanel = () => {
 
   useEffect(() => {
     axios.get("/api/Overview").then((res) => {
-      setResult(res.data);
+      //setResult(res.data);
     });
   }, []);
 

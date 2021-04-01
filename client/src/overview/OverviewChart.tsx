@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import Skeleton from "react-loading-skeleton";
 import { Line } from "react-chartjs-2";
 import { keyBy } from "lodash";
 import { PrimaryColor, SecondaryColor } from "../constants";
@@ -57,25 +58,29 @@ const OverviewChart = ({ result }: Props) => {
     return chartData;
   }, [result]);
 
-  if (!result) {
-    return null;
-  }
+  // if (!result) {
+  //   return null;
+  // }
 
   return (
     <div className="overview-chart mt-3">
-      <Line
-        options={{
-          maintainAspectRatio: false,
-          legend: { position: "bottom" },
-          title: {
-            display: true,
-            fontSize: 16,
-            text: "First-time Fall Enrollments",
-          },
-        }}
-        height={300}
-        data={chartDataProps}
-      />
+      {result ? (
+        <Line
+          options={{
+            maintainAspectRatio: false,
+            legend: { position: "bottom" },
+            title: {
+              display: true,
+              fontSize: 16,
+              text: "First-time Fall Enrollments",
+            },
+          }}
+          height={300}
+          data={chartDataProps}
+        />
+      ) : (
+        <Skeleton height={300} />
+      )}
     </div>
   );
 };
