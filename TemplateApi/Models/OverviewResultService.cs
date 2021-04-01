@@ -32,16 +32,16 @@ namespace TemplateApi.Models
             result.ObservedPoints = AggreggateByYear(observedPoints);
             result.PredictedPoints = AggreggateByYear(predictedPoints);
 
+            result.ObservedAverageAnnualGrowth = GetAverageAnnualGrowthRate(result.ObservedPoints);
+            result.PredictedAverageAnnualGrowth = GetAverageAnnualGrowthRate(result.PredictedPoints);
+            result.ProjectedChange = GetProjectedChange(result.ObservedPoints, result.PredictedPoints);
+
             var allDataPoints = observedPoints.Concat(predictedPoints).ToList();
 
             result.Years = GetYears(allDataPoints);
             result.RegionIds = GetRegionIdsOrderedByEnrollmentDescending(allDataPoints);
 
             result.RegionRows = await GetRegionRows(allDataPoints, result.RegionIds);
-
-            result.ObservedAverageAnnualGrowth = 0;
-            result.PredictedAverageAnnualGrowth = 0;
-            result.ProjectedChange = 0;
 
             return result;
         }
@@ -132,7 +132,7 @@ order by pe.year
         /// </summary>
         /// <param name="points"></param>
         /// <returns></returns>
-        private List<DataPoint> AggreggateByYear(List<DataPoint> points)
+        private DataPoint[] AggreggateByYear(List<DataPoint> points)
         {
             return points.GroupBy(p => p.Year)
                 .Select(g => new DataPoint
@@ -145,7 +145,72 @@ order by pe.year
                     Population = Math.Round(g.Sum(f => f.Population) ?? 0)
                 })
                 .OrderBy(p => p.Year)
-                .ToList();
+                .ToArray();
+        }
+
+        /// <summary>
+        /// Calculates average annual growth rate for an ordered set of data points
+        /// As described in: https://www.investopedia.com/terms/a/aagr.asp
+        /// </summary>
+        /// <param name="points"></param>
+        /// <returns></returns>
+        private double? GetAverageAnnualGrowthRate(DataPoint[] points)
+        {
+            if (points.Length == 0)
+            {
+                return null;
+            }
+            else if (points.Length == 1)
+            {
+                return 0;
+            }
+
+            // Calculate growth rate for each year
+            var growthRates = new List<double>();
+            for (int i = 0, j = 1; j < points.Length; j++)
+            {
+                if (points[i].Enrollment > 0)
+                {
+                    double growthRate = CalculatePercentChange(points[i], points[j]) ?? 0;
+                    growthRates.Add(growthRate);
+                }
+            }
+
+            double avgAnnualGrowthRate = growthRates.Sum() / growthRates.Count;
+            return avgAnnualGrowthRate;
+        }
+
+        private double? CalculatePercentChange(DataPoint previous, DataPoint current)
+        {
+            if (previous == null || current == null || previous.Enrollment == 0)
+            {
+                return null;
+            }
+
+            double prev = previous.Enrollment ?? 0;
+            double curr = current.Enrollment ?? 0;
+
+            double growthRate = (curr - prev) / prev;
+            return growthRate;
+        }
+
+        /// <summary>
+        /// Calculates overall percentage change from last observed point to last predicted point
+        /// </summary>
+        private double? GetProjectedChange(DataPoint[] observedPoints, DataPoint[] predictedPoints)
+        {
+            if (observedPoints == null
+                || observedPoints.Length == 0
+                || predictedPoints == null
+                || predictedPoints.Length == 0
+                || observedPoints[0].Enrollment == 0
+            )
+            {
+                return null;
+            }
+
+            double? change = CalculatePercentChange(observedPoints.Last(), predictedPoints.Last());
+            return change;
         }
 
         private async Task<List<RegionRow>> GetRegionRows(List<DataPoint> dataPoints, List<int> regionIds)

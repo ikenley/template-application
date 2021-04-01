@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Col, Form, InputGroup } from "react-bootstrap";
-import axios from "axios";
 
 const FilterPanel = () => {
   return (

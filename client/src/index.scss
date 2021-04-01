@@ -1,14 +1,23 @@
 /* Top-level styles */
-.some-fake-class {
-  border: 0;
-}
-
-/* Component-specific styles */
-/* TODO consider moving to inline style */
 
 /* utility */
+.min-height-100-vh {
+  min-height: 100vh;
+}
+
 .table-responsive-max-height-500 .table-responsive {
   max-height: 500px;
+}
+
+.table-responsive-max-height-500 .table-responsive table {
+  margin-bottom: 0;
+}
+
+/* layout */
+.container,
+.container-fluid,
+.container-xl {
+  background-color: #fff;
 }
 
 /* table */
@@ -23,9 +32,23 @@
   background-color: #fff;
 }
 
+/* Component-specific styles */
+/* TODO consider moving to inline style */
+.summary-stat-card .card-title.h5 {
+  font-size: 1.15rem;
+}
+
 /* Bootstrap overrides */
-$primary: #00355f;
+$primary: #002746;
 $secondary: #ed8b00;
+
+$body-bg: #00355f;
+
+@media (min-width: 1440px) {
+  .app .container-xxl {
+    max-width: 1400px;
+  }
+}
 
 // $enable-rounded: false;
 

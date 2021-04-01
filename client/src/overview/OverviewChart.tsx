@@ -1,7 +1,8 @@
 import React, { useMemo } from "react";
-import { OverviewResult } from "./types";
 import { Line } from "react-chartjs-2";
 import { keyBy } from "lodash";
+import { PrimaryColor, SecondaryColor } from "../constants";
+import { OverviewResult } from "./types";
 
 type Props = {
   result: OverviewResult | null;
@@ -39,15 +40,15 @@ const OverviewChart = ({ result }: Props) => {
         {
           label: "Reported",
           fill: false,
-          backgroundColor: "#00355f",
-          borderColor: "#00355f",
+          backgroundColor: PrimaryColor,
+          borderColor: PrimaryColor,
           data: observedData,
         },
         {
           label: "Projected",
           fill: false,
-          backgroundColor: "#ed8b00",
-          borderColor: "#ed8b00",
+          backgroundColor: SecondaryColor,
+          borderColor: SecondaryColor,
           data: predictedData,
         },
       ],

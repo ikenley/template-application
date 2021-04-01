@@ -1,8 +1,8 @@
 export type OverviewResult = {
     years: number[],
     regionIds: number[],
-    observedPoints: object[],
-    predictedPoints: object[],
+    observedPoints: DataPoint[],
+    predictedPoints: DataPoint[],
     regionRows: RegionRow[],
     observedAverageAnnualGrowth: number,
     predictedAverageAnnualGrowth: number,

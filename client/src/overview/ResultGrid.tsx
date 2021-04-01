@@ -12,7 +12,7 @@ const ResultGrid = ({ result }: Props) => {
     return null;
   }
 
-  const { regionIds, years, regionRows } = result;
+  const { years, regionRows } = result;
 
   return (
     <div className="result-grid mt-3 table-responsive-max-height-500">
