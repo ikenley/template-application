@@ -1,6 +1,5 @@
 import React from "react";
 import classNames from "classnames";
-import { OverviewResult } from "./types";
 import { Card } from "react-bootstrap";
 
 type Props = {
