@@ -1,5 +1,13 @@
 /* Top-level styles */
 
+html {
+  position: relative;
+  min-height: 100%;
+}
+.app body {
+  margin-bottom: 60px; /* Margin bottom by footer height */
+}
+
 /* utility */
 .min-height-100-vh {
   min-height: 100vh;

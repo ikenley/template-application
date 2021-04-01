@@ -1,10 +1,12 @@
-import React from 'react';
-import OverviewPage from "./overview/OverviewPage"
+import React from "react";
+import OverviewPage from "./overview/OverviewPage";
+import Footer from "./shared/Footer";
 
 function App() {
   return (
-    <div className="App">
+    <div className="app">
       <OverviewPage />
+      <Footer />
     </div>
   );
 }
