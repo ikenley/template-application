@@ -3,6 +3,7 @@ import { Nav, Navbar } from "react-bootstrap";
 import axios from "axios";
 import FilterPanel from "./FilterPanel";
 import { OverviewResult } from "./types";
+import OverviewChart from "./OverviewChart";
 import ResultGrid from "./ResultGrid";
 
 const ResultPanel = () => {
@@ -29,7 +30,7 @@ const ResultPanel = () => {
             </Navbar>
             <main role="main" className="container-fluid mt-3">
                 <FilterPanel />
-                <div>Trend Chart TODO</div>
+                <OverviewChart result={result} />
                 <div>Summary stats TODO</div>
                 <ResultGrid result={result} />
             </main>

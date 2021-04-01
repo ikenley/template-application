@@ -1,11 +1,31 @@
 /* Top-level styles */
 .some-fake-class {
-    border: 0;
+  border: 0;
+}
+
+/* Component-specific styles */
+/* TODO consider moving to inline style */
+
+/* utility */
+.table-responsive-max-height-500 .table-responsive {
+  max-height: 500px;
+}
+
+/* table */
+.app .table-sm th,
+.app .table-sm td {
+  padding: 0.1rem 0.3rem;
+}
+
+.sticky-table th {
+  position: sticky;
+  top: -1px;
+  background-color: #fff;
 }
 
 /* Bootstrap overrides */
-$primary:       #00355f;
-$secondary:     #ed8b00;
+$primary: #00355f;
+$secondary: #ed8b00;
 
 // $enable-rounded: false;
 

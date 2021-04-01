@@ -140,10 +140,11 @@ order by pe.year
                     Year = g.First().Year,
                     RegionId = -1,
                     IsForecast = g.First().IsForecast,
-                    Enrollment = g.Sum(f => f.Enrollment),
+                    Enrollment = Math.Round(g.Sum(f => f.Enrollment) ?? 0),
                     MarketShare = null, // TODO?
-                    Population = g.Sum(f => f.Population)
+                    Population = Math.Round(g.Sum(f => f.Population) ?? 0)
                 })
+                .OrderBy(p => p.Year)
                 .ToList();
         }
 
