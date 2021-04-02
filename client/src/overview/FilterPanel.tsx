@@ -14,7 +14,7 @@ const FilterPanel = () => {
         <Form.Row>
           <Col lg={true} className="mb-2">
             <Form.Control as="select" size="lg">
-              <option>Rensselaer Polytechnic Institute</option>
+              <option>EAB University</option>
             </Form.Control>
           </Col>
           <Col lg={true} className="mb-2">
