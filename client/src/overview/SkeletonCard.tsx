@@ -11,9 +11,9 @@ const SkeletonCard = () => {
             <Skeleton />
           </Card.Title>
           <Card.Text>
-            <h3>
+            <span className="h3">
               <Skeleton />
-            </h3>
+            </span>
           </Card.Text>
         </Card.Body>
       </Card>

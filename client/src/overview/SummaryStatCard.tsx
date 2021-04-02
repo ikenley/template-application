@@ -24,7 +24,7 @@ const SummaryStatCard = ({ title, subtitle, body, isNegative }: Props) => {
               "text-danger": isNegative,
             })}
           >
-            <h3>{body}</h3>
+            <span className="h3">{body}</span>
           </Card.Text>
         </Card.Body>
       </Card>
