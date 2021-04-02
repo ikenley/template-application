@@ -1,9 +1,11 @@
 import React, { useMemo } from "react";
+import { Alert } from "react-bootstrap";
 import { OverviewResult, emptyOverviewResult } from "./types";
 import { Row, Col } from "react-bootstrap";
 import numeral from "numeral";
 import SummaryStatCard from "./SummaryStatCard";
 import SkeletonCard from "./SkeletonCard";
+import NumberFormatSpan from "../shared/NumberFormatSpan";
 
 type Props = {
   result: OverviewResult | null;
@@ -55,7 +57,7 @@ const SummaryStatPanel = ({ result }: Props) => {
     yearRanges || {};
 
   return (
-    <div className="summary-stat-panel mt-3">
+    <div className="summary-stat-panel mt-1">
       <Row>
         <Col lg={true}>
           {result ? (
@@ -92,6 +94,34 @@ const SummaryStatPanel = ({ result }: Props) => {
           )}
         </Col>
       </Row>
+      <Alert variant="dark">
+        <p>
+          Cras at laoreet mi. Suspendisse in ultrices eros. Proin sodales
+          consequat vulputate. Suspendisse aliquet rhoncus enim, malesuada
+          consequat velit fringilla{" "}
+          <NumberFormatSpan
+            value={observedAverageAnnualGrowth}
+            format="0.00%"
+            isLoading={result === null}
+            className="font-weight-bold"
+          />
+          . Integer a pulvinar ligula. Interdum et malesuada fames ac ante ipsum
+          primis in faucibus. Sed elementum tristique augue, ac volutpat mauris
+          egestas a. Nulla quis lectus{" "}
+          <NumberFormatSpan
+            value={predictedAverageAnnualGrowth}
+            format="0.00%"
+            isLoading={result === null}
+            className="font-weight-bold"
+          />
+          .
+        </p>
+        <p className="mb-0">
+          Ut nec varius elit. Cras quis arcu vehicula, viverra dolor sit amet,
+          hendrerit massa. Ut semper condimentum neque, vitae ornare tellus
+          euismod ac. Phasellus a congue ligula, id mattis sem.
+        </p>
+      </Alert>
     </div>
   );
 };

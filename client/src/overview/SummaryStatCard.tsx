@@ -11,7 +11,7 @@ type Props = {
 
 const SummaryStatCard = ({ title, subtitle, body, isNegative }: Props) => {
   return (
-    <div className="summary-stat-card mb-1 h-100">
+    <div className="summary-stat-card pb-3 h-100">
       <Card className="h-100">
         <Card.Body className="text-center">
           <Card.Title>

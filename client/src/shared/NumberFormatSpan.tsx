@@ -1,0 +1,36 @@
+import React from "react";
+import classNames from "classnames";
+import numeral from "numeral";
+import Skeleton from "react-loading-skeleton";
+
+type Props = {
+  value: number;
+  format: string;
+  isLoading?: boolean;
+  className?: string;
+};
+
+const NumberFormatSpan = ({ value, format, isLoading, className }: Props) => {
+  const isNegative = value && value < 0;
+  return (
+    <span className="number-format-span">
+      {isLoading ? (
+        <Skeleton />
+      ) : (
+        <span
+          className={classNames(
+            {
+              "text-primary": !isNegative,
+              "text-danger": isNegative,
+            },
+            className
+          )}
+        >
+          {numeral(value).format(format)}
+        </span>
+      )}
+    </span>
+  );
+};
+
+export default NumberFormatSpan;

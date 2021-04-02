@@ -63,7 +63,7 @@ const OverviewChart = ({ result }: Props) => {
   // }
 
   return (
-    <div className="overview-chart mt-3">
+    <div className="overview-chart mt-1">
       {result ? (
         <Line
           options={{
