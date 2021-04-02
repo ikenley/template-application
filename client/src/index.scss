@@ -28,6 +28,16 @@ html {
   background-color: #fff;
 }
 
+/* Navbar */
+.app .navbar-nav .navbar-context-menu .nav-link {
+  color: #ed8b00;
+}
+
+.app .navbar-nav .navbar-context-menu .nav-link:hover,
+.app .navbar-nav .navbar-context-menu .nav-link:focus {
+  color: #a15e00;
+}
+
 /* table */
 .app .table-sm th,
 .app .table-sm td {
@@ -51,6 +61,8 @@ $primary: #002746;
 $secondary: #ed8b00;
 
 $body-bg: #00355f;
+
+$tooltip-max-width: 300px;
 
 @media (min-width: 1440px) {
   .app .container-xxl {
