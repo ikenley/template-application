@@ -38,6 +38,7 @@ namespace TemplateApi
                     .UseSnakeCaseNamingConvention()
             );
 
+            services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<IRegionService, RegionService>();
             services.AddScoped<IOverviewResultService, OverviewResultService>();
 

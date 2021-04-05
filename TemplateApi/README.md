@@ -29,6 +29,9 @@ dotnet ef database update
 # Generate SQL script from a blank database to the latest migration:
 dotnet ef migrations script
 
+# Revert to previous version
+dotnet ef database update 20210331150331_Region
+
 # Undo previous migration
 dotnet ef migrations remove
 
@@ -37,6 +40,5 @@ dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
 dotnet add package Microsoft.EntityFrameworkCore.Design
 dotnet add package Microsoft.EntityFrameworkCore.SqlServer
 dotnet tool install -g dotnet-aspnet-codegenerator
-dotnet aspnet-codegenerator controller -name TodoItemsController -async -api -m TodoItem -dc DataContext -outDir Controllers
+dotnet aspnet-codegenerator controller -name SessionController -async -api -m TemplateApi.Models.Session -dc DataContext -outDir Controllers
 ```
-

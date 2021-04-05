@@ -103,6 +103,7 @@ const SummaryStatPanel = ({ result }: Props) => {
             value={observedAverageAnnualGrowth}
             format="0.00%"
             isLoading={result === null}
+            loadingWidth={20}
             className="font-weight-bold"
           />
           . Integer a pulvinar ligula. Interdum et malesuada fames ac ante ipsum
@@ -112,6 +113,7 @@ const SummaryStatPanel = ({ result }: Props) => {
             value={predictedAverageAnnualGrowth}
             format="0.00%"
             isLoading={result === null}
+            loadingWidth={20}
             className="font-weight-bold"
           />
           .

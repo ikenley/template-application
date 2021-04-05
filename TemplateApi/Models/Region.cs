@@ -9,6 +9,8 @@ namespace TemplateApi.Models
     /// </summary>
     public class Region
     {
+        public const int AllRegionsId = 0;
+        public const string AllRegionsName = "All Regions";
         /// <summary>
         /// Foreign country region
         /// </summary>

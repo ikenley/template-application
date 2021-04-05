@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Alert } from "react-bootstrap";
 import axios from "axios";
 import Navbar from "../shared/Navbar";
+import { SessionContext } from "../session/SessionContext";
 import FilterPanel from "./FilterPanel";
 import { OverviewResult } from "./types";
 import OverviewChart from "./OverviewChart";
@@ -10,12 +11,17 @@ import ResultGrid from "./ResultGrid";
 
 const ResultPanel = () => {
   const [result, setResult] = useState<OverviewResult | null>(null);
+  const sessionContext = useContext(SessionContext);
 
   useEffect(() => {
+    if (sessionContext.session.isLoading) {
+      return;
+    }
+
     axios.get("/api/Overview").then((res) => {
       setResult(res.data);
     });
-  }, []);
+  }, [sessionContext]);
 
   return (
     <div className="overview-page">

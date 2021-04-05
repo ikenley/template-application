@@ -7,15 +7,22 @@ type Props = {
   value: number;
   format: string;
   isLoading?: boolean;
+  loadingWidth?: number;
   className?: string;
 };
 
-const NumberFormatSpan = ({ value, format, isLoading, className }: Props) => {
+const NumberFormatSpan = ({
+  value,
+  format,
+  isLoading,
+  loadingWidth,
+  className,
+}: Props) => {
   const isNegative = value && value < 0;
   return (
     <span className="number-format-span">
       {isLoading ? (
-        <Skeleton />
+        <Skeleton width={loadingWidth} />
       ) : (
         <span
           className={classNames(

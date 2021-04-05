@@ -15,7 +15,7 @@ namespace TemplateApi.Models
             modelBuilder.Entity<DataPoint>().ToTable(nameof(DataPoint), t => t.ExcludeFromMigrations());
         }
 
-        public DbSet<TodoItem> TodoItems { get; set; }
+        public DbSet<Session> Session { get; set; }
 
         public DbSet<DataPoint> DataPoints { get; set; }
 
