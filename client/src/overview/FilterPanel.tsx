@@ -15,11 +15,11 @@ const FilterPanel = () => {
   const sessionContext = useContext(SessionContext);
   const {
     isLoading,
-    institutionId,
+    //institutionId,
     institutionName,
-    regionId,
+    //regionId,
     regionName,
-    marketShareModel,
+    //marketShareModel,
   } = sessionContext.session;
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const FilterPanel = () => {
               </div>
             ) : (
               <Form.Control as="select" size="lg">
-                <option>EAB University</option>
+                <option>{institutionName}</option>
               </Form.Control>
             )}
           </Col>
@@ -85,7 +85,7 @@ const FilterPanel = () => {
                   <InputGroup.Text id="basic-addon1">Region</InputGroup.Text>
                 </InputGroup.Prepend>
                 <Form.Control as="select">
-                  <option>All Regions</option>
+                  <option>{regionName}</option>
                 </Form.Control>
               </InputGroup>
             )}
