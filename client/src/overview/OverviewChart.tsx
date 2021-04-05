@@ -3,7 +3,7 @@ import Skeleton from "react-loading-skeleton";
 import { Line } from "react-chartjs-2";
 import { keyBy } from "lodash";
 import { PrimaryColor, SecondaryColor } from "../constants";
-import { OverviewResult } from "./types";
+import { OverviewResult } from "../types";
 
 type Props = {
   result: OverviewResult | null;

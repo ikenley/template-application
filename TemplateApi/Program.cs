@@ -13,6 +13,9 @@ namespace TemplateApi
     {
         public static void Main(string[] args)
         {
+            var ASPNETCORE_ENVIRONMENT = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            Console.WriteLine($"ASPNETCORE_ENVIRONMENT={ASPNETCORE_ENVIRONMENT}");
+
             CreateHostBuilder(args).Build().Run();
         }
 

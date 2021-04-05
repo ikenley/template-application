@@ -11,5 +11,7 @@ namespace TemplateApi.Models
         Task<Session> GetSession(Guid sessionId);
 
         Task<Session> UpdateSession(UpdateSessionParams updateSessionParams);
+
+        Task<SessionOptionSet> GetSessionOptionSet();
     }
 }

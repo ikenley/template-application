@@ -15,7 +15,9 @@ select inst.year
 from public.observed_enrollment inst
 join public.regions r
 	on inst.region_id = r.id
-where inst.unitid = '194824'
+where inst.unitid = 194824
+    -- Show all regions for type 0, else filter by regionId
+	and (0 = 25 or inst.region_id = 25)
 order by inst.year
 	, inst.enrollment desc
 ;
@@ -34,12 +36,16 @@ join (
 	select x.region_id
 		, x.enrollment_share 
 	from public.observed_enrollment x
-	where x.unitid = '194824'
+	where x.unitid = 194824
+		and x.region_id = 25
+	    -- Show all regions for type 0, else filter by regionId
+		and (0 = 25 or inst.region_id = 25)
 		and year = 2018
 ) shr
 	on pe.region_id = shr.region_id
 left join public.regions r 
 	on pe.region_id = r.id 
+
 order by pe.year
 	, pe.region_id
 ;

@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Alert } from "react-bootstrap";
-import { OverviewResult, emptyOverviewResult } from "./types";
+import { OverviewResult, emptyOverviewResult } from "../types";
 import { Row, Col } from "react-bootstrap";
 import numeral from "numeral";
 import SummaryStatCard from "./SummaryStatCard";

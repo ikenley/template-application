@@ -114,7 +114,7 @@ CREATE schema if not exists staging;
 drop table if exists public.observed_enrollment;
 
 CREATE TABLE public.observed_enrollment (
-	unitid varchar(6),
+	unitid int,
 	year int,
 	region_id int,
 	enrollment float,

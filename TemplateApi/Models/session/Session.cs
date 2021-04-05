@@ -40,7 +40,7 @@ namespace TemplateApi.Models
                 UserId = userId,
                 DateCreated = DateTime.Now,
                 LastUpdated = DateTime.Now,
-                InstitutionId = 0, // TODO store this as a const
+                InstitutionId = 194824, // TODO store this as a const
                 InstitutionName = "EAB University",
                 RegionId = Region.AllRegionsId,
                 RegionName = Region.AllRegionsName,

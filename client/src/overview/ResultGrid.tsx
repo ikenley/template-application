@@ -1,7 +1,7 @@
 import React from "react";
 import { Table } from "react-bootstrap";
 import Skeleton from "react-loading-skeleton";
-import { OverviewResult, emptyOverviewResult } from "./types";
+import { OverviewResult, emptyOverviewResult } from "../types";
 import ResultGridRow from "./ResultGridRow";
 
 type Props = {

@@ -4,7 +4,7 @@ import axios from "axios";
 import Navbar from "../shared/Navbar";
 import { SessionContext } from "../session/SessionContext";
 import FilterPanel from "./FilterPanel";
-import { OverviewResult } from "./types";
+import { OverviewResult } from "../types";
 import OverviewChart from "./OverviewChart";
 import SummaryStatPanel from "./SummaryStatPanel";
 import ResultGrid from "./ResultGrid";
@@ -18,7 +18,8 @@ const ResultPanel = () => {
       return;
     }
 
-    axios.get("/api/Overview").then((res) => {
+    const sessionId = sessionContext.session.sessionId;
+    axios.get(`/api/Overview/${sessionId}`).then((res) => {
       setResult(res.data);
     });
   }, [sessionContext]);

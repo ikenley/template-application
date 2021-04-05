@@ -7,17 +7,8 @@ import React, {
   useEffect,
 } from "react";
 import axios from "axios";
+import { Session, UpdateSessionParams } from "../types";
 import { AuthContext } from "../auth/AuthContext";
-
-export type Session = {
-  isLoading: boolean;
-  sessionId: string;
-  institutionId: number;
-  institutionName: string;
-  regionId: number;
-  regionName: string;
-  marketShareModel: number;
-};
 
 const defaultSession: Session = {
   isLoading: true,
@@ -31,7 +22,7 @@ const defaultSession: Session = {
 
 const defaultSessionProps = {
   session: defaultSession,
-  setSession: (s: Session) => {},
+  updateSession: (s: UpdateSessionParams) => {},
 };
 
 export const SessionContext = createContext(defaultSessionProps);
@@ -39,13 +30,6 @@ export const SessionContext = createContext(defaultSessionProps);
 export const SessionContextProvider = ({ children }: any) => {
   const [session, setState] = useState<Session>(defaultSession);
   const authContext = useContext(AuthContext);
-
-  const setSession = useCallback(
-    (s: Session) => {
-      setState(s);
-    },
-    [setState]
-  );
 
   // Get session when AuthContext changes
   useEffect(() => {
@@ -58,9 +42,24 @@ export const SessionContextProvider = ({ children }: any) => {
     });
   }, [authContext, setState]);
 
+  const updateSession = useCallback(
+    (s: UpdateSessionParams) => {
+      // Reset loadmask until AJAX resolves
+      setState((ses) => {
+        return { ...ses, isLoading: true };
+      });
+
+      s.sessionId = session.sessionId;
+      axios.post("/api/session/update", s).then((res) => {
+        setState(res.data);
+      });
+    },
+    [session, setState]
+  );
+
   const value = useMemo(() => {
-    return { session, setSession };
-  }, [session, setSession]);
+    return { session, updateSession };
+  }, [session, updateSession]);
 
   return (
     <SessionContext.Provider value={value}>{children}</SessionContext.Provider>

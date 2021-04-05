@@ -15,7 +15,7 @@ CREATE schema if not exists staging;
 drop table if exists staging.observed_enrollment_unit_fips;
 
 CREATE TABLE staging.observed_enrollment_unit_fips (
-	unitid varchar(6),
+	unitid int,
 	year int,
 	state_fips int,
 	enrollment float,
@@ -23,56 +23,56 @@ CREATE TABLE staging.observed_enrollment_unit_fips (
 );
 
 insert into staging.observed_enrollment_unit_fips
-select unitid
+select cast(unitid as int)
 	, 2004 as year
 	, efcstate as state_fips
 	, efres01 as enrollment
 from base.ef2004c_rv
 where efcstate <> 99
 union
-select unitid
+select cast(unitid as int)
 	, 2006 as year
 	, efcstate as state_fips
 	, efres02 as enrollment
 from base.ef2006c_rv
 where efcstate <> 99
 union
-select unitid
+select cast(unitid as int)
 	, 2008 as year
 	, efcstate as state_fips
 	, efres02 as enrollment
 from base.ef2008c_rv
 where efcstate <> 99
 union
-select unitid
+select cast(unitid as int)
 	, 2010 as year
 	, efcstate as state_fips
 	, CASE WHEN efres02~E'^\\d+$' THEN efres02::float ELSE 0 end as enrollment
 from base.ef2010c_rv
 where efcstate <> 99
 union
-select unitid
+select cast(unitid as int)
 	, 2012 as year
 	, efcstate as state_fips
 	, efres02 as enrollment
 from base.ef2012c_rv
 where efcstate <> 99
 union
-select unitid
+select cast(unitid as int)
 	, 2014 as year
 	, efcstate as state_fips
 	, efres02 as enrollment
 from base.ef2014c_rv
 where efcstate <> 99
 union
-select unitid
+select cast(unitid as int)
 	, 2016 as year
 	, efcstate as state_fips
 	, efres02 as enrollment
 from base.ef2016c_rv
 where efcstate <> 99
 union
-select unitid
+select cast(unitid as int)
 	, 2018 as year
 	, efcstate as state_fips
 	, efres02 as enrollment
@@ -90,7 +90,7 @@ from staging.observed_enrollment_unit_fips
 drop table if exists staging.observed_enrollment;
 
 CREATE TABLE staging.observed_enrollment (
-	unitid varchar(6),
+	unitid int,
 	year int,
 	region_id int,
 	enrollment float,

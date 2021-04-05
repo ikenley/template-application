@@ -10,7 +10,7 @@ Sample .NET Core API to be hosted in a Docker container
 - [Dockerfile based on](https://docs.docker.com/engine/examples/dotnetcore/)
 
 ```
-docker build -t template-api .
+docker build -t template-api --build-arg ASPNETCORE_ENVIRONMENT=Development .
 docker run --rm -it -p 5000:5000 template-api
 ```
 

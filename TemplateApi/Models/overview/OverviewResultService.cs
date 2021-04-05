@@ -11,24 +11,27 @@ namespace TemplateApi.Models
     {
         private readonly DataContext _dataContext;
         private readonly IRegionService _regionService;
+        private readonly ISessionService _sessionService;
 
-        public OverviewResultService(DataContext dataContext, IRegionService regionService)
+        public OverviewResultService(DataContext dataContext, IRegionService regionService, ISessionService sessionService)
         {
             _dataContext = dataContext;
             _regionService = regionService;
+            _sessionService = sessionService;
         }
 
-        public async Task<OverviewResult> GetOverviewResultAsync()
+        public async Task<OverviewResult> GetOverviewResultAsync(Guid sessionId)
         {
-            // TODO get values from session
-            string unitId = "194824";
-            var result = new OverviewResult();
+            var session = await _sessionService.GetSession(sessionId);
+            int institutionId = session.InstitutionId;
+            int regionId = session.RegionId;
 
-            var observedPoints = await GetObservedPoints(unitId);
-            var predictedPoints = await GetPredictedPoints(unitId);
+            var observedPoints = await GetObservedPoints(institutionId, regionId);
+            var predictedPoints = await GetPredictedPoints(institutionId, regionId);
 
             ImputePredictedForeignDataPoints(observedPoints, predictedPoints);
 
+            var result = new OverviewResult();
             result.ObservedPoints = AggreggateByYear(observedPoints);
             result.PredictedPoints = AggreggateByYear(predictedPoints);
 
@@ -46,7 +49,7 @@ namespace TemplateApi.Models
             return result;
         }
 
-        private async Task<List<DataPoint>> GetObservedPoints(string unitId)
+        private async Task<List<DataPoint>> GetObservedPoints(int unitId, int regionId)
         {
             // throw new NotImplementedException();
             var dataPoints = await _dataContext.DataPoints
@@ -60,13 +63,15 @@ from public.observed_enrollment inst
 join public.regions r
 	on inst.region_id = r.id
 where inst.unitid = {unitId}
+    -- Show all regions for type 0, else filter by regionId
+	and (0 = {regionId} or inst.region_id = {regionId})
 order by inst.enrollment desc")
                 .ToListAsync();
 
             return dataPoints;
         }
 
-        private async Task<List<DataPoint>> GetPredictedPoints(string unitId)
+        private async Task<List<DataPoint>> GetPredictedPoints(int unitId, int regionId)
         {
             // throw new NotImplementedException();
             var dataPoints = await _dataContext.DataPoints
@@ -82,6 +87,8 @@ join (
 		, x.enrollment_share 
 	from public.observed_enrollment x
 	where x.unitid = {unitId}
+        -- Show all regions for type 0, else filter by regionId
+        and (0 = {regionId} or x.region_id = {regionId})
 		and year = 2018
 ) shr
 	on pe.region_id = shr.region_id
@@ -106,7 +113,12 @@ order by pe.year
             var latest = observedPoints
                 .Where(p => p.RegionId == Region.Foreign)
                 .OrderByDescending(p => p.Year)
-                .First();
+                .FirstOrDefault();
+
+            if (latest == null)
+            {
+                return;
+            }
 
             // For each prediction year, add copy of most recent foreign data
             int[] predictedYears = predictedPoints

@@ -10,10 +10,12 @@ namespace TemplateApi.Models
     public class SessionService : ISessionService
     {
         private readonly DataContext _dataContext;
+        private readonly IRegionService _regionService;
 
-        public SessionService(DataContext dataContext)
+        public SessionService(DataContext dataContext, IRegionService regionService)
         {
             _dataContext = dataContext;
+            _regionService = regionService;
         }
 
         public async Task<Session> CreateOrGetSession(string userId)
@@ -79,6 +81,19 @@ namespace TemplateApi.Models
 
             await _dataContext.SaveChangesAsync();
             return session;
+        }
+
+        public async Task<SessionOptionSet> GetSessionOptionSet()
+        {
+            var optionSet = new SessionOptionSet();
+
+            optionSet.Institutions = new List<Institution>{
+                new Institution{ Id = 194824, Name = "EAB University" }
+            };
+
+            optionSet.Regions = await _regionService.GetRegionsAsync();
+
+            return optionSet;
         }
     }
 }

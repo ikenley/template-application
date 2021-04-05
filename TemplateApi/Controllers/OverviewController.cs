@@ -21,10 +21,10 @@ namespace TemplateApi.Controllers
             _resultService = resultService;
         }
 
-        [HttpGet]
-        public async Task<OverviewResult> GetAsync()
+        [HttpGet("{sessionId}")]
+        public async Task<OverviewResult> GetAsync(Guid sessionId)
         {
-            var result = await _resultService.GetOverviewResultAsync();
+            var result = await _resultService.GetOverviewResultAsync(sessionId);
             return result;
         }
     }

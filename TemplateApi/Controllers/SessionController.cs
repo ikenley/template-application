@@ -46,12 +46,20 @@ namespace TemplateApi.Controllers
             return session;
         }
 
-        // POST: api/Session/update
+        // POST: api/session/update
         [HttpPost("update")]
         public async Task<ActionResult<Session>> UpdateSession(UpdateSessionParams updateSessionParams)
         {
             var session = await _sessionService.UpdateSession(updateSessionParams);
             return session;
+        }
+
+        // GET /api/session/sessionoptionset
+        [HttpGet("sessionoptionset")]
+        public async Task<ActionResult<SessionOptionSet>> GetSessionOptionSet()
+        {
+            var optionSet = await _sessionService.GetSessionOptionSet();
+            return optionSet;
         }
     }
 }
