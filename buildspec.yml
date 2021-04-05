@@ -17,7 +17,8 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - IMAGE_TAG=$ENV-$CODEBUILD_BUILD_NUMBER
+      - IMAGE_TAG_RAW=$ENV-$CODEBUILD_BUILD_NUMBER
+      - IMAGE_TAG=${IMAGE_TAG_RAW,,}
       - echo "IMAGE_TAG=$IMAGE_TAG"
       - ASPNETCORE_ENVIRONMENT=$ENV
       - echo "ASPNETCORE_ENVIRONMENT=$ASPNETCORE_ENVIRONMENT"

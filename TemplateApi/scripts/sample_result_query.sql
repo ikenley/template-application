@@ -17,7 +17,7 @@ join public.regions r
 	on inst.region_id = r.id
 where inst.unitid = 194824
     -- Show all regions for type 0, else filter by regionId
-	and (0 = 25 or inst.region_id = 25)
+	and (0 = 0 or inst.region_id = 0)
 order by inst.year
 	, inst.enrollment desc
 ;
@@ -39,7 +39,7 @@ join (
 	where x.unitid = 194824
 		and x.region_id = 25
 	    -- Show all regions for type 0, else filter by regionId
-		and (0 = 25 or inst.region_id = 25)
+		and (0 = 0 or x.region_id = 0)
 		and year = 2018
 ) shr
 	on pe.region_id = shr.region_id
