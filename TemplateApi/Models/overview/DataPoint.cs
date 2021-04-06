@@ -21,5 +21,10 @@ namespace TemplateApi.Models
         /// </summary>
         /// <value></value>
         public double? Population { get; set; }
+
+        /// <summary>
+        /// Percent of total institution enrollment for given region-year
+        /// </summary>
+        public double? PercentTotalEnrollment { get; set; }
     }
 }

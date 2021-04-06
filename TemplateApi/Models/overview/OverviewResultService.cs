@@ -31,15 +31,17 @@ namespace TemplateApi.Models
 
             ImputePredictedForeignDataPoints(observedPoints, predictedPoints);
 
+            var allDataPoints = observedPoints.Concat(predictedPoints).ToList();
+
             var result = new OverviewResult();
             result.ObservedPoints = AggreggateByYear(observedPoints);
             result.PredictedPoints = AggreggateByYear(predictedPoints);
 
+            CalculatePercentTotalEnrollment(allDataPoints, result.ObservedPoints.Concat(result.PredictedPoints));
+
             result.ObservedAverageAnnualGrowth = GetAverageAnnualGrowthRate(result.ObservedPoints);
             result.PredictedAverageAnnualGrowth = GetAverageAnnualGrowthRate(result.PredictedPoints);
             result.ProjectedChange = GetProjectedChange(result.ObservedPoints, result.PredictedPoints);
-
-            var allDataPoints = observedPoints.Concat(predictedPoints).ToList();
 
             result.Years = GetYears(allDataPoints);
             result.RegionIds = GetRegionIdsOrderedByEnrollmentDescending(allDataPoints);
@@ -59,6 +61,7 @@ namespace TemplateApi.Models
 	, inst.enrollment
 	, inst.enrollment_share as market_share
     , null as population
+    , null as percent_total_enrollment
 from public.observed_enrollment inst
 join public.regions r
 	on inst.region_id = r.id
@@ -81,6 +84,7 @@ order by inst.enrollment desc")
 	, pe.enrollment * shr.enrollment_share as enrollment
 	, shr.enrollment_share as market_share
 	, pe.enrollment as population
+    , null as percent_total_enrollment
 from public.predicted_market_enrollment pe 
 join (
 	select x.region_id
@@ -136,6 +140,28 @@ order by pe.year
                     MarketShare = latest.MarketShare,
                     Population = latest.Population
                 });
+            }
+        }
+
+        /// <summary>
+        /// Generates predicted foreign values using observed foreign data
+        /// </summary>
+        private void CalculatePercentTotalEnrollment(
+            List<DataPoint> allDataPoints,
+            IEnumerable<DataPoint> aggregateDataPoints
+        )
+        {
+            // Create map of year => total enrollment
+            var yearTotalEnrollmentMap = aggregateDataPoints.ToDictionary(p => p.Year, t => t.Enrollment);
+
+            // For each DataPoint calculate % of total enrollment for that year
+            foreach (var point in allDataPoints)
+            {
+                if (yearTotalEnrollmentMap.ContainsKey(point.Year))
+                {
+                    double total = yearTotalEnrollmentMap[point.Year] ?? 0;
+                    point.PercentTotalEnrollment = total > 0 ? point.Enrollment / total : null;
+                }
             }
         }
 
@@ -227,12 +253,19 @@ order by pe.year
 
         private async Task<List<RegionRow>> GetRegionRows(List<DataPoint> dataPoints, List<int> regionIds)
         {
+            List<RegionRow> rows = new List<RegionRow>();
+
+            // Calculate "All Regions" total
+            var totalRow = new RegionRow { RegionId = Region.AllRegionsId, RegionName = Region.AllRegionsName };
+            totalRow.YearDataPointMap = AggreggateByYear(dataPoints).ToDictionary(p => p.Year);
+            rows.Add(totalRow);
+
+            // Calculate each region
             ILookup<int, DataPoint> regionDataPointMap = dataPoints.ToLookup(p => p.RegionId);
 
             var regions = await _regionService.GetRegionsAsync();
             var regionMap = regions.ToDictionary(r => r.Id);
 
-            List<RegionRow> rows = new List<RegionRow>();
             foreach (int regionId in regionIds)
             {
                 var row = new RegionRow { RegionId = regionId };
@@ -244,10 +277,7 @@ order by pe.year
                 rows.Add(row);
             }
 
-            // Add in "All Regions" total
-            var totalRow = new RegionRow { RegionId = Region.AllRegionsId, RegionName = Region.AllRegionsName };
-            totalRow.YearDataPointMap = AggreggateByYear(dataPoints).ToDictionary(p => p.Year);
-            rows.Insert(0, totalRow);
+
 
             return rows;
         }

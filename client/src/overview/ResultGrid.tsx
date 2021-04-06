@@ -10,7 +10,7 @@ type Props = {
   result: OverviewResult | null;
 };
 
-const MAX_ROW_COUNT = 10;
+const MAX_ROW_COUNT = 11;
 
 const ResultGrid = ({ result }: Props) => {
   const { regionRows } = result || emptyOverviewResult;
@@ -42,10 +42,14 @@ const ResultGrid = ({ result }: Props) => {
             accessor: "yearDataPointMap[2018].enrollment",
             Cell: ({ value }) => <ResultGridCell value={value} />,
           },
-          // {
-          //   Header: "Percent of Enrollment TODO",
-          //   accessor: "yearDataPointMap[2004].enrollment",
-          // },
+          {
+            Header: "% of Enrollment",
+            accessor: "yearDataPointMap[2018].percentTotalEnrollment",
+            Cell: ({ value }) => (
+              <ResultGridCell value={value} format="0.00%" />
+            ),
+            width: 150,
+          },
           {
             Header: "2018 Market Share",
             accessor: "yearDataPointMap[2018].marketShare",
@@ -95,7 +99,7 @@ const ResultGrid = ({ result }: Props) => {
       {result ? (
         <DataGrid columns={columns} data={data} />
       ) : (
-        <Skeleton height={500} />
+        <Skeleton height={460} />
       )}
     </div>
   );
