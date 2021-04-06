@@ -10,6 +10,7 @@ import SelectColumnFilter from "./SelectColumnFilter";
 type DataGridProps = {
   columns: any[];
   data: any[];
+  maxHeight?: number;
   handleRowClick?: (row: any) => void;
 };
 
@@ -17,18 +18,24 @@ type TableProps = DataGridProps & {
   width: number;
 };
 
-function Table({ columns, data, width, handleRowClick }: TableProps) {
+const ITEM_SIZE = 35;
+
+function Table({
+  columns,
+  data,
+  handleRowClick,
+  maxHeight = 400,
+  width,
+}: TableProps) {
   // Use the state and functions returned from useTable to build your UI
 
   const defaultColumn = useMemo(
     () => ({
-      width: 150,
+      width: 100,
       disableFilters: true,
     }),
     []
   );
-
-  const scrollBarSize = useMemo(() => scrollbarWidth(), []);
 
   const filterTypes = useMemo(
     () => ({
@@ -69,7 +76,10 @@ function Table({ columns, data, width, handleRowClick }: TableProps) {
     ({ index, style }) => {
       const row = rows[index];
       prepareRow(row);
-      const styleProps: any = { ...style, cursor: "pointer" };
+      const styleProps: any = {
+        ...style,
+        cursor: handleRowClick ? "pointer" : "inherit",
+      };
       return (
         <div
           {...row.getRowProps({
@@ -93,7 +103,18 @@ function Table({ columns, data, width, handleRowClick }: TableProps) {
     [prepareRow, rows, handleRowClick]
   );
 
-  const headerWidth = width - scrollBarSize;
+  const headerWidth = useMemo(() => {
+    // If items exceed height of window, subtract scrollbar width
+    if (rows.length * ITEM_SIZE > maxHeight) {
+      const scrollBarSize = scrollbarWidth();
+      return width - scrollBarSize;
+    }
+    return width;
+  }, [width, maxHeight, rows.length]);
+
+  const height = useMemo(() => {
+    return Math.min(maxHeight, rows.length * ITEM_SIZE);
+  }, [maxHeight, rows]);
 
   // Render the UI for your table
   return (
@@ -122,10 +143,10 @@ function Table({ columns, data, width, handleRowClick }: TableProps) {
 
       <div {...getTableBodyProps()} className="tbody">
         <FixedSizeList
-          height={400}
           itemCount={rows.length}
           itemSize={35}
           width={width}
+          height={height}
         >
           {RenderRow}
         </FixedSizeList>
@@ -134,7 +155,12 @@ function Table({ columns, data, width, handleRowClick }: TableProps) {
   );
 }
 
-const DataGrid = ({ columns, data, handleRowClick }: DataGridProps) => {
+const DataGrid = ({
+  columns,
+  data,
+  maxHeight,
+  handleRowClick,
+}: DataGridProps) => {
   return (
     <div className="data-grid w-100">
       <AutoSizer disableHeight>
@@ -144,6 +170,7 @@ const DataGrid = ({ columns, data, handleRowClick }: DataGridProps) => {
               columns={columns}
               data={data}
               handleRowClick={handleRowClick}
+              maxHeight={maxHeight}
               width={width}
             />
           </div>

@@ -1,5 +1,4 @@
 import React from "react";
-import sortBy from "lodash";
 // Default column filter for react-table. Text input search
 
 type Props = {

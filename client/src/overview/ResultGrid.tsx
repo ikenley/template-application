@@ -1,41 +1,99 @@
-import React from "react";
-import { Table } from "react-bootstrap";
+import React, { useMemo } from "react";
 import Skeleton from "react-loading-skeleton";
+import { take } from "lodash";
+import { Column } from "react-table";
+import DataGrid from "../shared/grid/DataGrid";
 import { OverviewResult, emptyOverviewResult } from "../types";
-import ResultGridRow from "./ResultGridRow";
+import ResultGridCell from "./ResultGridCell";
 
 type Props = {
   result: OverviewResult | null;
 };
 
+const MAX_ROW_COUNT = 10;
+
 const ResultGrid = ({ result }: Props) => {
-  const { years, regionRows } = result || emptyOverviewResult;
+  const { regionRows } = result || emptyOverviewResult;
+
+  const data = useMemo(() => {
+    return take(regionRows, MAX_ROW_COUNT);
+  }, [regionRows]);
+
+  const columns: Column<any>[] = useMemo(
+    () => [
+      {
+        Header: <div className="text-center font-weight-bold">Region</div>,
+        accessor: "regionName",
+        width: 250,
+      },
+      {
+        Header: () => (
+          <div className="text-center font-weight-bold">Reported Data</div>
+        ),
+        id: "reported_data",
+        columns: [
+          {
+            Header: "2012",
+            accessor: "yearDataPointMap[2012].enrollment",
+            Cell: ({ value }) => <ResultGridCell value={value} />,
+          },
+          {
+            Header: "2018",
+            accessor: "yearDataPointMap[2018].enrollment",
+            Cell: ({ value }) => <ResultGridCell value={value} />,
+          },
+          // {
+          //   Header: "Percent of Enrollment TODO",
+          //   accessor: "yearDataPointMap[2004].enrollment",
+          // },
+          {
+            Header: "2018 Market Share",
+            accessor: "yearDataPointMap[2018].marketShare",
+            Cell: ({ value }) => (
+              <ResultGridCell value={value} format="0.0000%" />
+            ),
+            width: 150,
+          },
+        ],
+      },
+      {
+        Header: () => (
+          <div className="text-center font-weight-bold">
+            Estimated Enrollment Demand
+          </div>
+        ),
+        id: "estimated_enrollment_demand",
+        columns: [
+          {
+            Header: "2022",
+            accessor: "yearDataPointMap[2022].enrollment",
+            Cell: ({ value }) => <ResultGridCell value={value} />,
+          },
+          {
+            Header: "2025",
+            accessor: "yearDataPointMap[2025].enrollment",
+            Cell: ({ value }) => <ResultGridCell value={value} />,
+          },
+          {
+            Header: "2030",
+            accessor: "yearDataPointMap[2030].enrollment",
+            Cell: ({ value }) => <ResultGridCell value={value} />,
+          },
+          {
+            Header: "2035",
+            accessor: "yearDataPointMap[2035].enrollment",
+            Cell: ({ value }) => <ResultGridCell value={value} />,
+          },
+        ],
+      },
+    ],
+    []
+  );
 
   return (
     <div className="result-grid mt-3 table-responsive-max-height-500">
       {result ? (
-        <Table
-          responsive
-          striped
-          bordered
-          hover
-          size="sm"
-          className="sticky-table"
-        >
-          <thead>
-            <tr>
-              <th>Region</th>
-              {years.map((y) => (
-                <th key={y}>{y}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {regionRows.map((row) => (
-              <ResultGridRow key={row.regionId} years={years} row={row} />
-            ))}
-          </tbody>
-        </Table>
+        <DataGrid columns={columns} data={data} />
       ) : (
         <Skeleton height={500} />
       )}

@@ -84,3 +84,11 @@ $enable-rounded: false;
 @import "~bootstrap/scss/bootstrap";
 
 @import "/src/shared/tables.scss";
+
+/* Individual Components */
+
+/* ResultGrid */
+
+.result-grid .th {
+  text-align: center;
+}

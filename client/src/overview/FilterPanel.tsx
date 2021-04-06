@@ -45,9 +45,7 @@ const FilterPanel = () => {
   }, [setOptionSet]);
 
   // Update when session changes
-  useEffect(() => {
-    console.log("sessionContext", sessionContext);
-  }, [sessionContext]);
+  useEffect(() => {}, [sessionContext]);
 
   const regions: Region[] = useMemo(() => {
     if (optionSet) {

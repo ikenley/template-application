@@ -244,6 +244,11 @@ order by pe.year
                 rows.Add(row);
             }
 
+            // Add in "All Regions" total
+            var totalRow = new RegionRow { RegionId = Region.AllRegionsId, RegionName = Region.AllRegionsName };
+            totalRow.YearDataPointMap = AggreggateByYear(dataPoints).ToDictionary(p => p.Year);
+            rows.Insert(0, totalRow);
+
             return rows;
         }
 
