@@ -12,6 +12,7 @@ select inst.year
 	, inst.enrollment
 	, inst.enrollment_share as market_share
     , null as population
+    , null as percent_total_enrollment
 from public.observed_enrollment inst
 join public.regions r
 	on inst.region_id = r.id
@@ -28,24 +29,20 @@ order by inst.year
 select pe.year
 	, pe.region_id
 	, true as is_forecast
-	, pe.enrollment * shr.enrollment_share as enrollment
-	, shr.enrollment_share as market_share
+	, pe.enrollment * shr.market_share as enrollment
+	, shr.market_share
 	, pe.enrollment as population
+    , null as percent_total_enrollment
 from public.predicted_market_enrollment pe 
-join (
-	select x.region_id
-		, x.enrollment_share 
-	from public.observed_enrollment x
-	where x.unitid = 194824
-		and x.region_id = 25
-	    -- Show all regions for type 0, else filter by regionId
-		and (0 = 0 or x.region_id = 0)
-		and year = 2018
-) shr
+join public.predicted_market_share shr
 	on pe.region_id = shr.region_id
+		and pe.year = shr.year
 left join public.regions r 
 	on pe.region_id = r.id 
-
+where shr.unitid = 194824
+	and shr.market_share_model_id = 0
+    -- Show all regions for type 0, else filter by regionId
+	and (0 = 0 or shr.region_id = 0)
 order by pe.year
 	, pe.region_id
 ;

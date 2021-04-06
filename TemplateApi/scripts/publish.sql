@@ -185,6 +185,36 @@ limit 100
 ;
 
 -------------------------------------------------------------------------------
+-- predicted_market_share
+
+drop table if exists public.predicted_market_share;
+
+CREATE TABLE public.predicted_market_share (
+	unitid int,
+	market_share_model_id int,
+	region_id int,
+	year int,
+	market_share float,
+	constraint pk_predicted_market_share primary key (unitid, market_share_model_id, region_id, year)
+);
+
+insert into public.predicted_market_share
+select p.unitid 
+	, p.market_share_model_id
+	, p.region_id
+	, p.year
+	, p.market_share 
+from staging.predicted_market_share p
+;
+
+CLUSTER public.predicted_market_share USING pk_predicted_market_share;
+
+select COUNT(*)
+from public.predicted_market_share
+limit 100
+;
+
+-------------------------------------------------------------------------------
 -- Access
 
 --ACCESS DB

@@ -25,9 +25,10 @@ namespace TemplateApi.Models
             var session = await _sessionService.GetSession(sessionId);
             int institutionId = session.InstitutionId;
             int regionId = session.RegionId;
+            int marketShareModel = (int)session.MarketShareModel;
 
             var observedPoints = await GetObservedPoints(institutionId, regionId);
-            var predictedPoints = await GetPredictedPoints(institutionId, regionId);
+            var predictedPoints = await GetPredictedPoints(institutionId, regionId, marketShareModel);
 
             ImputePredictedForeignDataPoints(observedPoints, predictedPoints);
 
@@ -74,30 +75,27 @@ order by inst.enrollment desc")
             return dataPoints;
         }
 
-        private async Task<List<DataPoint>> GetPredictedPoints(int unitId, int regionId)
+        private async Task<List<DataPoint>> GetPredictedPoints(int unitId, int regionId, int marketShareModel)
         {
             // throw new NotImplementedException();
             var dataPoints = await _dataContext.DataPoints
                 .FromSqlInterpolated($@"select pe.year
 	, pe.region_id
 	, true as is_forecast
-	, pe.enrollment * shr.enrollment_share as enrollment
-	, shr.enrollment_share as market_share
+	, pe.enrollment * shr.market_share as enrollment
+	, shr.market_share
 	, pe.enrollment as population
     , null as percent_total_enrollment
 from public.predicted_market_enrollment pe 
-join (
-	select x.region_id
-		, x.enrollment_share 
-	from public.observed_enrollment x
-	where x.unitid = {unitId}
-        -- Show all regions for type 0, else filter by regionId
-        and (0 = {regionId} or x.region_id = {regionId})
-		and year = 2018
-) shr
+join public.predicted_market_share shr
 	on pe.region_id = shr.region_id
+		and pe.year = shr.year
 left join public.regions r 
 	on pe.region_id = r.id 
+where shr.unitid = {unitId}
+	and shr.market_share_model_id = {marketShareModel}
+    -- Show all regions for type 0, else filter by regionId
+	and (0 = {regionId} or shr.region_id = {regionId})
 order by pe.year
 	, pe.region_id")
                 .ToListAsync();

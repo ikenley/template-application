@@ -251,6 +251,34 @@ limit 100
 ;
 
 -------------------------------------------------------------------------------
+-- years
+
+drop table if exists staging.years;
+
+CREATE TABLE staging.years (
+	year int,
+	is_prediction boolean,
+	constraint pk_years primary key (year)
+);
+
+insert into staging.years
+select distinct obs.year
+	, false as is_prediction
+from staging.observed_market_enrollment obs
+union
+select distinct pme.year
+	, true as is_prediction 
+from staging.predicted_market_enrollment pme 
+;
+
+CLUSTER staging.years USING pk_years;
+
+select *
+from staging.years
+limit 100
+;
+
+-------------------------------------------------------------------------------
 -- predicted_market_enrollment
 
 drop table if exists staging.predicted_market_enrollment;
@@ -281,6 +309,46 @@ select *
 from staging.predicted_market_enrollment
 limit 100
 ;
+
+-------------------------------------------------------------------------------
+-- predicted_market_share
+
+drop table if exists staging.predicted_market_share;
+
+CREATE TABLE staging.predicted_market_share (
+	unitid int,
+	market_share_model_id int,
+	region_id int,
+	year int,
+	market_share float,
+	constraint pk_predicted_market_share primary key (unitid, market_share_model_id, region_id, year)
+);
+
+insert into staging.predicted_market_share
+select obs.unitid 
+	, 0 as market_share_model_id -- Most recent year
+	, obs.region_id
+	, p.year as year
+	, obs.enrollment_share as market_share  
+from staging.observed_enrollment obs
+cross join (
+	select year 
+	from staging.years 
+	where is_prediction = true
+) p
+where obs.year = (
+	select max(year) from staging.years where is_prediction = false
+)
+order by obs.unitid, obs.region_id, p.year
+;
+
+CLUSTER staging.predicted_market_share USING pk_predicted_market_share;
+
+select COUNT(*)
+from staging.predicted_market_share
+limit 100
+;
+
 
 
 
