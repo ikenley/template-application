@@ -7,7 +7,32 @@ CREATE schema if not exists staging;
 -------------------------------------------------------------------------------
 -- institutions
 
--- TODO
+drop table if exists staging.institutions;
+
+CREATE TABLE staging.institutions (
+	id int4 NOT NULL,
+	"name" text NULL,
+	city text NULL,
+	state text NULL,
+	zip text NULL,
+	CONSTRAINT pk_institutions PRIMARY KEY (id)
+);
+
+insert into staging.institutions
+select cast(unitid as int) as id
+	, instnm as "name"
+	, city
+	, stabbr as state
+	, zip
+from base.hd2019 b
+;
+
+CLUSTER staging.institutions USING pk_institutions;
+
+select *
+from staging.institutions
+limit 100
+;
 
 -------------------------------------------------------------------------------
 -- observed_enrollment by institution-fipss

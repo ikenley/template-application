@@ -50,6 +50,14 @@ html {
   background-color: #fff;
 }
 
+/* modal */
+@media (min-width: 992px) {
+  .app .modal-lg,
+  .app .modal-xl {
+    max-width: 950px;
+  }
+}
+
 /* Component-specific styles */
 /* TODO consider moving to inline style */
 .summary-stat-card .card-title.h5 {
@@ -74,3 +82,5 @@ $enable-rounded: false;
 
 /* import bootstrap to set changes */
 @import "~bootstrap/scss/bootstrap";
+
+@import "/src/shared/tables.scss";

@@ -4,18 +4,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace TemplateApi.Models
 {
     public class SessionService : ISessionService
     {
+        private IMemoryCache _cache;
         private readonly DataContext _dataContext;
         private readonly IRegionService _regionService;
+        private readonly IInstitutionService _institutionService;
 
-        public SessionService(DataContext dataContext, IRegionService regionService)
+        public SessionService(IMemoryCache memoryCache, DataContext dataContext, IRegionService regionService, IInstitutionService institutionService)
         {
+            _cache = memoryCache;
             _dataContext = dataContext;
             _regionService = regionService;
+            _institutionService = institutionService;
         }
 
         public async Task<Session> CreateOrGetSession(string userId)
@@ -85,14 +90,18 @@ namespace TemplateApi.Models
 
         public async Task<SessionOptionSet> GetSessionOptionSet()
         {
-            var optionSet = new SessionOptionSet();
+            SessionOptionSet optionSet;
 
-            optionSet.Institutions = new List<Institution>{
-                new Institution{ Id = 194824, Name = "EAB University" }
-            };
+            if (!_cache.TryGetValue(CacheKeys.GetSessionOptionSet, out optionSet))
+            {
+                optionSet = new SessionOptionSet();
 
-            optionSet.Regions = await _regionService.GetRegionsAsync();
+                optionSet.Institutions = await _institutionService.GetInstitutionsAsync();
 
+                optionSet.Regions = await _regionService.GetRegionsAsync();
+
+                _cache.Set(CacheKeys.GetSessionOptionSet, optionSet);
+            }
             return optionSet;
         }
     }

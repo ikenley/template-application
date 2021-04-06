@@ -40,9 +40,11 @@ namespace TemplateApi
 
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<IRegionService, RegionService>();
+            services.AddScoped<IInstitutionService, InstitutionService>();
             services.AddScoped<IOverviewResultService, OverviewResultService>();
 
             services.AddControllers();
+            services.AddMemoryCache();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

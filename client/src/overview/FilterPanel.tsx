@@ -11,16 +11,19 @@ import {
   InputGroup,
   OverlayTrigger,
   Tooltip,
+  Button,
 } from "react-bootstrap";
 import Skeleton from "react-loading-skeleton";
 import axios from "axios";
 import { SessionOptionSet, Region } from "../types";
 import { SessionContext } from "../session/SessionContext";
+import InstitutionSelectionModal from "./InstitutionSelectionModal";
 
 const SKELETON_HEIGHT = 45;
 
 const FilterPanel = () => {
   const [optionSet, setOptionSet] = useState<SessionOptionSet | null>(null);
+  const [showInstModal, setShowInstModal] = useState(true);
   const sessionContext = useContext(SessionContext);
   const {
     isLoading,
@@ -30,6 +33,10 @@ const FilterPanel = () => {
     regionName,
     //marketShareModel,
   } = sessionContext.session;
+
+  const openShowInstModal = useCallback(() => {
+    setShowInstModal(true);
+  }, [setShowInstModal]);
 
   // Get session options
   useEffect(() => {
@@ -76,9 +83,18 @@ const FilterPanel = () => {
                 <Skeleton height={SKELETON_HEIGHT} />
               </div>
             ) : (
-              <Form.Control as="select" size="lg">
-                <option>{institutionName}</option>
-              </Form.Control>
+              <Button
+                className="d-flex justify-content-between"
+                size="lg"
+                variant="outline-dark"
+                block
+                onClick={openShowInstModal}
+              >
+                <span>{institutionName}</span>
+                <span>
+                  <i className="fas fa-bars"></i>
+                </span>
+              </Button>
             )}
           </Col>
           <Col lg={true} className="mb-2">
@@ -139,6 +155,11 @@ const FilterPanel = () => {
             )}
           </Col>
         </Form.Row>
+        <InstitutionSelectionModal
+          show={showInstModal}
+          setShow={setShowInstModal}
+          optionSet={optionSet}
+        />
       </Form>
     </div>
   );

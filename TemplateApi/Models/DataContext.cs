@@ -20,5 +20,7 @@ namespace TemplateApi.Models
         public DbSet<DataPoint> DataPoints { get; set; }
 
         public DbSet<Region> Regions { get; set; }
+
+        public DbSet<Institution> Institutions { get; set; }
     }
 }
