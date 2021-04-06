@@ -23,7 +23,7 @@ const SKELETON_HEIGHT = 45;
 
 const FilterPanel = () => {
   const [optionSet, setOptionSet] = useState<SessionOptionSet | null>(null);
-  const [showInstModal, setShowInstModal] = useState(true);
+  const [showInstModal, setShowInstModal] = useState(false);
   const sessionContext = useContext(SessionContext);
   const {
     isLoading,
