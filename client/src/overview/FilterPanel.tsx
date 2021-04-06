@@ -27,7 +27,6 @@ const FilterPanel = () => {
   const sessionContext = useContext(SessionContext);
   const {
     isLoading,
-    institutionId,
     institutionName,
     regionId,
     regionName,

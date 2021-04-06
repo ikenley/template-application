@@ -8,7 +8,10 @@ import React, {
 import { Modal, Button } from "react-bootstrap";
 import { Institution, SessionOptionSet } from "../types";
 import { Column } from "react-table";
-import DataGrid from "../shared/DataGrid";
+import DataGrid, {
+  DefaultColumnFilter,
+  SelectColumnFilter,
+} from "../shared/grid/DataGrid";
 import { SessionContext } from "../session/SessionContext";
 
 type Props = {
@@ -23,7 +26,10 @@ type InstitutionRow = Institution & {
 
 const InstitutionSelectionModal = ({ show, setShow, optionSet }: Props) => {
   const { updateSession } = useContext(SessionContext);
-  const handleClose = () => setShow(false);
+
+  const handleClose = useCallback(() => {
+    setShow(false);
+  }, [setShow]);
 
   // Handle institution selection
   const handleRowClick = useCallback(
@@ -34,7 +40,7 @@ const InstitutionSelectionModal = ({ show, setShow, optionSet }: Props) => {
       });
       handleClose();
     },
-    [updateSession]
+    [updateSession, handleClose]
   );
 
   const data: InstitutionRow[] = useMemo(() => {
@@ -48,18 +54,24 @@ const InstitutionSelectionModal = ({ show, setShow, optionSet }: Props) => {
         accessor: "name",
         width: 300,
         maxWidth: 500,
+        Filter: DefaultColumnFilter,
+        disableFilters: false,
       },
       {
         Header: "City",
         accessor: "city",
         width: 200,
         maxWidth: 300,
+        Filter: DefaultColumnFilter,
+        disableFilters: false,
       },
       {
         Header: "State",
         accessor: "state",
-        width: 50,
-        maxWidth: 100,
+        width: 100,
+        maxWidth: 150,
+        Filter: SelectColumnFilter,
+        disableFilters: false,
       },
     ],
     []

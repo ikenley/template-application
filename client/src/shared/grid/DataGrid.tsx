@@ -1,9 +1,11 @@
 import React, { useCallback, useMemo } from "react";
-import { useTable, useFlexLayout } from "react-table";
+import { useTable, useFlexLayout, useFilters } from "react-table";
 import { FixedSizeList } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
-import scrollbarWidth from "./scrollbarWidth";
+import scrollbarWidth from "../scrollbarWidth";
 import { noop } from "lodash";
+import DefaultColumnFilter from "./DefaultColumnFilter";
+import SelectColumnFilter from "./SelectColumnFilter";
 
 type DataGridProps = {
   columns: any[];
@@ -21,11 +23,29 @@ function Table({ columns, data, width, handleRowClick }: TableProps) {
   const defaultColumn = useMemo(
     () => ({
       width: 150,
+      disableFilters: true,
     }),
     []
   );
 
-  const scrollBarSize = useMemo(() => scrollbarWidth(), [scrollbarWidth]);
+  const scrollBarSize = useMemo(() => scrollbarWidth(), []);
+
+  const filterTypes = useMemo(
+    () => ({
+      // Override the default text filter to use "startWith"
+      text: (rows: any, id: any, filterValue: any) => {
+        return rows.filter((row: any) => {
+          const rowValue = row.values[id];
+          return rowValue !== undefined
+            ? String(rowValue)
+                .toLowerCase()
+                .startsWith(String(filterValue).toLowerCase())
+            : true;
+        });
+      },
+    }),
+    []
+  );
 
   const {
     getTableProps,
@@ -39,8 +59,10 @@ function Table({ columns, data, width, handleRowClick }: TableProps) {
       columns,
       data,
       defaultColumn,
+      filterTypes,
     },
-    useFlexLayout
+    useFlexLayout,
+    useFilters
   );
 
   const RenderRow = useCallback(
@@ -90,6 +112,8 @@ function Table({ columns, data, width, handleRowClick }: TableProps) {
             {headerGroup.headers.map((column) => (
               <div {...column.getHeaderProps()} className="th">
                 {column.render("Header")}
+                {/* Render the columns filter UI */}
+                <div>{column.canFilter ? column.render("Filter") : null}</div>
               </div>
             ))}
           </div>
@@ -130,3 +154,4 @@ const DataGrid = ({ columns, data, handleRowClick }: DataGridProps) => {
 };
 
 export default DataGrid;
+export { DefaultColumnFilter, SelectColumnFilter };
