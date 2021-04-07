@@ -49,7 +49,7 @@ export const SessionContextProvider = ({ children }: any) => {
 
       // Reset loadmask until AJAX resolves
       setState((ses) => {
-        return { ...ses, isLoading: true };
+        return { ...ses, ...s, isLoading: true };
       });
 
       axios.post("/api/session/update", s).then((res) => {
