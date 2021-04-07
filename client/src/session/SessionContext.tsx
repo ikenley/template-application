@@ -30,6 +30,7 @@ export const SessionContext = createContext(defaultSessionProps);
 export const SessionContextProvider = ({ children }: any) => {
   const [session, setState] = useState<Session>(defaultSession);
   const authContext = useContext(AuthContext);
+  const { sessionId } = session;
 
   // Get session when AuthContext changes
   useEffect(() => {
@@ -44,17 +45,18 @@ export const SessionContextProvider = ({ children }: any) => {
 
   const updateSession = useCallback(
     (s: UpdateSessionParams) => {
+      s.sessionId = sessionId;
+
       // Reset loadmask until AJAX resolves
       setState((ses) => {
         return { ...ses, isLoading: true };
       });
 
-      s.sessionId = session.sessionId;
       axios.post("/api/session/update", s).then((res) => {
         setState(res.data);
       });
     },
-    [session, setState]
+    [sessionId, setState]
   );
 
   const value = useMemo(() => {

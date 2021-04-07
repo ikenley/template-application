@@ -211,7 +211,6 @@ CLUSTER public.predicted_market_share USING pk_predicted_market_share;
 
 select COUNT(*)
 from public.predicted_market_share
-limit 100
 ;
 
 -------------------------------------------------------------------------------

@@ -5,19 +5,13 @@ import React, {
   useMemo,
   useCallback,
 } from "react";
-import {
-  Col,
-  Form,
-  InputGroup,
-  OverlayTrigger,
-  Tooltip,
-  Button,
-} from "react-bootstrap";
+import { Col, Form, InputGroup, Button } from "react-bootstrap";
 import Skeleton from "react-loading-skeleton";
 import axios from "axios";
-import { SessionOptionSet, Region } from "../types";
-import { SessionContext } from "../session/SessionContext";
+import { SessionOptionSet, Region } from "../../types";
+import { SessionContext } from "../../session/SessionContext";
 import InstitutionSelectionModal from "./InstitutionSelectionModal";
+import MarketShareSelector from "./MarketShareSelector";
 
 const SKELETON_HEIGHT = 45;
 
@@ -95,39 +89,7 @@ const FilterPanel = () => {
             )}
           </Col>
           <Col lg={true} className="mb-2">
-            {isLoading ? (
-              <Skeleton height={SKELETON_HEIGHT} />
-            ) : (
-              <InputGroup size="lg">
-                <InputGroup.Prepend>
-                  <InputGroup.Text id="basic-addon1">
-                    Market Share Model
-                    <OverlayTrigger
-                      placement="bottom"
-                      overlay={
-                        <Tooltip id="market-share-model-button">
-                          Proin dapibus nisl id massa varius, mattis blandit
-                          metus maximus. Duis eu massa vitae ligula ultrices
-                          laoreet. Nulla fermentum elit eget lobortis mollis. Ut
-                          metus velit, vulputate quis tincidunt sed, condimentum
-                          ultricies tellus. Etiam interdum porttitor libero
-                          volutpat mattis. Nullam consequat mi non nisl
-                          pellentesque, non suscipit lacus aliquet. Mauris ac
-                          quam lacus.
-                        </Tooltip>
-                      }
-                    >
-                      <span className="ml-1">
-                        <i className="fas fa-info-circle"></i>
-                      </span>
-                    </OverlayTrigger>
-                  </InputGroup.Text>
-                </InputGroup.Prepend>
-                <Form.Control as="select">
-                  <option>Most Recent Year</option>
-                </Form.Control>
-              </InputGroup>
-            )}
+            <MarketShareSelector optionSet={optionSet} />
           </Col>
           <Col lg={true} className="mb-2">
             {isLoading ? (

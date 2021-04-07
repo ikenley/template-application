@@ -6,13 +6,13 @@ import React, {
   useContext,
 } from "react";
 import { Modal, Button } from "react-bootstrap";
-import { Institution, SessionOptionSet } from "../types";
+import { Institution, SessionOptionSet } from "../../types";
 import { Column } from "react-table";
 import DataGrid, {
   DefaultColumnFilter,
   SelectColumnFilter,
-} from "../shared/grid/DataGrid";
-import { SessionContext } from "../session/SessionContext";
+} from "../../shared/grid/DataGrid";
+import { SessionContext } from "../../session/SessionContext";
 
 type Props = {
   show: boolean;

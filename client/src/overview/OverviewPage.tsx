@@ -3,7 +3,7 @@ import { Alert } from "react-bootstrap";
 import axios from "axios";
 import Navbar from "../shared/Navbar";
 import { SessionContext } from "../session/SessionContext";
-import FilterPanel from "./FilterPanel";
+import FilterPanel from "./filters/FilterPanel";
 import { OverviewResult } from "../types";
 import OverviewChart from "./OverviewChart";
 import SummaryStatPanel from "./SummaryStatPanel";
@@ -15,6 +15,9 @@ const ResultPanel = () => {
 
   useEffect(() => {
     if (sessionContext.session.isLoading) {
+      if (result !== null) {
+        setResult(null);
+      }
       return;
     }
 

@@ -326,7 +326,7 @@ CREATE TABLE staging.predicted_market_share (
 
 insert into staging.predicted_market_share
 select obs.unitid 
-	, 0 as market_share_model_id -- Most recent year
+	, 0 as market_share_model_id -- MostRecentYear
 	, obs.region_id
 	, p.year as year
 	, obs.enrollment_share as market_share  
@@ -339,16 +339,70 @@ cross join (
 where obs.year = (
 	select max(year) from staging.years where is_prediction = false
 )
-order by obs.unitid, obs.region_id, p.year
+union 
+select obs.unitid 
+	, 1 as market_share_model_id -- AverageAllYears
+	, obs.region_id
+	, p.year as year
+	, avg(obs.enrollment_share) as market_share  
+from staging.observed_enrollment obs
+cross join (
+	select year 
+	from staging.years 
+	where is_prediction = true
+) p
+where obs.unitid = 194824
+group by obs.unitid, obs.region_id, p.year
+union 
+select obs.unitid 
+	, 2 as market_share_model_id -- HighestObserved
+	, obs.region_id
+	, p.year as year
+	, max(obs.enrollment_share) as market_share  
+from staging.observed_enrollment obs
+cross join (
+	select year 
+	from staging.years 
+	where is_prediction = true
+) p
+where obs.unitid = 194824
+group by obs.unitid, obs.region_id, p.year
+union 
+select obs.unitid 
+	, 3 as market_share_model_id -- LowestObserved
+	, obs.region_id
+	, p.year as year
+	, min(obs.enrollment_share) as market_share  
+from staging.observed_enrollment obs
+cross join (
+	select year 
+	from staging.years 
+	where is_prediction = true
+) p
+where obs.unitid = 194824
+group by obs.unitid, obs.region_id, p.year
 ;
 
 CLUSTER staging.predicted_market_share USING pk_predicted_market_share;
 
 select COUNT(*)
 from staging.predicted_market_share
-limit 100
 ;
 
+select obs.unitid 
+	, 3 as market_share_model_id -- LowestObserved
+	, obs.region_id
+	, p.year as year
+	, min(obs.enrollment_share) as market_share  
+from staging.observed_enrollment obs
+cross join (
+	select year 
+	from staging.years 
+	where is_prediction = true
+) p
+where obs.unitid = 194824
+group by obs.unitid, obs.region_id, p.year
+order by obs.unitid, obs.region_id, p.year
 
 
 
