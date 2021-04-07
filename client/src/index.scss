@@ -28,6 +28,18 @@ html {
   background-color: #fff;
 }
 
+/* reboot */
+.abbr {
+  // text-decoration: underline;
+  // -webkit-text-decoration: underline dotted;
+  // text-decoration: underline dotted;
+  cursor: help;
+  //border-bottom: 0;
+  // -webkit-text-decoration-skip-ink: none;
+  // text-decoration-skip-ink: none;
+  border-bottom: 1px dotted #000;
+}
+
 /* Navbar */
 .app .navbar-nav .navbar-context-menu .nav-link {
   color: #ed8b00;

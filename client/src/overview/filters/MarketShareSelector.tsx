@@ -31,8 +31,6 @@ const MarketShareSelector = ({ optionSet }: Props) => {
   const { session, updateSession } = useContext(SessionContext);
   const { isLoading, marketShareModel } = session;
 
-  console.log("MarketShareSelector:session", session);
-
   const handleOpen = useCallback(() => {
     setShow(true);
   }, [setShow]);

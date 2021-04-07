@@ -5,6 +5,8 @@ import { Column } from "react-table";
 import DataGrid from "../shared/grid/DataGrid";
 import { OverviewResult, emptyOverviewResult } from "../types";
 import ResultGridCell from "./ResultGridCell";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import OverlayTooltip from "../shared/OverlayTooltip";
 
 type Props = {
   result: OverviewResult | null;
@@ -43,7 +45,16 @@ const ResultGrid = ({ result }: Props) => {
             Cell: ({ value }) => <ResultGridCell value={value} />,
           },
           {
-            Header: "% of Enrollment",
+            Header: (
+              <OverlayTooltip
+                id="result-grid-pctenroll"
+                placement="top"
+                tooltip="Mauris a varius justo. Integer id scelerisque erat. Nam eget
+              dolor efficitur, iaculis sapien a, imperdiet elit."
+              >
+                <span className="abbr">% of Enrollemnt</span>
+              </OverlayTooltip>
+            ),
             accessor: "yearDataPointMap[2018].percentTotalEnrollment",
             Cell: ({ value }) => (
               <ResultGridCell value={value} format="0.00%" />
@@ -51,7 +62,15 @@ const ResultGrid = ({ result }: Props) => {
             width: 150,
           },
           {
-            Header: "2018 Market Share",
+            Header: (
+              <OverlayTooltip
+                id="result-grid-pctenroll"
+                placement="top"
+                tooltip="Ut finibus, augue vel ultricies euismod, ipsum felis viverra sapien, nec varius eros metus sit amet arcu."
+              >
+                <span className="abbr">2018 Market Share</span>
+              </OverlayTooltip>
+            ),
             accessor: "yearDataPointMap[2018].marketShare",
             Cell: ({ value }) => (
               <ResultGridCell value={value} format="0.0000%" />
