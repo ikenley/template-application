@@ -7,6 +7,10 @@ namespace TemplateApi.Models
     {
         public List<int> Years { get; set; }
 
+        public int MinYear { get; set; }
+
+        public int MaxYear { get; set; }
+
         /// <summary>
         /// Region ids sorted by enrollment descending
         /// </summary>

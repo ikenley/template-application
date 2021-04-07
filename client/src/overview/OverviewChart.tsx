@@ -4,6 +4,7 @@ import { Line } from "react-chartjs-2";
 import { keyBy } from "lodash";
 import { PrimaryColor, SecondaryColor } from "../constants";
 import { OverviewResult } from "../types";
+import { min, max } from "lodash";
 
 type Props = {
   result: OverviewResult | null;
@@ -43,6 +44,7 @@ const OverviewChart = ({ result }: Props) => {
           fill: false,
           backgroundColor: PrimaryColor,
           borderColor: PrimaryColor,
+          spanGaps: 1,
           data: observedData,
         },
         {

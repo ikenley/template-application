@@ -44,7 +44,7 @@ namespace TemplateApi.Models
             result.PredictedAverageAnnualGrowth = GetAverageAnnualGrowthRate(result.PredictedPoints);
             result.ProjectedChange = GetProjectedChange(result.ObservedPoints, result.PredictedPoints);
 
-            result.Years = GetYears(allDataPoints);
+            SetYears(result, allDataPoints);
             result.RegionIds = GetRegionIdsOrderedByEnrollmentDescending(allDataPoints);
 
             result.RegionRows = await GetRegionRows(allDataPoints, result.RegionIds);
@@ -280,13 +280,30 @@ order by pe.year
             return rows;
         }
 
-        private List<int> GetYears(List<DataPoint> dataPoints)
+        /// <summary>
+        /// Sets the Years, MinYear, and MaxYear properties in OverviewResult
+        /// </summary>
+        private void SetYears(OverviewResult result, List<DataPoint> dataPoints)
         {
-            return dataPoints
+            var rawYears = dataPoints
                 .Select(p => p.Year)
                 .Distinct()
                 .OrderBy(p => p)
                 .ToList();
+
+            if (rawYears.Count == 0)
+            {
+                return;
+            }
+
+            result.MinYear = rawYears.First();
+            result.MaxYear = rawYears.Last();
+
+            result.Years = new List<int>();
+            for (int year = result.MinYear; year <= result.MaxYear; year++)
+            {
+                result.Years.Add(year);
+            }
         }
 
         private List<int> GetRegionIdsOrderedByEnrollmentDescending(List<DataPoint> dataPoints)
