@@ -27,3 +27,15 @@ order by region_id, market_share_model_id
 limit 100
 ;
 
+select COUNT(*)
+from public.predicted_market_share
+where unitid = 194824
+--order by region_id, market_share_model_id 
+--limit 400
+;
+
+select *
+from public.regions r 
+
+
+

@@ -147,6 +147,11 @@ const MarketShareSelector = ({ optionSet }: Props) => {
       <Modal show={show} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Select Market Share Model</Modal.Title>
+          <span className="d-lg-none">
+            <Button variant="primary" onClick={updateMarketShare}>
+              Update
+            </Button>
+          </span>
         </Modal.Header>
         <Modal.Body>
           <div>
@@ -157,7 +162,7 @@ const MarketShareSelector = ({ optionSet }: Props) => {
               posuere lacus quis ultrices efficitur.
             </Alert>
             <div className="model-selection-toolbar d-flex justify-content-center">
-              <ButtonGroup size="lg" className="mb-2">
+              <ButtonGroup size="lg" className="flex-wrap mb-2">
                 {marketShareOptions.map((opt) => (
                   <Button
                     key={opt.id}
@@ -187,7 +192,9 @@ const MarketShareSelector = ({ optionSet }: Props) => {
                   </div>
                 </Col>
                 <Col lg={8}>
-                  <MarketShareGrid result={marketShareResult} />
+                  <div className="mt-3 mt-lg-0">
+                    <MarketShareGrid result={marketShareResult} />
+                  </div>
                 </Col>
               </Row>
             </div>

@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import Skeleton from "react-loading-skeleton";
 import { Column } from "react-table";
 import { MarketShareResult } from "../../types";
-import { FirstPredictionYear } from "../../constants";
+import { displayPredictionYears } from "../../constants";
 import DataGrid from "../../shared/grid/DataGrid";
 import GridCell from "../../shared/grid/GridCell";
 
@@ -20,12 +20,21 @@ const MarketShareGrid = ({ result }: Props) => {
 
     const { regions, marketShareRowMap } = result;
 
-    const regionMap = marketShareRowMap[FirstPredictionYear];
+    const getMarketShareByYearRegion = (year: number, regionId: number) => {
+      const regionMap = marketShareRowMap[year];
+      if (!regionMap) {
+        return 0;
+      }
+
+      return regionMap[regionId] ? regionMap[regionId].marketShare : 0;
+    };
 
     // TODO consider refactoring as we firm up which columns to show
     const rows = regions.map((reg) => {
-      const marketShare = regionMap[reg.id] ? regionMap[reg.id].marketShare : 0;
-      const row = { regionId: reg.id, regionName: reg.name, marketShare };
+      const row: any = { regionId: reg.id, regionName: reg.name };
+      displayPredictionYears.forEach((year) => {
+        row[year] = getMarketShareByYearRegion(year, reg.id);
+      });
       return row;
     });
 
@@ -39,9 +48,21 @@ const MarketShareGrid = ({ result }: Props) => {
         accessor: "regionName",
       },
       {
-        Header: <div className="text-center">Estimated 2022 Market Share</div>,
-        accessor: "marketShare",
-        Cell: ({ value }) => <GridCell value={value} format="0.000%" />,
+        Header: () => (
+          <div className="text-center font-weight-bold">
+            Estimated Market Share
+          </div>
+        ),
+        id: "estimated_enrollment_demand",
+        columns: displayPredictionYears.map((year) => {
+          return {
+            Header: <div className="text-center">{year}</div>,
+            accessor: `${year}`,
+            Cell: ({ value }: any) => (
+              <GridCell value={value} format="0.000%" />
+            ),
+          };
+        }),
       },
     ],
     []
