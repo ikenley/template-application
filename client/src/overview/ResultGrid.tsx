@@ -109,7 +109,7 @@ const ResultGrid = ({ result }: Props) => {
   );
 
   return (
-    <div className="result-grid mt-3 table-responsive-max-height-500">
+    <div className="result-grid mt-3">
       {result ? (
         <DataGrid columns={columns} data={data} />
       ) : (

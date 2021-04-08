@@ -1,3 +1,12 @@
+// data-grid
+
+// Override default react-window behavior since parent div will scroll
+// .data-grid .fixed-size-list-outer > div {
+//   overflow: auto auto !important;
+//   //overflow-x: inherit !important;
+//   // overflow-y: auto !important;
+// }
+
 //
 // Basic Bootstrap table
 //

@@ -6,6 +6,7 @@ import scrollbarWidth from "../scrollbarWidth";
 import { noop } from "lodash";
 import DefaultColumnFilter from "./DefaultColumnFilter";
 import SelectColumnFilter from "./SelectColumnFilter";
+import { relative } from "node:path";
 
 type DataGridProps = {
   columns: any[];
@@ -15,7 +16,7 @@ type DataGridProps = {
 };
 
 type TableProps = DataGridProps & {
-  width: number;
+  parentWidth: number;
 };
 
 const ITEM_SIZE = 35;
@@ -25,7 +26,7 @@ function Table({
   data,
   handleRowClick,
   maxHeight = 400,
-  width,
+  parentWidth,
 }: TableProps) {
   // Use the state and functions returned from useTable to build your UI
 
@@ -59,7 +60,7 @@ function Table({
     getTableBodyProps,
     headerGroups,
     rows,
-    //totalColumnsWidth,
+    totalColumnsWidth,
     prepareRow,
   } = useTable<any>(
     {
@@ -103,6 +104,9 @@ function Table({
     [prepareRow, rows, handleRowClick]
   );
 
+  const width = Math.max(totalColumnsWidth, parentWidth);
+  console.log("totalColumnsWidth", totalColumnsWidth);
+
   const headerWidth = useMemo(() => {
     // If items exceed height of window, subtract scrollbar width
     if (rows.length * ITEM_SIZE > maxHeight) {
@@ -121,8 +125,9 @@ function Table({
     <div
       {...getTableProps()}
       className="data-grid-table sticky-table table table-sm table-striped table-bordered table-hover mb-0"
+      style={{ width: `${headerWidth}px` }}
     >
-      <div className="thead">
+      <div className="thead" style={{ position: "relative" }}>
         {headerGroups.map((headerGroup) => (
           <div
             {...headerGroup.getHeaderGroupProps({
@@ -141,7 +146,7 @@ function Table({
         ))}
       </div>
 
-      <div {...getTableBodyProps()} className="tbody">
+      <div {...getTableBodyProps()} className="tbody fixed-size-list-outer">
         <FixedSizeList
           itemCount={rows.length}
           itemSize={35}
@@ -162,16 +167,20 @@ const DataGrid = ({
   handleRowClick,
 }: DataGridProps) => {
   return (
-    <div className="data-grid w-100">
+    <div className="data-grid table-responsive">
       <AutoSizer disableHeight>
         {({ width }) => (
-          <div style={{ width: `${width}px` }}>
+          <div
+            style={{
+              width: `${width}px`,
+            }}
+          >
             <Table
               columns={columns}
               data={data}
               handleRowClick={handleRowClick}
               maxHeight={maxHeight}
-              width={width}
+              parentWidth={width - 1}
             />
           </div>
         )}
