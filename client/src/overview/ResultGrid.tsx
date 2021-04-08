@@ -4,8 +4,7 @@ import { take } from "lodash";
 import { Column } from "react-table";
 import DataGrid from "../shared/grid/DataGrid";
 import { OverviewResult, emptyOverviewResult } from "../types";
-import ResultGridCell from "./ResultGridCell";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import GridCell from "../shared/grid/GridCell";
 import OverlayTooltip from "../shared/OverlayTooltip";
 
 type Props = {
@@ -37,12 +36,12 @@ const ResultGrid = ({ result }: Props) => {
           {
             Header: "2012",
             accessor: "yearDataPointMap[2012].enrollment",
-            Cell: ({ value }) => <ResultGridCell value={value} />,
+            Cell: ({ value }) => <GridCell value={value} />,
           },
           {
             Header: "2018",
             accessor: "yearDataPointMap[2018].enrollment",
-            Cell: ({ value }) => <ResultGridCell value={value} />,
+            Cell: ({ value }) => <GridCell value={value} />,
           },
           {
             Header: (
@@ -56,9 +55,7 @@ const ResultGrid = ({ result }: Props) => {
               </OverlayTooltip>
             ),
             accessor: "yearDataPointMap[2018].percentTotalEnrollment",
-            Cell: ({ value }) => (
-              <ResultGridCell value={value} format="0.00%" />
-            ),
+            Cell: ({ value }) => <GridCell value={value} format="0.00%" />,
             width: 150,
           },
           {
@@ -72,9 +69,7 @@ const ResultGrid = ({ result }: Props) => {
               </OverlayTooltip>
             ),
             accessor: "yearDataPointMap[2018].marketShare",
-            Cell: ({ value }) => (
-              <ResultGridCell value={value} format="0.0000%" />
-            ),
+            Cell: ({ value }) => <GridCell value={value} format="0.0000%" />,
             width: 150,
           },
         ],
@@ -90,22 +85,22 @@ const ResultGrid = ({ result }: Props) => {
           {
             Header: "2022",
             accessor: "yearDataPointMap[2022].enrollment",
-            Cell: ({ value }) => <ResultGridCell value={value} />,
+            Cell: ({ value }) => <GridCell value={value} />,
           },
           {
             Header: "2025",
             accessor: "yearDataPointMap[2025].enrollment",
-            Cell: ({ value }) => <ResultGridCell value={value} />,
+            Cell: ({ value }) => <GridCell value={value} />,
           },
           {
             Header: "2030",
             accessor: "yearDataPointMap[2030].enrollment",
-            Cell: ({ value }) => <ResultGridCell value={value} />,
+            Cell: ({ value }) => <GridCell value={value} />,
           },
           {
             Header: "2035",
             accessor: "yearDataPointMap[2035].enrollment",
-            Cell: ({ value }) => <ResultGridCell value={value} />,
+            Cell: ({ value }) => <GridCell value={value} />,
           },
         ],
       },

@@ -15,9 +15,7 @@ const ResultPanel = () => {
 
   useEffect(() => {
     if (sessionContext.session.isLoading) {
-      if (result !== null) {
-        setResult(null);
-      }
+      setResult(null);
       return;
     }
 

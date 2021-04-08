@@ -214,6 +214,30 @@ from public.predicted_market_share
 ;
 
 -------------------------------------------------------------------------------
+-- years
+
+drop table if exists public.years;
+
+CREATE TABLE public.years (
+	year int,
+	is_prediction boolean,
+	constraint pk_years primary key (year)
+);
+
+insert into public.years
+select "year"
+	, is_prediction
+from staging.years obs
+;
+
+CLUSTER public.years USING pk_years;
+
+select *
+from public.years
+limit 100
+;
+
+-------------------------------------------------------------------------------
 -- Access
 
 --ACCESS DB

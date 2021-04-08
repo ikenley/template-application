@@ -74,3 +74,14 @@ export type DataPoint = {
     marketShare?: number,
     population?: number
 }
+
+export type MarketShareResult = {
+    regions: Region[];
+    marketShareRowMap: { [key: number]: { [key: number]: MarketShareRow } }
+}
+
+export type MarketShareRow = {
+    year: number;
+    regionId: number;
+    marketShare: number;
+}

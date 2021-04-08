@@ -48,8 +48,54 @@ order by pe.year
 ;
 
 -------------------------------------------------------------------------------
--- Predicted market share by region
--- TODO add in alternative models
+-- Top regions
+
+select r.id 
+	, r.name
+from public.observed_enrollment e
+join public.regions r
+	on e.region_id = r.id
+where e.unitid = 194824
+	and r.id <> 90 -- exclude foreign
+	and e.year = (
+		select max(year)
+		from public.years
+		where is_prediction = false
+	)
+order by e.enrollment desc
+limit 10
+;
+
+
+-------------------------------------------------------------------------------
+-- Predicted market share for institution's top regions
+select ms.year
+	, ms.region_id 
+	, ms.market_share 
+from public.predicted_market_share ms
+join (
+	select r.id as region_id
+	from public.observed_enrollment e
+	join public.regions r
+		on e.region_id = r.id
+	where e.unitid = 194824
+		and r.id <> 90 -- exclude foreign
+		and e.year = (
+			select max(year)
+			from public.years
+			where is_prediction = false
+		)
+	order by e.enrollment desc
+	limit 10
+) ts
+	on ms.region_id = ts.region_id
+where ms.market_share_model_id = 0
+	and ms.unitid = 194824
+order by ms.market_share_model_id 
+	, ms.year 
+	, ms.market_share desc
+	, ms.region_id 
+;
 
 
 

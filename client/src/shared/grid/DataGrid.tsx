@@ -120,7 +120,7 @@ function Table({
   return (
     <div
       {...getTableProps()}
-      className="data-grid-table sticky-table table table-sm table-striped table-bordered table-hover"
+      className="data-grid-table sticky-table table table-sm table-striped table-bordered table-hover mb-0"
     >
       <div className="thead">
         {headerGroups.map((headerGroup) => (

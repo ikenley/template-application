@@ -40,6 +40,7 @@ namespace TemplateApi
 
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<IRegionService, RegionService>();
+            services.AddScoped<IMarketShareService, MarketShareService>();
             services.AddScoped<IInstitutionService, InstitutionService>();
             services.AddScoped<IOverviewResultService, OverviewResultService>();
 

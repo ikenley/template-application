@@ -18,8 +18,27 @@ namespace TemplateApi.Models
 
         public async Task<List<Region>> GetRegionsAsync()
         {
-            // TODO add caching
             return await _dataContext.Regions.Select(r => r).ToListAsync();
+        }
+
+        public async Task<List<Region>> GetTopRegionsAsync(int institutionId)
+        {
+            return await _dataContext.Regions.FromSqlInterpolated($@"select r.id 
+	, r.name
+from public.observed_enrollment e
+join public.regions r
+	on e.region_id = r.id
+where e.unitid = 194824
+	and r.id <> 90 -- exclude foreign
+	and e.year = (
+		select max(year)
+		from public.years
+		where is_prediction = false
+	)
+order by e.enrollment desc
+limit 10
+;
+            ").ToListAsync();
         }
     }
 }
