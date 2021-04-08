@@ -46,6 +46,7 @@ const MarketShareGrid = ({ result }: Props) => {
       {
         Header: <div className="text-center">Region</div>,
         accessor: "regionName",
+        width: 150,
       },
       {
         Header: () => (
