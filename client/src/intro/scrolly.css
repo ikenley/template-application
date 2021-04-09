@@ -1,3 +1,18 @@
 /* .intro-page {
   background-color: #fff;
 } */
+
+.slide {
+  padding: 5rem 0 15rem 0;
+  border: 1px solid gray;
+}
+
+.slide-header {
+  color: white;
+  font-size: 35px;
+  margin: 60px;
+  font-family: "Museo Slab", serif;
+  font-weight: 500;
+  font-size: 45px;
+  text-align: center;
+}

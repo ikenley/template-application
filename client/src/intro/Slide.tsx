@@ -7,17 +7,7 @@ type Props = {
 };
 
 const Slide = ({ children }: Props) => {
-  return (
-    <div
-      className="slide"
-      style={{
-        height: "100vh",
-        border: "1px solid gray",
-      }}
-    >
-      {children}
-    </div>
-  );
+  return <div className="slide d-flex flex-column d-flex">{children}</div>;
 };
 
 export default Slide;
