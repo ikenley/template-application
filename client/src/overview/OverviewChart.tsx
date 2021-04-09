@@ -59,12 +59,6 @@ const OverviewChart = ({ result }: Props) => {
     return chartData;
   }, [result]);
 
-  // if (!result) {
-  //   return null;
-  // }
-
-  console.log(JSON.stringify(chartDataProps));
-
   return (
     <div className="overview-chart mt-1">
       {result ? (

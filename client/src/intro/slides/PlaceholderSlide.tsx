@@ -4,30 +4,27 @@ import { useInView } from "react-intersection-observer";
 import Slide from "../Slide";
 import PlaceholderChart from "../PlaceholderChart";
 
-const BirthCliff = () => {
+const PlaceholderSlide = ({ title }: any) => {
   const { ref, inView } = useInView({
     threshold: 0.5,
   });
 
   useEffect(() => {
     if (inView) {
-      console.log(`inView BirthCliff`);
+      console.log(`inView PlaceholderSlide ${title}`);
     }
-  }, [inView]);
+  }, [inView, title]);
 
   return (
     <div ref={ref}>
       <Slide>
-        <div className="slide-title">
-          The Great Recession Created a Birth Cliff
-        </div>
+        <div className="slide-title">{title}</div>
         <Row className="slide-body justify-content-center">
           <Col lg={6}>
             <div className="mx-5">
               <PlaceholderChart
                 redraw={inView}
-                title="Births Declined Dramatically after Great Recession, Never
-                    Recovered"
+                title="In orci neque, efficitur sed venenatis ac, consequat non orci."
               />
             </div>
           </Col>
@@ -57,4 +54,4 @@ const BirthCliff = () => {
   );
 };
 
-export default BirthCliff;
+export default PlaceholderSlide;
