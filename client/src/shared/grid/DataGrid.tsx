@@ -6,7 +6,6 @@ import scrollbarWidth from "../scrollbarWidth";
 import { noop } from "lodash";
 import DefaultColumnFilter from "./DefaultColumnFilter";
 import SelectColumnFilter from "./SelectColumnFilter";
-import { relative } from "node:path";
 
 type DataGridProps = {
   columns: any[];

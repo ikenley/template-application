@@ -10,8 +10,6 @@ type Props = {
   result: MarketShareResult | null;
 };
 
-const SKELETON_HEIGHT = 45;
-
 const MarketShareGrid = ({ result }: Props) => {
   const data = useMemo(() => {
     if (!result) {

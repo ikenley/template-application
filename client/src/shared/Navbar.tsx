@@ -9,6 +9,9 @@ const NavbarMain = () => {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
+          <NavLink className="nav-link" activeClassName="active" to="/intro">
+            Introduction
+          </NavLink>
           <NavLink
             className="nav-link"
             activeClassName="active"

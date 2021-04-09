@@ -14,12 +14,10 @@ import {
 import Skeleton from "react-loading-skeleton";
 import axios from "axios";
 import { SessionOptionSet, MarketShareResult } from "../../types";
-import { Column } from "react-table";
 import { SessionContext } from "../../session/SessionContext";
 import marketShareOptions, {
   MarketShareModelOption,
 } from "./MarketShareOptions";
-import MarketSharModel from "./MarketShareModel";
 import MarketShareGrid from "./MarketShareGrid";
 
 type Props = {

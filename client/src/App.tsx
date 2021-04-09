@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Footer from "./shared/Footer";
 import { AuthContextProvider } from "./auth/AuthContext";
 import { SessionContextProvider } from "./session/SessionContext";
+import IntroPage from "./intro/IntroPage";
 import OverviewPage from "./overview/OverviewPage";
 import ComparePage from "./compare/ComparePage";
 import MarketPage from "./market/MarketPage";
@@ -14,6 +15,9 @@ function App() {
         <Router>
           <div className="app">
             <Switch>
+              <Route path="/intro">
+                <IntroPage />
+              </Route>
               <Route path="/compare">
                 <ComparePage />
               </Route>
