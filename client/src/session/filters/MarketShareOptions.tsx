@@ -37,6 +37,13 @@ const marketShareOptions: MarketShareModelOption[] = [
     img: "https://via.placeholder.com/450x250?text=Placeholder",
   },
   {
+    id: MarketShareModel.Trend,
+    name: "Infer Trend",
+    description:
+      "Sed commodo velit ac condimentum euismod. Aenean sodales tellus vel augue imperdiet, id tristique tortor mattis. Nunc iaculis diam vel cursus rhoncus.",
+    img: "https://via.placeholder.com/450x250?text=Placeholder",
+  },
+  {
     id: MarketShareModel.HighestObserved,
     name: "Highest Observed",
     description:

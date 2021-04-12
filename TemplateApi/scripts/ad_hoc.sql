@@ -68,4 +68,68 @@ where p.unitid = 194824
 	and p.region_id = 25
 limit 100;
 
+-- Infer trend
+
+select *
+from (
+select distinct e.unitid 
+	, e.region_id 
+	, avg(e.enrollment) over (partition by e.unitid, e.region_id) as avg_enrollment
+	, avg(e.enrollment_share) over (partition by e.unitid, e.region_id) as avg_enrollment_share
+	, regr_slope(e.enrollment_share, e.year) over (partition by e.unitid, e.region_id) as slope
+	, regr_intercept(e.enrollment_share, e.year) over (partition by e.unitid, e.region_id) as intercept
+from staging.observed_enrollment e
+where e.unitid = 194824
+order by e.region_id 
+	--and e.region_id = 25
+) ols
+group by ols.unitid 
+	, ols.region_id 
+limit 300
+;
+
+
+-- find slope + intercept by region
+-- https://stackoverflow.com/questions/52432231/how-to-do-a-linear-regression-in-postgresql
+select obs.unitid 
+	, 4 as market_share_model_id -- Trend
+	, obs.region_id
+	, p.year as year
+	, obs.intercept + obs.slope * p.year as market_share
+from (
+	select distinct e.unitid 
+		, e.region_id 
+		--, avg(e.enrollment) over (partition by e.unitid, e.region_id) as avg_enrollment
+		--, avg(e.enrollment_share) over (partition by e.unitid, e.region_id) as avg_enrollment_share
+		, regr_slope(e.enrollment_share, e.year) over (partition by e.unitid, e.region_id) as slope
+		, regr_intercept(e.enrollment_share, e.year) over (partition by e.unitid, e.region_id) as intercept
+	from staging.observed_enrollment e
+) obs
+cross join (
+	select "year"
+	from staging.years
+	where is_prediction = true
+) p
+;
+
+select pe.year
+	, pe.region_id
+	, true as is_forecast
+	, pe.enrollment * shr.market_share as enrollment
+	, shr.market_share
+	, pe.enrollment as population
+    , null as percent_total_enrollment
+from public.predicted_market_enrollment pe 
+join public.predicted_market_share shr
+	on pe.region_id = shr.region_id
+		and pe.year = shr.year
+left join public.regions r 
+	on pe.region_id = r.id 
+where shr.unitid = 194824
+	and shr.market_share_model_id = 4
+    -- Show all regions for type 0, else filter by regionId
+	and (0 = 0 or shr.region_id = 0)
+order by pe.region_id 
+	, pe.year
+;
 

@@ -392,21 +392,30 @@ where obs.year = (
 group by obs.unitid, obs.region_id, obs.year, obs.enrollment_share, p.year
 ;
 
---insert into staging.predicted_market_share
---select obs.unitid 
---	, 4 as market_share_model_id -- Trend
---	, obs.region_id
---	, p.year as year
---	, min(obs.enrollment_share) as market_share  
---from staging.observed_enrollment obs
---cross join (
---	select year 
---	from staging.years 
---	where is_prediction = true
---) p
---where obs.unitid = 194824
---group by obs.unitid, obs.region_id, p.year
---;
+insert into staging.predicted_market_share
+select obs.unitid 
+	, 4 as market_share_model_id -- Trend
+	, obs.region_id
+	, p.year as year
+	, 	case 
+			when obs.slope is null then 0 
+			else obs.intercept + obs.slope * p.year 
+		end as market_share
+from (
+	select distinct e.unitid 
+		, e.region_id 
+		--, avg(e.enrollment) over (partition by e.unitid, e.region_id) as avg_enrollment
+		--, avg(e.enrollment_share) over (partition by e.unitid, e.region_id) as avg_enrollment_share
+		, regr_slope(e.enrollment_share, e.year) over (partition by e.unitid, e.region_id) as slope
+		, regr_intercept(e.enrollment_share, e.year) over (partition by e.unitid, e.region_id) as intercept
+	from staging.observed_enrollment e
+) obs
+cross join (
+	select "year"
+	from staging.years
+	where is_prediction = true
+) p
+;
 
 insert into staging.predicted_market_share
 select obs.unitid 
