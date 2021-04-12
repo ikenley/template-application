@@ -23,6 +23,20 @@ const marketShareOptions: MarketShareModelOption[] = [
     img: "https://via.placeholder.com/450x250?text=Placeholder",
   },
   {
+    id: MarketShareModel.AllIncrease,
+    name: "All Increase",
+    description:
+      "Praesent mattis pretium tempus. Donec ut risus ac elit maximus porta sit amet lobortis arcu. Integer consectetur rutrum turpis, eu rhoncus lacus convallis vitae. Donec mollis.",
+    img: "https://via.placeholder.com/450x250?text=Placeholder",
+  },
+  {
+    id: MarketShareModel.AllDescrease,
+    name: "All Descrease",
+    description:
+      " In pellentesque mattis volutpat. Mauris ultricies efficitur tortor, a sodales dolor tristique sit amet. Praesent tincidunt erat ipsum, pulvinar varius.",
+    img: "https://via.placeholder.com/450x250?text=Placeholder",
+  },
+  {
     id: MarketShareModel.HighestObserved,
     name: "Highest Observed",
     description:

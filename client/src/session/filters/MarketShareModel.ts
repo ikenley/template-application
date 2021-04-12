@@ -2,11 +2,11 @@ export enum MarketShareModel
 {
     MostRecentYear = 0,
     AverageAllYears = 1,
-    HighestObserved = 2,
-    LowestObserved = 3,
-    AllIncrease = 4,
-    AllDescrease = 5,
-    Trend = 6,
+    AllIncrease = 2,
+    AllDescrease = 3,
+    Trend = 4,
+    HighestObserved = 5,
+    LowestObserved = 6,
     Custom = 7
 }
 

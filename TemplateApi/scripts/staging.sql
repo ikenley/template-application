@@ -339,7 +339,9 @@ cross join (
 where obs.year = (
 	select max(year) from staging.years where is_prediction = false
 )
-union 
+;
+
+insert into staging.predicted_market_share
 select obs.unitid 
 	, 1 as market_share_model_id -- AverageAllYears
 	, obs.region_id
@@ -351,11 +353,64 @@ cross join (
 	from staging.years 
 	where is_prediction = true
 ) p
-where obs.unitid = 194824
 group by obs.unitid, obs.region_id, p.year
-union 
+;
+
+insert into staging.predicted_market_share
 select obs.unitid 
-	, 2 as market_share_model_id -- HighestObserved
+	, 2 as market_share_model_id -- AllIncrease
+	, obs.region_id
+	, p.year as year
+	, obs.enrollment_share * (1 + 0.15 * ((p.year - obs.year) / 17.0)) as market_share  
+from staging.observed_enrollment obs
+cross join (
+	select year 
+	from staging.years 
+	where is_prediction = true
+) p
+where obs.year = (
+	select max(year) from staging.years where is_prediction = false
+)
+group by obs.unitid, obs.region_id, obs.year, obs.enrollment_share, p.year
+;
+
+insert into staging.predicted_market_share
+select obs.unitid 
+	, 3 as market_share_model_id -- AllIncrease
+	, obs.region_id
+	, p.year as year
+	, obs.enrollment_share * (1 - 0.15 * ((p.year - obs.year) / 17.0)) as market_share  
+from staging.observed_enrollment obs
+cross join (
+	select year 
+	from staging.years 
+	where is_prediction = true
+) p
+where obs.year = (
+	select max(year) from staging.years where is_prediction = false
+)
+group by obs.unitid, obs.region_id, obs.year, obs.enrollment_share, p.year
+;
+
+--insert into staging.predicted_market_share
+--select obs.unitid 
+--	, 4 as market_share_model_id -- Trend
+--	, obs.region_id
+--	, p.year as year
+--	, min(obs.enrollment_share) as market_share  
+--from staging.observed_enrollment obs
+--cross join (
+--	select year 
+--	from staging.years 
+--	where is_prediction = true
+--) p
+--where obs.unitid = 194824
+--group by obs.unitid, obs.region_id, p.year
+--;
+
+insert into staging.predicted_market_share
+select obs.unitid 
+	, 5 as market_share_model_id -- HighestObserved
 	, obs.region_id
 	, p.year as year
 	, max(obs.enrollment_share) as market_share  
@@ -365,11 +420,12 @@ cross join (
 	from staging.years 
 	where is_prediction = true
 ) p
-where obs.unitid = 194824
 group by obs.unitid, obs.region_id, p.year
-union 
+;
+
+insert into staging.predicted_market_share
 select obs.unitid 
-	, 3 as market_share_model_id -- LowestObserved
+	, 6 as market_share_model_id -- LowestObserved
 	, obs.region_id
 	, p.year as year
 	, min(obs.enrollment_share) as market_share  
@@ -379,7 +435,6 @@ cross join (
 	from staging.years 
 	where is_prediction = true
 ) p
-where obs.unitid = 194824
 group by obs.unitid, obs.region_id, p.year
 ;
 
@@ -390,19 +445,23 @@ from staging.predicted_market_share
 ;
 
 select obs.unitid 
-	, 3 as market_share_model_id -- LowestObserved
+	, 2 as market_share_model_id -- AllIncrease
 	, obs.region_id
 	, p.year as year
-	, min(obs.enrollment_share) as market_share  
+	, obs.enrollment_share * (1 + 0.15 * ((p.year - obs.year) / 17.0)) as market_share  
 from staging.observed_enrollment obs
 cross join (
 	select year 
 	from staging.years 
 	where is_prediction = true
 ) p
-where obs.unitid = 194824
-group by obs.unitid, obs.region_id, p.year
+where obs.year = (
+	select max(year) from staging.years where is_prediction = false
+)
+	and obs.unitid = 194824
+	and obs.region_id = 25
+group by obs.unitid, obs.region_id, obs.year, obs.enrollment_share, p.year
 order by obs.unitid, obs.region_id, p.year
-
+;
 
 

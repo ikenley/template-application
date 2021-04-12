@@ -10,6 +10,7 @@ import {
   Card,
   Row,
   Col,
+  Form,
 } from "react-bootstrap";
 import Skeleton from "react-loading-skeleton";
 import axios from "axios";
@@ -89,8 +90,13 @@ const MarketShareSelector = ({ optionSet }: Props) => {
   }, [updateSession, handleClose, tempModel]);
 
   const handleModelSelect = useCallback(
-    (m: MarketShareModelOption) => {
-      setTempModel(m);
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      const nextTempModel = marketShareOptions.find(
+        (opt) => opt.id === parseInt(e.currentTarget.value)
+      );
+      if (nextTempModel) {
+        setTempModel(nextTempModel);
+      }
     },
     [setTempModel]
   );
@@ -159,22 +165,46 @@ const MarketShareSelector = ({ optionSet }: Props) => {
               pulvinar urna tortor, varius dignissim ante facilisis a. Nam
               posuere lacus quis ultrices efficitur.
             </Alert>
-            <div className="model-selection-toolbar d-flex justify-content-center">
-              <ButtonGroup size="lg" className="flex-wrap mb-2">
-                {marketShareOptions.map((opt) => (
-                  <Button
-                    key={opt.id}
-                    variant={
-                      opt.id === tempModel.id ? "primary" : "outline-dark"
-                    }
-                    onClick={() => {
-                      handleModelSelect(opt);
-                    }}
-                  >
-                    {opt.name}
-                  </Button>
-                ))}
-              </ButtonGroup>
+            <div className="model-selection-toolbar ">
+              <InputGroup size="lg">
+                <InputGroup.Prepend>
+                  <InputGroup.Text id="basic-addon1">
+                    Market Share Model
+                    <OverlayTrigger
+                      placement="bottom"
+                      overlay={
+                        <Tooltip id="market-share-model-button">
+                          Proin dapibus nisl id massa varius, mattis blandit
+                          metus maximus. Duis eu massa vitae ligula ultrices
+                          laoreet. Nulla fermentum elit eget lobortis mollis. Ut
+                          metus velit, vulputate quis tincidunt sed, condimentum
+                          ultricies tellus. Etiam interdum porttitor libero
+                          volutpat mattis. Nullam consequat mi non nisl
+                          pellentesque, non suscipit lacus aliquet. Mauris ac
+                          quam lacus.
+                        </Tooltip>
+                      }
+                    >
+                      <span className="ml-1">
+                        <i className="fas fa-info-circle"></i>
+                      </span>
+                    </OverlayTrigger>
+                  </InputGroup.Text>
+                </InputGroup.Prepend>
+                <Form.Control
+                  className="form-control d-flex justify-content-between"
+                  size="lg"
+                  as="select"
+                  onChange={handleModelSelect}
+                  value={tempModel.id}
+                >
+                  {marketShareOptions.map((opt) => (
+                    <option key={opt.id} value={opt.id}>
+                      {opt.name}
+                    </option>
+                  ))}
+                </Form.Control>
+              </InputGroup>
             </div>
             <div className="model-body my-3">
               <Row className="align-it">
