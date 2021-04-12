@@ -1,42 +1,18 @@
-import React, {
-  useContext,
-  useEffect,
-  useState,
-  useMemo,
-  useCallback,
-} from "react";
-import { Col, Form, InputGroup, Button } from "react-bootstrap";
+import React, { useContext, useEffect, useMemo, useCallback } from "react";
+import { Col, Form, InputGroup } from "react-bootstrap";
 import Skeleton from "react-loading-skeleton";
-import axios from "axios";
-import { SessionOptionSet, Region } from "../../types";
-import { SessionContext } from "../../session/SessionContext";
-import InstitutionSelectionModal from "./InstitutionSelectionModal";
+import { Region } from "../../types";
+import { SessionContext } from "../SessionContext";
+import useSessionOptionSet from "../useSessionOptionSet";
+import InstitutionSelector from "./InstitutionSelector";
 import MarketShareSelector from "./MarketShareSelector";
 
 const SKELETON_HEIGHT = 45;
 
 const FilterPanel = () => {
-  const [optionSet, setOptionSet] = useState<SessionOptionSet | null>(null);
-  const [showInstModal, setShowInstModal] = useState(false);
+  const optionSet = useSessionOptionSet();
   const sessionContext = useContext(SessionContext);
-  const {
-    isLoading,
-    institutionName,
-    regionId,
-    regionName,
-    //marketShareModel,
-  } = sessionContext.session;
-
-  const openShowInstModal = useCallback(() => {
-    setShowInstModal(true);
-  }, [setShowInstModal]);
-
-  // Get session options
-  useEffect(() => {
-    axios.get("/api/session/sessionoptionset").then((res) => {
-      setOptionSet(res.data);
-    });
-  }, [setOptionSet]);
+  const { isLoading, regionId, regionName } = sessionContext.session;
 
   // Update when session changes
   useEffect(() => {}, [sessionContext]);
@@ -69,24 +45,7 @@ const FilterPanel = () => {
       <Form>
         <Form.Row>
           <Col lg={true} className="mb-2">
-            {isLoading ? (
-              <div className="">
-                <Skeleton height={SKELETON_HEIGHT} />
-              </div>
-            ) : (
-              <Button
-                className="d-flex justify-content-between"
-                size="lg"
-                variant="outline-dark"
-                block
-                onClick={openShowInstModal}
-              >
-                <span>{institutionName}</span>
-                <span>
-                  <i className="fas fa-bars"></i>
-                </span>
-              </Button>
-            )}
+            <InstitutionSelector optionSet={optionSet} />
           </Col>
           <Col lg={true} className="mb-2">
             <MarketShareSelector optionSet={optionSet} />
@@ -114,11 +73,6 @@ const FilterPanel = () => {
             )}
           </Col>
         </Form.Row>
-        <InstitutionSelectionModal
-          show={showInstModal}
-          setShow={setShowInstModal}
-          optionSet={optionSet}
-        />
       </Form>
     </div>
   );

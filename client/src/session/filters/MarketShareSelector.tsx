@@ -14,7 +14,7 @@ import {
 import Skeleton from "react-loading-skeleton";
 import axios from "axios";
 import { SessionOptionSet, MarketShareResult } from "../../types";
-import { SessionContext } from "../../session/SessionContext";
+import { SessionContext } from "../SessionContext";
 import marketShareOptions, {
   MarketShareModelOption,
 } from "./MarketShareOptions";

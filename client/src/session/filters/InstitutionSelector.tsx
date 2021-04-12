@@ -1,22 +1,16 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useMemo,
-  useCallback,
-  useContext,
-} from "react";
+import React, { useMemo, useCallback, useContext, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
-import { Institution, SessionOptionSet } from "../../types";
+
+import Skeleton from "react-loading-skeleton";
 import { Column } from "react-table";
+import { Institution, SessionOptionSet } from "../../types";
 import DataGrid, {
   DefaultColumnFilter,
   SelectColumnFilter,
 } from "../../shared/grid/DataGrid";
-import { SessionContext } from "../../session/SessionContext";
+import { SessionContext } from "../SessionContext";
 
 type Props = {
-  show: boolean;
-  setShow: Dispatch<SetStateAction<boolean>>;
   optionSet: SessionOptionSet | null;
 };
 
@@ -24,8 +18,16 @@ type InstitutionRow = Institution & {
   selected?: boolean;
 };
 
-const InstitutionSelectionModal = ({ show, setShow, optionSet }: Props) => {
-  const { updateSession } = useContext(SessionContext);
+const SKELETON_HEIGHT = 45;
+
+const InstitutionSelectionModal = ({ optionSet }: Props) => {
+  const [show, setShow] = useState<boolean>(false);
+  const { session, updateSession } = useContext(SessionContext);
+  const { isLoading, institutionName } = session;
+
+  const handleOpen = useCallback(() => {
+    setShow(true);
+  }, [setShow]);
 
   const handleClose = useCallback(() => {
     setShow(false);
@@ -78,7 +80,23 @@ const InstitutionSelectionModal = ({ show, setShow, optionSet }: Props) => {
   );
 
   return (
-    <div className="institution-selection-modal">
+    <div className="institution-selector">
+      {isLoading ? (
+        <Skeleton height={SKELETON_HEIGHT} />
+      ) : (
+        <Button
+          className="d-flex justify-content-between"
+          size="lg"
+          variant="outline-dark"
+          block
+          onClick={handleOpen}
+        >
+          <span>{institutionName}</span>
+          <span>
+            <i className="fas fa-bars"></i>
+          </span>
+        </Button>
+      )}
       <Modal show={show} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Select Your Institution</Modal.Title>

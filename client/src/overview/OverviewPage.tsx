@@ -3,13 +3,13 @@ import { Alert } from "react-bootstrap";
 import axios from "axios";
 import Navbar from "../shared/Navbar";
 import { SessionContext } from "../session/SessionContext";
-import FilterPanel from "./filters/FilterPanel";
+import FilterPanel from "../session/filters/FilterPanel";
 import { OverviewResult } from "../types";
 import OverviewChart from "./OverviewChart";
 import SummaryStatPanel from "./SummaryStatPanel";
 import ResultGrid from "./ResultGrid";
 
-const ResultPanel = () => {
+const OverviewPage = () => {
   const [result, setResult] = useState<OverviewResult | null>(null);
   const sessionContext = useContext(SessionContext);
 
@@ -48,4 +48,4 @@ const ResultPanel = () => {
   );
 };
 
-export default ResultPanel;
+export default OverviewPage;

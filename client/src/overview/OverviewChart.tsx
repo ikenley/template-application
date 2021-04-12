@@ -7,13 +7,11 @@ import { OverviewResult } from "../types";
 
 type Props = {
   result: OverviewResult | null;
+  hidePredicted?: boolean;
 };
 
-const OverviewChart = ({ result }: Props) => {
-  //const { regionIds, years, regionRows } = result;
-
+const OverviewChart = ({ result, hidePredicted }: Props) => {
   // Converts DataPoint[] array into chart.js data format
-  // Fills in missing categories with null
   const mapPointsToDataset = (years: number[], dataPoints: any[]) => {
     const yearMap = keyBy<any>(dataPoints, "year");
     const dataSet: number[] = [];
@@ -35,7 +33,7 @@ const OverviewChart = ({ result }: Props) => {
     const observedData = mapPointsToDataset(years, observedPoints);
     const predictedData = mapPointsToDataset(years, predictedPoints);
 
-    const chartData = {
+    const chartData: any = {
       labels: years,
       datasets: [
         {
@@ -46,18 +44,21 @@ const OverviewChart = ({ result }: Props) => {
           spanGaps: 1,
           data: observedData,
         },
-        {
-          label: "Projected",
-          fill: false,
-          backgroundColor: SecondaryColor,
-          borderColor: SecondaryColor,
-          data: predictedData,
-        },
       ],
     };
 
+    if (!hidePredicted) {
+      chartData.datasets.push({
+        label: "Projected",
+        fill: false,
+        backgroundColor: SecondaryColor,
+        borderColor: SecondaryColor,
+        data: predictedData,
+      });
+    }
+
     return chartData;
-  }, [result]);
+  }, [result, hidePredicted]);
 
   return (
     <div className="overview-chart mt-1">

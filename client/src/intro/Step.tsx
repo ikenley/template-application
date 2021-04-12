@@ -27,7 +27,7 @@ const Step = ({ data, onEnter, onLeave, children }: Props) => {
     } else if (hasEntered && !inView && onLeave) {
       onLeave(data);
     }
-  }, [inView]);
+  }, [inView, data, hasEntered, setHasEntered, onEnter, onLeave]);
 
   return (
     <div ref={ref} className="step">
