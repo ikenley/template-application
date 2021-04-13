@@ -36,6 +36,7 @@ where unitid = 194824
 
 select *
 from public.regions r 
+;
 
 select e.*
 	, p.year as prediction_year

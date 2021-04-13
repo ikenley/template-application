@@ -49,9 +49,24 @@ CREATE TABLE staging.observed_enrollment_unit_fips (
 
 insert into staging.observed_enrollment_unit_fips
 select cast(unitid as int)
+	, 2002 as year
+	, efcstate as state_fips
+	-- Use efres02 when available but fall back to efres01
+	, 	case 
+			when efres02 > 0 then efres02
+			else efres01
+		end as enrollment
+from base.ef2002c
+where efcstate <> 99
+union
+select cast(unitid as int)
 	, 2004 as year
 	, efcstate as state_fips
-	, efres01 as enrollment
+	-- Use efres02 when available but fall back to efres01
+	, 	case 
+			when efres02 > 0 then efres02
+			else efres01
+		end as enrollment
 from base.ef2004c_rv
 where efcstate <> 99
 union

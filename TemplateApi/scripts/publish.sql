@@ -261,7 +261,7 @@ from staging.custom_market_share_option opt
 
 CLUSTER public.custom_market_share_option USING pk_custom_market_share_option;
 
-select COUNT(*)
+select COUNT(*) as custom_market_share_option_count
 from public.custom_market_share_option
 ;
 

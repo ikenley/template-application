@@ -1,15 +1,6 @@
 import React, { useCallback } from "react";
 import { Form } from "react-bootstrap";
-import axios from "axios";
-import Skeleton from "react-loading-skeleton";
-import { Column } from "react-table";
-import DataGrid from "../../shared/grid/DataGrid";
-import GridCell from "../../shared/grid/GridCell";
-import {
-  CustomMarketShareResult,
-  CustomMarketShareRow,
-  CustomMarketShareOption,
-} from "../../types";
+import { CustomMarketShareRow } from "../../types";
 
 type Props = {
   row: CustomMarketShareRow;
@@ -17,7 +8,6 @@ type Props = {
 };
 
 const CustomMarketShareSlider = ({ row, handleOptionChange }: Props) => {
-  console.log("row", row);
   const { minOptionId, maxOptionId, selOption } = row;
 
   const handleChange = useCallback(

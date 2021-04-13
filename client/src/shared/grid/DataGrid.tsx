@@ -104,7 +104,6 @@ function Table({
   );
 
   const width = Math.max(totalColumnsWidth, parentWidth);
-  console.log("totalColumnsWidth", totalColumnsWidth);
 
   const headerWidth = useMemo(() => {
     // If items exceed height of window, subtract scrollbar width

@@ -58,35 +58,35 @@ select pe.year
 	, pe.enrollment as population
     , null as percent_total_enrollment
 from public.predicted_market_enrollment pe 
-join public.predicted_market_share shr
+join (
+	select r.id as region_id
+		, opt.market_share 
+	from public.regions r 
+	left outer join (
+		select *
+		from public.session_custom_market_share_option
+		where session_id = '9ca477a2-00f7-4373-a8b7-59cbca0bef70'
+	) s
+		on r.id = s.region_id
+	join public.custom_market_share_option opt
+		on r.id = opt.region_id 
+			and coalesce(s.option_id, 0) = opt.option_id 
+	where r.id <> 0
+		and opt.unit_id = 194824
+) shr
 	on pe.region_id = shr.region_id
-		and pe.year = shr.year
-left join public.regions r 
-	on pe.region_id = r.id 
-where shr.unitid = 194824
-	and shr.market_share_model_id = 4
-    -- Show all regions for type 0, else filter by regionId
-	and (0 = 0 or shr.region_id = 0)
+--left join public.regions r 
+--	on pe.region_id = r.id 
+-- Show all regions for type 0, else filter by regionId
+where (0 = 0 or shr.region_id = 0)
 order by pe.year
 	, pe.region_id
 ;
 
 
-select *
-from public.custom_market_share_option opt
-left outer join (
-	select *
-	from public.session_custom_market_share_option
-	where session_id = '9ca477a2-00f7-4373-a8b7-59cbca0bef70'
-) ses
-	on opt.region_id = ses.region_id 
-where opt.unit_id = 194824 
-	and (ses.region_id is not null or  
-limit 100;
-
-
 -- Get session option or default for each region
-select *
+select r.id as region_id
+	, opt.market_share 
 from public.regions r 
 left outer join (
 	select *

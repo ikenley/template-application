@@ -114,6 +114,27 @@ limit 100
 -------------------------------------------------------------------------------
 -- enrollments
 
+drop table if exists base.ef2002c;
+
+CREATE TABLE base.ef2002c (
+	unitid varchar(6),
+	efcstate int,
+	line varchar(3),
+	xefres01 varchar(1),
+	efres01 float,
+	xefres02 varchar(1),
+	efres02 float
+);
+
+SELECT aws_s3.table_import_from_s3(
+   'base.ef2002c',
+   '',
+   'CSV HEADER ENCODING ''WIN1252''',
+   aws_commons.create_s3_uri('924586450630-data-lake', 'template-app/base/EF2002C/ef2002c.csv', 'us-east-1')
+);
+
+---
+
 drop table if exists base.ef2004c_rv;
 
 CREATE TABLE base.ef2004c_rv (
