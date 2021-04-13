@@ -19,7 +19,7 @@ const CustomMarketShareSlider = ({ row, handleOptionChange }: Props) => {
   );
 
   return (
-    <div className="custom-market-share-slider">
+    <div className="custom-market-share-slider mx-1">
       <Form.Control
         type="range"
         min={minOptionId}

@@ -109,14 +109,12 @@ const CustomMarketSharePanel = ({
       },
       {
         Header: (
-          <div>
-            <Row className="text-center">
-              <Col>Sharp Decline</Col>
-              <Col>Decline</Col>
-              <Col className="">Stable</Col>
-              <Col>Increase</Col>
-              <Col>Sharp Increase</Col>
-            </Row>
+          <div className="row mx-1 no-gutters text-center">
+            <span className="col">Sharp Decline</span>
+            <span className="col">Decline</span>
+            <span className="col">Stable</span>
+            <span className="col">Increase</span>
+            <span className="col">Sharp Increase</span>
           </div>
         ),
         accessor: "regionId",
