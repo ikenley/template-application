@@ -155,3 +155,16 @@ where obs.year = (
 	and obs.unitid = 194824
 order by obs.unitid, obs.region_id, p.option_id
 ;
+
+-------------------------------------------------------------------------------
+-- session_custom_market_share_option
+
+select *
+from public."session" s 
+where s.session_id = '9ca477a2-00f7-4373-a8b7-59cbca0bef70'
+limit 100;
+
+select *
+from public.session_custom_market_share_option scmso 
+where scmso.session_id = '9ca477a2-00f7-4373-a8b7-59cbca0bef70'
+limit 100;

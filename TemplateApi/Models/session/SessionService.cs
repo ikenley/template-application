@@ -53,6 +53,7 @@ namespace TemplateApi.Models
 #nullable disable
         {
             var session = await _dataContext.Session.FirstOrDefaultAsync(s => s.UserId == userId);
+            session.CustomMarketShareOptionMap = await GetCustomMarketShareOptionsAsync(session);
             return session;
         }
 

@@ -18,6 +18,7 @@ const defaultSession: Session = {
   regionId: 0,
   regionName: "",
   marketShareModel: 0,
+  customMarketShareOptionMap: {},
 };
 
 const defaultSessionProps = {

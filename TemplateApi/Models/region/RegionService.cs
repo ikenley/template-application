@@ -28,7 +28,7 @@ namespace TemplateApi.Models
 from public.observed_enrollment e
 join public.regions r
 	on e.region_id = r.id
-where e.unitid = 194824
+where e.unitid = {institutionId}
 	and r.id <> 90 -- exclude foreign
 	and e.year = (
 		select max(year)

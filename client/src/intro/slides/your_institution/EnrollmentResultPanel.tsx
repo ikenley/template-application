@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Card } from "react-bootstrap";
 import axios from "axios";
-import Skeleton from "react-loading-skeleton";
 import { SessionContext } from "../../../session/SessionContext";
 import { StepId } from "./YourInstitutionSlide";
 import { OverviewResult } from "../../../types";

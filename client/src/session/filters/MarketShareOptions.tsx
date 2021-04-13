@@ -1,11 +1,5 @@
 import MarketShareModel from "./MarketShareModel";
-
-export type MarketShareModelOption = {
-  id: MarketShareModel;
-  name: string;
-  description: string;
-  img: string;
-};
+import { MarketShareModelOption } from "../../types";
 
 const marketShareOptions: MarketShareModelOption[] = [
   {
@@ -55,6 +49,13 @@ const marketShareOptions: MarketShareModelOption[] = [
     name: "Lowest Observed",
     description:
       "In in tristique eros. Proin ac mauris justo. Duis id ornare leo. Donec accumsan odio massa, a rutrum lacus semper sit amet.",
+    img: "https://via.placeholder.com/450x250?text=Placeholder",
+  },
+  {
+    id: MarketShareModel.Custom,
+    name: "Custom",
+    description:
+      "Fusce euismod volutpat felis, et convallis libero tincidunt aliquam. Etiam commodo tempus ex.",
     img: "https://via.placeholder.com/450x250?text=Placeholder",
   },
 ];

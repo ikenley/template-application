@@ -26,9 +26,10 @@ namespace TemplateApi.Models
             int institutionId = session.InstitutionId;
             int regionId = session.RegionId;
             int marketShareModel = (int)session.MarketShareModel;
+            bool hasCustomMarketShare = session.MarketShareModel == MarketShareModel.Custom;
 
             var observedPoints = await GetObservedPoints(institutionId, regionId);
-            var predictedPoints = await GetPredictedPoints(institutionId, regionId, marketShareModel);
+            var predictedPoints = await GetPredictedPoints(institutionId, regionId, marketShareModel, hasCustomMarketShare, sessionId);
 
             ImputePredictedForeignDataPoints(observedPoints, predictedPoints);
 
@@ -75,7 +76,22 @@ order by inst.enrollment desc")
             return dataPoints;
         }
 
-        private async Task<List<DataPoint>> GetPredictedPoints(int unitId, int regionId, int marketShareModel)
+        private async Task<List<DataPoint>> GetPredictedPoints(
+            int unitId,
+            int regionId,
+            int marketShareModel,
+            bool hasCustomMarketShare,
+            Guid sessionId
+        )
+        {
+            if (hasCustomMarketShare)
+            {
+                return await GetPredictedPointsCustom(unitId, regionId, sessionId);
+            }
+            return await GetPredictedPointsStandard(unitId, regionId, marketShareModel);
+        }
+
+        private async Task<List<DataPoint>> GetPredictedPointsStandard(int unitId, int regionId, int marketShareModel)
         {
             // throw new NotImplementedException();
             var dataPoints = await _dataContext.DataPoints
@@ -96,6 +112,44 @@ where shr.unitid = {unitId}
 	and shr.market_share_model_id = {marketShareModel}
     -- Show all regions for type 0, else filter by regionId
 	and (0 = {regionId} or shr.region_id = {regionId})
+order by pe.year
+	, pe.region_id")
+                .ToListAsync();
+
+            return dataPoints;
+        }
+
+        private async Task<List<DataPoint>> GetPredictedPointsCustom(int unitId, int regionId, Guid sessionId)
+        {
+            // throw new NotImplementedException();
+            var dataPoints = await _dataContext.DataPoints
+                .FromSqlInterpolated($@"select pe.year
+	, pe.region_id
+	, true as is_forecast
+	, pe.enrollment * shr.market_share as enrollment
+	, shr.market_share
+	, pe.enrollment as population
+    , null as percent_total_enrollment
+from public.predicted_market_enrollment pe 
+join (
+	select r.id as region_id
+		, opt.market_share 
+	from public.regions r 
+	left outer join (
+		select *
+		from public.session_custom_market_share_option
+		where session_id = {sessionId}
+	) s
+		on r.id = s.region_id
+	join public.custom_market_share_option opt
+		on r.id = opt.region_id 
+			and coalesce(s.option_id, 0) = opt.option_id 
+	where r.id <> 0
+		and opt.unit_id = {unitId}
+) shr
+	on pe.region_id = shr.region_id
+-- Show all regions for type 0, else filter by regionId
+where (0 = {regionId} or shr.region_id = {regionId})
 order by pe.year
 	, pe.region_id")
                 .ToListAsync();

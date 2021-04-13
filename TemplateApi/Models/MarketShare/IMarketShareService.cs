@@ -9,6 +9,6 @@ namespace TemplateApi.Models
     {
         Task<MarketShareResult> GetMarketShareResultAsync(MarketShareModel marketShareModel, int institutionId);
 
-        Task<Dictionary<int, List<CustomMarketShareOption>>> GetCustomMarketShareOptionsAsync(int institutionId);
+        Task<CustomMarketShareResult> GetCustomMarketShareResultAsync(int institutionId);
     }
 }

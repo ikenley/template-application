@@ -33,10 +33,10 @@ namespace TemplateApi.Controllers
         }
 
         // GET: api/marketshare/custom-options/194824
-        [HttpGet("options/{institutionId}")]
-        public async Task<ActionResult<Dictionary<int, List<CustomMarketShareOption>>>> GetCustomMarketShareOptions(int institutionId)
+        [HttpGet("custom-options/{institutionId}")]
+        public async Task<ActionResult<CustomMarketShareResult>> GetCustomMarketShareOptions(int institutionId)
         {
-            var result = await _marketShareService.GetCustomMarketShareOptionsAsync(institutionId);
+            var result = await _marketShareService.GetCustomMarketShareResultAsync(institutionId);
             return result;
         }
     }

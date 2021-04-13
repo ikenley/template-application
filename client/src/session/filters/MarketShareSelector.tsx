@@ -6,20 +6,19 @@ import {
   OverlayTrigger,
   Tooltip,
   Alert,
-  ButtonGroup,
-  Card,
-  Row,
-  Col,
   Form,
 } from "react-bootstrap";
 import Skeleton from "react-loading-skeleton";
-import axios from "axios";
-import { SessionOptionSet, MarketShareResult } from "../../types";
-import { SessionContext } from "../SessionContext";
-import marketShareOptions, {
+import {
+  SessionOptionSet,
   MarketShareModelOption,
-} from "./MarketShareOptions";
-import MarketShareGrid from "./MarketShareGrid";
+  UpdateSessionParams,
+} from "../../types";
+import { SessionContext } from "../SessionContext";
+import marketShareOptions from "./MarketShareOptions";
+import MarketShareResultPanel from "./MarketShareResultPanel";
+import CustomMarketSharePanel from "./CustomMarketSharePanel";
+import MarketShareModel from "./MarketShareModel";
 
 type Props = {
   optionSet: SessionOptionSet | null;
@@ -36,17 +35,19 @@ const MarketShareSelector = ({ optionSet }: Props) => {
   const [tempModel, setTempModel] = useState<MarketShareModelOption>(
     marketShareOptions[0]
   );
+  const [tempCustomOptionMap, setTempCustomOptionMap] = useState<{
+    [key: number]: number;
+  }>({});
 
   const [show, setShow] = useState<boolean>(false);
 
-  const [
-    marketShareResult,
-    setMarketShareResult,
-  ] = useState<MarketShareResult | null>(null);
-  // TODO add marketShareResultMap
-
   const { session, updateSession } = useContext(SessionContext);
-  const { isLoading, marketShareModel, institutionId } = session;
+  const {
+    isLoading,
+    marketShareModel,
+    institutionId,
+    customMarketShareOptionMap,
+  } = session;
 
   // On session updates, update session selectedModel
   useEffect(() => {
@@ -55,22 +56,8 @@ const MarketShareSelector = ({ optionSet }: Props) => {
       setSessionModel(selModel);
       setTempModel(selModel);
     }
-  }, [marketShareModel]);
-
-  // On tempModel change, update MarketShareRows
-  useEffect(() => {
-    setMarketShareResult(null);
-
-    if (isLoading) {
-      return;
-    }
-
-    axios
-      .get(`/api/marketshare/${tempModel.id}/${institutionId}`)
-      .then((res) => {
-        setMarketShareResult(res.data);
-      });
-  }, [tempModel, isLoading, institutionId]);
+    setTempCustomOptionMap(customMarketShareOptionMap);
+  }, [marketShareModel, customMarketShareOptionMap]);
 
   const handleOpen = useCallback(() => {
     setShow(true);
@@ -83,11 +70,17 @@ const MarketShareSelector = ({ optionSet }: Props) => {
   }, [setShow, setTempModel, sessionModel]);
 
   const updateMarketShare = useCallback(() => {
-    updateSession({
+    const updateParams: UpdateSessionParams = {
       marketShareModel: tempModel.id,
-    });
+    };
+
+    if (tempModel.id === MarketShareModel.Custom) {
+      updateParams.customMarketShareOptionMap = tempCustomOptionMap;
+    }
+
+    updateSession(updateParams);
     handleClose();
-  }, [updateSession, handleClose, tempModel]);
+  }, [updateSession, handleClose, tempModel, tempCustomOptionMap]);
 
   const handleModelSelect = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -99,6 +92,13 @@ const MarketShareSelector = ({ optionSet }: Props) => {
       }
     },
     [setTempModel]
+  );
+
+  const handleCustomOptionChange = useCallback(
+    (optionMap: any) => {
+      setTempCustomOptionMap(optionMap);
+    },
+    [setTempCustomOptionMap]
   );
 
   if (isLoading) {
@@ -148,7 +148,7 @@ const MarketShareSelector = ({ optionSet }: Props) => {
           </span>
         </Button>
       </InputGroup>
-      <Modal show={show} onHide={handleClose} size="lg">
+      <Modal show={show} onHide={handleClose} size="lg" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>Select Market Share Model</Modal.Title>
           <span className="d-lg-none">
@@ -207,24 +207,20 @@ const MarketShareSelector = ({ optionSet }: Props) => {
               </InputGroup>
             </div>
             <div className="model-body my-3">
-              <Row className="align-it">
-                <Col lg={4}>
-                  <div className="d-flex justify-content-center h-100">
-                    <Card>
-                      <Card.Img variant="top" src={tempModel.img} />
-                      <Card.Body>
-                        <Card.Title>{tempModel.name}</Card.Title>
-                        <Card.Text>{tempModel.description}</Card.Text>
-                      </Card.Body>
-                    </Card>
-                  </div>
-                </Col>
-                <Col lg={8}>
-                  <div className="mt-3 mt-lg-0">
-                    <MarketShareGrid result={marketShareResult} />
-                  </div>
-                </Col>
-              </Row>
+              {tempModel.id === MarketShareModel.Custom ? (
+                <CustomMarketSharePanel
+                  isLoading={isLoading}
+                  institutionId={institutionId}
+                  handleCustomOptionChange={handleCustomOptionChange}
+                  sessionOptionMap={tempCustomOptionMap}
+                />
+              ) : (
+                <MarketShareResultPanel
+                  isLoading={isLoading}
+                  institutionId={institutionId}
+                  modelOption={tempModel}
+                />
+              )}
             </div>
           </div>
         </Modal.Body>

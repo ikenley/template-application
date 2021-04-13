@@ -74,12 +74,23 @@ order by ms.market_share_model_id
             return marketShareRowMap;
         }
 
+        public async Task<CustomMarketShareResult> GetCustomMarketShareResultAsync(int institutionId)
+        {
+            var result = new CustomMarketShareResult();
+
+            result.Regions = await _regionService.GetTopRegionsAsync(institutionId);
+
+            result.OptionMap = await GetCustomMarketShareOptionsAsync(institutionId);
+
+            return result;
+        }
+
         /// <summary>
         /// Returns a Lookup of RegionId => CustomMarketShareOption
         /// </summary>
         /// <param name="institutionId"></param>
         /// <returns></returns>
-        public async Task<Dictionary<int, List<CustomMarketShareOption>>> GetCustomMarketShareOptionsAsync(int institutionId)
+        private async Task<Dictionary<int, List<CustomMarketShareOption>>> GetCustomMarketShareOptionsAsync(int institutionId)
         {
             var options = await _dataContext.CustomMarketShareOption
                 .Where(m => m.UnitId == institutionId)
@@ -94,5 +105,7 @@ order by ms.market_share_model_id
 
             return map;
         }
+
+
     }
 }
