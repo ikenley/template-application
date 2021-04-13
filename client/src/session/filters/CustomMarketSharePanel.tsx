@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback } from "react";
-import { Row, Col } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
 import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import { Column } from "react-table";
@@ -19,7 +19,7 @@ type Props = {
   handleCustomOptionChange: (optionMap: any) => void;
 };
 
-const SKELETON_HEIGHT = 45;
+const SKELETON_HEIGHT = 350;
 
 const defaultOption: CustomMarketShareOption = {
   optionId: 0,
@@ -140,6 +140,12 @@ const CustomMarketSharePanel = ({
 
   return (
     <div className="custom-market-share-panel">
+      <Alert variant="dark">
+        Cras eleifend ultricies quam, at imperdiet odio tempor in. Cras dictum
+        ornare lorem, quis porta augue ullamcorper iaculis. Etiam aliquam
+        consequat gravida. In vitae tortor eu lacus fringilla varius a quis
+        nisi.
+      </Alert>
       {regionRows ? (
         <DataGrid columns={columns} data={regionRows} />
       ) : (
