@@ -60,6 +60,7 @@ namespace TemplateApi.Models
         public async Task<Session> GetSession(Guid sessionId)
         {
             var session = await _dataContext.Session.SingleAsync(s => s.SessionId == sessionId);
+            session.CustomMarketShareOptionMap = await GetCustomMarketShareOptionsAsync(session);
             return session;
         }
 
