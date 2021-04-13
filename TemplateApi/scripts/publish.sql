@@ -238,6 +238,34 @@ limit 100
 ;
 
 -------------------------------------------------------------------------------
+-- custom_market_share_option
+
+-- Managed by entity framework
+truncate table public.custom_market_share_option;
+
+--CREATE TABLE public.custom_market_share_option (
+--	unitid int,
+--	region_id int,
+--	option_id int,
+--	market_share float,
+--	constraint pk_custom_market_share_option primary key (unitid, region_id, option_id)
+--);
+
+insert into public.custom_market_share_option
+select unitid 
+	, region_id
+	, option_id
+	, market_share  
+from staging.custom_market_share_option opt
+;
+
+CLUSTER public.custom_market_share_option USING pk_custom_market_share_option;
+
+select COUNT(*)
+from public.custom_market_share_option
+;
+
+-------------------------------------------------------------------------------
 -- Access
 
 --ACCESS DB

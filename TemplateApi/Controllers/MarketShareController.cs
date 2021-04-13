@@ -23,13 +23,20 @@ namespace TemplateApi.Controllers
             _marketShareService = marketShareService;
         }
 
-        // GET: api/Session/CreateOrGet/12345
-        // TODO update to infer from auth token
+        // GET: api/marketshare/0/194824
         [HttpGet("{marketShareModel}/{institutionId}")]
         public async Task<ActionResult<MarketShareResult>> GetMarketShareResult(int marketShareModel, int institutionId)
         {
             var model = (MarketShareModel)marketShareModel;
             var result = await _marketShareService.GetMarketShareResultAsync(model, institutionId);
+            return result;
+        }
+
+        // GET: api/marketshare/custom-options/194824
+        [HttpGet("options/{institutionId}")]
+        public async Task<ActionResult<Dictionary<int, List<CustomMarketShareOption>>>> GetCustomMarketShareOptions(int institutionId)
+        {
+            var result = await _marketShareService.GetCustomMarketShareOptionsAsync(institutionId);
             return result;
         }
     }

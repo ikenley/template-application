@@ -473,4 +473,42 @@ group by obs.unitid, obs.region_id, obs.year, obs.enrollment_share, p.year
 order by obs.unitid, obs.region_id, p.year
 ;
 
+-------------------------------------------------------------------------------
+-- custom_market_share_option
+
+drop table if exists staging.custom_market_share_option;
+
+CREATE TABLE staging.custom_market_share_option (
+	unitid int,
+	region_id int,
+	option_id int,
+	market_share float,
+	constraint pk_custom_market_share_option primary key (unitid, region_id, option_id)
+);
+
+insert into staging.custom_market_share_option
+select obs.unitid 
+	, obs.region_id
+	, p.option_id
+	, coalesce(obs.enrollment_share * p.multiplier, 0) as market_share  
+from staging.observed_enrollment obs
+cross join (
+	select -2 as option_id, 0.85 as multiplier
+	union select -1, 0.925
+	union select 0, 1
+	union select 1, 1.075
+	union select 2, 1.15
+) p
+where obs.year = (
+	select max(year) from staging.years where is_prediction = false
+)
+order by obs.unitid, obs.region_id, p.option_id
+;
+
+CLUSTER staging.custom_market_share_option USING pk_custom_market_share_option;
+
+select COUNT(*)
+from staging.custom_market_share_option
+;
+
 

@@ -73,5 +73,26 @@ order by ms.market_share_model_id
 
             return marketShareRowMap;
         }
+
+        /// <summary>
+        /// Returns a Lookup of RegionId => CustomMarketShareOption
+        /// </summary>
+        /// <param name="institutionId"></param>
+        /// <returns></returns>
+        public async Task<Dictionary<int, List<CustomMarketShareOption>>> GetCustomMarketShareOptionsAsync(int institutionId)
+        {
+            var options = await _dataContext.CustomMarketShareOption
+                .Where(m => m.UnitId == institutionId)
+                .ToListAsync();
+
+            var optionLookup = options.ToLookup(opt => opt.RegionId);
+            var map = new Dictionary<int, List<CustomMarketShareOption>>();
+            foreach (int regionId in optionLookup.Select(opt => opt.Key))
+            {
+                map[regionId] = optionLookup[regionId].ToList();
+            }
+
+            return map;
+        }
     }
 }

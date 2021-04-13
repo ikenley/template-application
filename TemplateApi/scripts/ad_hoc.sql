@@ -133,3 +133,25 @@ order by pe.region_id
 	, pe.year
 ;
 
+-------------------------------------------------------------------------------
+-- Find values for Custom market share
+-- Find standard deviation and average of region across years
+
+select obs.unitid 
+	, obs.region_id
+	, p.option_id
+	, obs.enrollment_share * p.multiplier as market_share  
+from staging.observed_enrollment obs
+cross join (
+	select -2 as option_id, 0.85 as multiplier
+	union select -1, 0.925
+	union select 0, 1
+	union select 1, 1.075
+	union select 2, 1.15
+) p
+where obs.year = (
+	select max(year) from staging.years where is_prediction = false
+)
+	and obs.unitid = 194824
+order by obs.unitid, obs.region_id, p.option_id
+;

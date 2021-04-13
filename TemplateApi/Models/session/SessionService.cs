@@ -52,12 +52,14 @@ namespace TemplateApi.Models
         private async Task<Session?> TryGetSessionByUserId(string userId)
 #nullable disable
         {
-            return await _dataContext.Session.FirstOrDefaultAsync(s => s.UserId == userId);
+            var session = await _dataContext.Session.FirstOrDefaultAsync(s => s.UserId == userId);
+            return session;
         }
 
         public async Task<Session> GetSession(Guid sessionId)
         {
-            return await _dataContext.Session.SingleAsync(s => s.SessionId == sessionId);
+            var session = await _dataContext.Session.SingleAsync(s => s.SessionId == sessionId);
+            return session;
         }
 
         public async Task<Session> UpdateSession(UpdateSessionParams updateSessionParams)
@@ -81,6 +83,11 @@ namespace TemplateApi.Models
             {
                 session.MarketShareModel = updateSessionParams.MarketShareModel.Value;
             }
+            if (updateSessionParams.CustomMarketShareOptionMap != null)
+            {
+                session.CustomMarketShareOptionMap = updateSessionParams.CustomMarketShareOptionMap;
+                await UpdateCustomMarketShareOptionAsync(session, session.CustomMarketShareOptionMap);
+            }
 
             session.LastUpdated = DateTime.Now;
 
@@ -103,6 +110,45 @@ namespace TemplateApi.Models
                 _cache.Set(CacheKeys.GetSessionOptionSet, optionSet);
             }
             return optionSet;
+        }
+
+        private async Task<Dictionary<int, int>> GetCustomMarketShareOptionsAsync(Session session)
+        {
+            if (session.MarketShareModel == MarketShareModel.Custom)
+            {
+                var optionMap = await _dataContext.SessionCustomMarketShareOption
+                .Where(s => s.SessionId == session.SessionId)
+                .ToDictionaryAsync(opt => opt.RegionId, opt => opt.OptionId);
+                return optionMap;
+            }
+            return new Dictionary<int, int>();
+        }
+
+        private async Task UpdateCustomMarketShareOptionAsync(
+            Session session,
+            Dictionary<int, int> customMarketShareOptionMap
+        )
+        {
+            // Delete existing options for session
+            var oldOptions = await _dataContext.SessionCustomMarketShareOption
+                .Where(opt => opt.SessionId == session.SessionId)
+                .ToListAsync();
+            _dataContext.SessionCustomMarketShareOption.RemoveRange(oldOptions);
+
+            // Convert map of RegionId => OptionId into rows and insert
+            var nextOptions = new List<SessionCustomMarketShareOption>();
+            foreach (int regionId in customMarketShareOptionMap.Keys)
+            {
+                nextOptions.Add(new SessionCustomMarketShareOption
+                {
+                    SessionId = session.SessionId,
+                    RegionId = regionId,
+                    OptionId = customMarketShareOptionMap[regionId]
+                });
+            }
+            await _dataContext.SessionCustomMarketShareOption.AddRangeAsync(nextOptions);
+
+            await _dataContext.SaveChangesAsync();
         }
     }
 }

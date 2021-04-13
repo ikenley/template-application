@@ -40,7 +40,7 @@ join public.predicted_market_share shr
 left join public.regions r 
 	on pe.region_id = r.id 
 where shr.unitid = 194824
-	and shr.market_share_model_id = 0
+	and shr.market_share_model_id = 4
     -- Show all regions for type 0, else filter by regionId
 	and (0 = 0 or shr.region_id = 0)
 order by pe.year

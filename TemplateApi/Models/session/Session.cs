@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,6 +32,12 @@ namespace TemplateApi.Models
         public string RegionName { get; set; }
 
         public MarketShareModel MarketShareModel { get; set; }
+
+        /// <summary>
+        /// Map of RegionId => selected OptionId
+        /// </summary>
+        [NotMapped]
+        public Dictionary<int, int> CustomMarketShareOptionMap { get; set; }
 
         public static Session CreateDefault(string userId)
         {
