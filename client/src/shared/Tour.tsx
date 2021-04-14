@@ -36,7 +36,7 @@ const Tour = ({ steps, show, setShow, launchCookiePrefix }: Props) => {
       setShow(true);
       Cookies.set(cookieName, "true", { expires: 30 });
     }
-  }, [launchCookiePrefix]);
+  }, [launchCookiePrefix, setShow]);
 
   return (
     <div className="tour">
