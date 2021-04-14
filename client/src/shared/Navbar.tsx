@@ -1,29 +1,51 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 
-const NavbarMain = () => {
+type Props = {
+  launchTour?: () => void;
+};
+
+const NavbarMain = ({ launchTour }: Props) => {
+  const handleTourClick = useCallback(() => {
+    if (launchTour) {
+      launchTour();
+    }
+  }, [launchTour]);
+
   return (
     <Navbar bg="primary" variant="dark" expand="lg">
       <Navbar.Brand href="#home">LOGO | Enrollment Forecasts</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="mr-auto">
-          <NavLink className="nav-link" activeClassName="active" to="/intro">
+        <Nav className="mr-auto nav-links">
+          <NavLink
+            className="nav-link nav-intro"
+            activeClassName="active"
+            to="/intro"
+          >
             Introduction
           </NavLink>
           <NavLink
-            className="nav-link"
+            className="nav-link nav-overview"
             activeClassName="active"
             to="/"
             exact={true}
           >
             Overview
           </NavLink>
-          <NavLink className="nav-link" activeClassName="active" to="/compare">
+          <NavLink
+            className="nav-link nav-compare"
+            activeClassName="active"
+            to="/compare"
+          >
             Compare Institutions
           </NavLink>
-          <NavLink className="nav-link" activeClassName="active" to="/market">
+          <NavLink
+            className="nav-link nav-market"
+            activeClassName="active"
+            to="/market"
+          >
             COVID-19
           </NavLink>
         </Nav>
@@ -34,9 +56,11 @@ const NavbarMain = () => {
             className="navbar-context-menu"
             alignRight
           >
-            <NavDropdown.Item href="#action/launch_tour_todo">
-              Walkthrough
-            </NavDropdown.Item>
+            {launchTour ? (
+              <NavDropdown.Item onClick={handleTourClick}>
+                Walkthrough
+              </NavDropdown.Item>
+            ) : null}
             <NavDropdown.Item target="_blank" href="/faq.pdf">
               FAQ
             </NavDropdown.Item>

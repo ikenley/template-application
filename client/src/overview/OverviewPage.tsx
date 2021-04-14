@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import { Alert } from "react-bootstrap";
 import axios from "axios";
 import Navbar from "../shared/Navbar";
@@ -8,10 +8,17 @@ import { OverviewResult } from "../types";
 import OverviewChart from "./OverviewChart";
 import SummaryStatPanel from "./SummaryStatPanel";
 import ResultGrid from "./ResultGrid";
+import Tour from "../shared/Tour";
+import tourSteps from "./tourSteps";
 
 const OverviewPage = () => {
+  const [showTour, setShowTour] = useState<boolean>(false);
   const [result, setResult] = useState<OverviewResult | null>(null);
   const sessionContext = useContext(SessionContext);
+
+  const launchTour = useCallback(() => {
+    setShowTour(true);
+  }, [setShowTour]);
 
   useEffect(() => {
     if (sessionContext.session.isLoading) {
@@ -27,7 +34,7 @@ const OverviewPage = () => {
 
   return (
     <div className="overview-page">
-      <Navbar />
+      <Navbar launchTour={launchTour} />
       <main
         role="main"
         className="container-xl container-xxl min-height-100-vh pt-3 pb-5"
@@ -44,6 +51,12 @@ const OverviewPage = () => {
         <SummaryStatPanel result={result} />
         <ResultGrid result={result} />
       </main>
+      <Tour
+        steps={tourSteps}
+        show={showTour}
+        setShow={setShowTour}
+        launchCookiePrefix="overview"
+      />
     </div>
   );
 };

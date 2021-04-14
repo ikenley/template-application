@@ -54,7 +54,7 @@ const FilterPanel = () => {
             {isLoading ? (
               <Skeleton height={SKELETON_HEIGHT} />
             ) : (
-              <InputGroup size="lg">
+              <InputGroup size="lg" className="region-selector">
                 <InputGroup.Prepend>
                   <InputGroup.Text id="basic-addon1">Region</InputGroup.Text>
                 </InputGroup.Prepend>
