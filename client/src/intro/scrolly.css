@@ -1,10 +1,14 @@
-/* .intro-page {
-  background-color: #fff;
-} */
+.intro-page {
+  font-size: 1.15rem;
+}
+
+.intro-page .container-fluid {
+  background-color: inherit;
+}
 
 .slide {
   padding: 5rem 0 15rem 0;
-  border: 1px solid gray;
+  border-bottom: 1px solid gray;
 }
 
 .slide.fullscreen {

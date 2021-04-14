@@ -1,5 +1,4 @@
-
-export const PrimaryColor = "#002746";
+export const PrimaryColor = "#0072CE";
 export const SecondaryColor = "#ed8b00";
 
 // TODO consider moving these to a DB or somewhere
