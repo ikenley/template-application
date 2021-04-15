@@ -151,5 +151,74 @@ order by ms.market_share_model_id
 	, ms.region_id 
 ;
 
+-------------------------------------------------------------------------------
+-- Market Attractiveness
 
+select inst.year
+	, inst.region_id
+    , false as is_forecast
+	, inst.enrollment
+	, inst.enrollment_share as market_share
+    , null as population
+    , null as percent_total_enrollment
+from public.observed_enrollment inst
+join public.regions r
+	on inst.region_id = r.id
+where inst.unitid = 194824
+    -- Show all regions for type 0, else filter by regionId
+	and (0 = 0 or inst.region_id = 0)
+	and inst.year = (
+		select max(y.year) 
+		from public.years y 
+		where is_prediction = false
+	)
+order by inst.year
+	, inst.enrollment desc
+;
+
+select r.id as region_id
+	, r."name" as region_name
+	, inst.enrollment
+	, inst.enrollment_share
+	, pmin.year as pmin_year
+	, pmin.enrollment as pmin_market_enrollment
+	, pmax.year as pmax_year
+	, pmax.enrollment as pmax_market_enrollment
+	, 	case 
+			when pmin.enrollment is null then 0
+			when pmin.enrollment = 0 then 0
+			else (pmax.enrollment - pmin.enrollment) / pmin.enrollment
+		end as predicted_market_enrollment_percent_change
+from public.regions r 
+join (
+	select *
+	from predicted_market_enrollment pme 
+	where pme.year = (
+		select min(y.year) 
+		from public.years y 
+		where is_prediction = true
+	)
+) pmin
+	on r.id = pmin.region_id
+join (
+	select *
+	from predicted_market_enrollment pme 
+	where pme.year = (
+		select max(y.year) 
+		from public.years y 
+		where is_prediction = true
+	)
+) pmax
+	on pmin.region_id = pmax.region_id
+left join (
+	select region_id
+		, enrollment
+		, enrollment_share
+	from public.observed_enrollment
+	where unitid = 194824
+) inst 
+	on r.id = inst.region_id 
+
+order by predicted_enrollment_percent_change desc
+;
 

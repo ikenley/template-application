@@ -169,3 +169,13 @@ select *
 from public.session_custom_market_share_option scmso 
 where scmso.session_id = '9ca477a2-00f7-4373-a8b7-59cbca0bef70'
 limit 100;
+
+-------------------------------------------------------------------------------
+-- enrollment scenario recipe 
+-- Enrollment Projections for {region}
+
+select pme.year
+	, pme.enrollment 
+from public.predicted_market_enrollment pme
+where region_id = 25
+order by pme.year 

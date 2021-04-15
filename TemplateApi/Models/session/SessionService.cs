@@ -45,6 +45,7 @@ namespace TemplateApi.Models
             var session = Session.CreateDefault(userId);
             await _dataContext.Session.AddAsync(session);
             await _dataContext.SaveChangesAsync();
+            session.CustomMarketShareOptionMap = await GetCustomMarketShareOptionsAsync(session);
             return session;
         }
 

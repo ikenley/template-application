@@ -51,7 +51,8 @@ namespace TemplateApi.Models
                 InstitutionName = "EAB University",
                 RegionId = Region.AllRegionsId,
                 RegionName = Region.AllRegionsName,
-                MarketShareModel = MarketShareModel.MostRecentYear
+                MarketShareModel = MarketShareModel.MostRecentYear,
+                CustomMarketShareOptionMap = new Dictionary<int, int>()
             };
             return session;
         }
