@@ -119,3 +119,47 @@ export type CustomMarketShareRow = {
   minOptionId: number;
   maxOptionId: number;
 };
+
+export type YearSummary = {
+  years: YearRow[];
+  firstObserved: number;
+  lastObserved: number;
+  firstPredicted: number;
+  lastPredicted: number;
+};
+
+const defaultYearSummary: YearSummary = {
+  years: [],
+  firstObserved: 0,
+  lastObserved: 0,
+  firstPredicted: 0,
+  lastPredicted: 0,
+};
+
+export type YearRow = {
+  year: number;
+  isPredicted: boolean;
+};
+
+export type MarketInfoResult = {
+  yearSummary: YearSummary;
+  marketInfoRows: MarketInfoRow[];
+};
+
+// Empty overview result. Useful for conditional rendering
+export const emptyMarketInfoResult: MarketInfoResult = {
+  yearSummary: defaultYearSummary,
+  marketInfoRows: [],
+};
+
+export type MarketInfoRow = {
+  regionId: number;
+  regionName: string;
+  enrollment: number;
+  enrollmentShare: number;
+  pminYear: number;
+  pminMarketEnrollment: number;
+  pmaxYear: number;
+  pmaxMarketEnrollment: number;
+  predictedMarketGrowth: number;
+};

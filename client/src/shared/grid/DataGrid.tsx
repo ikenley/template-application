@@ -1,11 +1,12 @@
 import React, { useCallback, useMemo } from "react";
-import { useTable, useFlexLayout, useFilters } from "react-table";
+import { useTable, useFlexLayout, useFilters, useSortBy } from "react-table";
 import { FixedSizeList } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import scrollbarWidth from "../scrollbarWidth";
 import { noop } from "lodash";
 import DefaultColumnFilter from "./DefaultColumnFilter";
 import SelectColumnFilter from "./SelectColumnFilter";
+import classNames from "classnames";
 
 type DataGridProps = {
   columns: any[];
@@ -69,8 +70,19 @@ function Table({
       filterTypes,
     },
     useFlexLayout,
-    useFilters
+    useFilters,
+    useSortBy
   );
+
+  const extendHeaderProps = useCallback((column: any) => {
+    const defaultProps = column.getHeaderProps(column.getSortByToggleProps());
+
+    const className = classNames("th", column.headerClassName);
+
+    const headerProps = { ...defaultProps, className };
+
+    return headerProps;
+  }, []);
 
   const RenderRow = useCallback(
     ({ index, style }) => {
@@ -118,6 +130,11 @@ function Table({
     return Math.min(maxHeight, rows.length * ITEM_SIZE);
   }, [maxHeight, rows]);
 
+  const debug = (x: any, col: any) => {
+    console.log("debug_x", x);
+    console.log("debug_y", col);
+  };
+
   // Render the UI for your table
   return (
     <div
@@ -134,8 +151,23 @@ function Table({
             className="tr"
           >
             {headerGroup.headers.map((column) => (
-              <div {...column.getHeaderProps()} className="th">
+              <div {...extendHeaderProps(column)}>
                 {column.render("Header")}
+                <span>
+                  {column.isSorted ? (
+                    <span>
+                      {" "}
+                      <i
+                        className={classNames({
+                          "fas fa-chevron-down": column.isSortedDesc,
+                          "fas fa-chevron-up": !column.isSortedDesc,
+                        })}
+                      />
+                    </span>
+                  ) : (
+                    ""
+                  )}
+                </span>
                 {/* Render the columns filter UI */}
                 <div>{column.canFilter ? column.render("Filter") : null}</div>
               </div>

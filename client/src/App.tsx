@@ -6,7 +6,7 @@ import { SessionContextProvider } from "./session/SessionContext";
 import IntroPage from "./intro/IntroPage";
 import OverviewPage from "./overview/OverviewPage";
 import ComparePage from "./compare/ComparePage";
-import MarketPage from "./market/MarketPage";
+import MarketPage from "./market_info/MarketInfoPage";
 
 function App() {
   return (

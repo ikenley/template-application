@@ -17,6 +17,7 @@ namespace TemplateApi.Models
             modelBuilder.Entity<MarketShareRow>().ToTable(nameof(MarketShareRow), t => t.ExcludeFromMigrations());
             modelBuilder.Entity<CustomMarketShareOption>().HasKey(t => new { t.UnitId, t.RegionId, t.OptionId });
             modelBuilder.Entity<SessionCustomMarketShareOption>().HasKey(t => new { t.SessionId, t.RegionId });
+            modelBuilder.Entity<MarketInfoRow>().ToTable(nameof(MarketInfoRow), t => t.ExcludeFromMigrations());
         }
 
         public DbSet<Session> Session { get; set; }
@@ -34,5 +35,9 @@ namespace TemplateApi.Models
         public DbSet<CustomMarketShareOption> CustomMarketShareOption { get; set; }
 
         public DbSet<SessionCustomMarketShareOption> SessionCustomMarketShareOption { get; set; }
+
+        public DbSet<MarketInfoRow> MarketInfoRows { get; set; }
+
+        public DbSet<YearRow> YearRows { get; set; }
     }
 }

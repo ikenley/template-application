@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TemplateApi.Models;
@@ -9,9 +10,10 @@ using TemplateApi.Models;
 namespace TemplateApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210415134055_MarketInfo")]
+    partial class MarketInfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,41 +110,17 @@ namespace TemplateApi.Migrations
 
             modelBuilder.Entity("TemplateApi.Models.MarketInfoRow", b =>
                 {
-                    b.Property<double>("Enrollment")
+                    b.Property<double>("MarketShare")
                         .HasColumnType("double precision")
-                        .HasColumnName("enrollment");
-
-                    b.Property<double>("EnrollmentShare")
-                        .HasColumnType("double precision")
-                        .HasColumnName("enrollment_share");
-
-                    b.Property<double>("PmaxMarketEnrollment")
-                        .HasColumnType("double precision")
-                        .HasColumnName("pmax_market_enrollment");
-
-                    b.Property<int>("PmaxYear")
-                        .HasColumnType("integer")
-                        .HasColumnName("pmax_year");
-
-                    b.Property<double>("PminMarketEnrollment")
-                        .HasColumnType("double precision")
-                        .HasColumnName("pmin_market_enrollment");
-
-                    b.Property<int>("PminYear")
-                        .HasColumnType("integer")
-                        .HasColumnName("pmin_year");
-
-                    b.Property<double>("PredictedMarketGrowth")
-                        .HasColumnType("double precision")
-                        .HasColumnName("predicted_market_growth");
+                        .HasColumnName("market_share");
 
                     b.Property<int>("RegionId")
                         .HasColumnType("integer")
                         .HasColumnName("region_id");
 
-                    b.Property<string>("RegionName")
-                        .HasColumnType("text")
-                        .HasColumnName("region_name");
+                    b.Property<int>("Year")
+                        .HasColumnType("integer")
+                        .HasColumnName("year");
 
                     b.ToTable("MarketInfoRow", t => t.ExcludeFromMigrations());
                 });
@@ -257,24 +235,6 @@ namespace TemplateApi.Migrations
                         .HasName("pk_session_custom_market_share_option");
 
                     b.ToTable("session_custom_market_share_option");
-                });
-
-            modelBuilder.Entity("TemplateApi.Models.YearRow", b =>
-                {
-                    b.Property<int>("Year")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("year")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<bool>("IsPrediction")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_prediction");
-
-                    b.HasKey("Year")
-                        .HasName("pk_years");
-
-                    b.ToTable("years");
                 });
 #pragma warning restore 612, 618
         }

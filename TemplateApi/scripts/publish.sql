@@ -216,13 +216,14 @@ from public.predicted_market_share
 -------------------------------------------------------------------------------
 -- years
 
-drop table if exists public.years;
+truncate table public.years;
 
-CREATE TABLE public.years (
-	year int,
-	is_prediction boolean,
-	constraint pk_years primary key (year)
-);
+-- Managed by entity framework migrations
+--CREATE TABLE public.years (
+--	year int,
+--	is_prediction boolean,
+--	constraint pk_years primary key (year)
+--);
 
 insert into public.years
 select "year"

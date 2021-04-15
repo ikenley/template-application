@@ -23,7 +23,8 @@ const ResultGrid = ({ result }: Props) => {
   const columns: Column<any>[] = useMemo(
     () => [
       {
-        Header: <div className="text-center font-weight-bold">Region</div>,
+        Header: <span className="font-weight-bold">Region</span>,
+        headerClassName: "text-center",
         accessor: "regionName",
         width: 250,
       },
@@ -36,11 +37,13 @@ const ResultGrid = ({ result }: Props) => {
           {
             Header: "2012",
             accessor: "yearDataPointMap[2012].enrollment",
+            sortType: "basic",
             Cell: ({ value }) => <GridCell value={value} />,
           },
           {
             Header: "2018",
             accessor: "yearDataPointMap[2018].enrollment",
+            sortType: "basic",
             Cell: ({ value }) => <GridCell value={value} />,
           },
           {
@@ -51,10 +54,11 @@ const ResultGrid = ({ result }: Props) => {
                 tooltip="Mauris a varius justo. Integer id scelerisque erat. Nam eget
               dolor efficitur, iaculis sapien a, imperdiet elit."
               >
-                <span className="abbr">% of Enrollemnt</span>
+                <span className="abbr">% of Enrollment</span>
               </OverlayTooltip>
             ),
             accessor: "yearDataPointMap[2018].percentTotalEnrollment",
+            sortType: "basic",
             Cell: ({ value }) => <GridCell value={value} format="0.00%" />,
             width: 150,
           },
@@ -69,6 +73,7 @@ const ResultGrid = ({ result }: Props) => {
               </OverlayTooltip>
             ),
             accessor: "yearDataPointMap[2018].marketShare",
+            sortType: "basic",
             Cell: ({ value }) => <GridCell value={value} format="0.0000%" />,
             width: 150,
           },
@@ -85,21 +90,25 @@ const ResultGrid = ({ result }: Props) => {
           {
             Header: "2022",
             accessor: "yearDataPointMap[2022].enrollment",
+            sortType: "basic",
             Cell: ({ value }) => <GridCell value={value} />,
           },
           {
             Header: "2025",
             accessor: "yearDataPointMap[2025].enrollment",
+            sortType: "basic",
             Cell: ({ value }) => <GridCell value={value} />,
           },
           {
             Header: "2030",
             accessor: "yearDataPointMap[2030].enrollment",
+            sortType: "basic",
             Cell: ({ value }) => <GridCell value={value} />,
           },
           {
             Header: "2035",
             accessor: "yearDataPointMap[2035].enrollment",
+            sortType: "basic",
             Cell: ({ value }) => <GridCell value={value} />,
           },
         ],
