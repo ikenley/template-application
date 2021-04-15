@@ -19,6 +19,7 @@ type InstitutionRow = Institution & {
 };
 
 const SKELETON_HEIGHT = 45;
+const GRID_HEIGHT = 500;
 
 const InstitutionSelectionModal = ({ optionSet }: Props) => {
   const [show, setShow] = useState<boolean>(false);
@@ -107,6 +108,7 @@ const InstitutionSelectionModal = ({ optionSet }: Props) => {
             columns={columns}
             data={data}
             handleRowClick={handleRowClick}
+            maxHeight={GRID_HEIGHT}
           />
         </Modal.Body>
 
