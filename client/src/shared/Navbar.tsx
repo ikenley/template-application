@@ -48,7 +48,7 @@ const NavbarMain = ({ launchTour }: Props) => {
             activeClassName="active"
             to="/market"
           >
-            COVID-19
+            Market Analysis
           </NavLink>
         </Nav>
         <Nav className="ml-auto">

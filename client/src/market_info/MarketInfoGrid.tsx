@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import Skeleton from "react-loading-skeleton";
+import { Alert } from "react-bootstrap";
 import { Column } from "react-table";
 import DataGrid from "../shared/grid/DataGrid";
 import { MarketInfoResult, emptyMarketInfoResult } from "../types";
@@ -10,7 +11,7 @@ type Props = {
   result: MarketInfoResult | null;
 };
 
-const SKELETON_HEIGHT = 460;
+const GRID_HEIGHT = 600;
 
 const MarketInfoGrid = ({ result }: Props) => {
   const { marketInfoRows, yearSummary } = result || emptyMarketInfoResult;
@@ -84,10 +85,21 @@ const MarketInfoGrid = ({ result }: Props) => {
 
   return (
     <div className="market-info-grid mt-3">
+      <Alert variant="dark">
+        Quisque scelerisque aliquam consectetur. Cras eget elit quis eros luctus
+        pulvinar. Curabitur dictum vel lacus ut tempor. Maecenas posuere, nunc
+        at ullamcorper pellentesque, dolor sem lobortis metus, pretium
+        vestibulum libero lorem in dui. In hac habitasse platea dictumst. Duis
+        scelerisque sit amet diam vitae viverra.
+      </Alert>
       {result ? (
-        <DataGrid columns={columns} data={marketInfoRows} />
+        <DataGrid
+          columns={columns}
+          data={marketInfoRows}
+          maxHeight={GRID_HEIGHT}
+        />
       ) : (
-        <Skeleton height={SKELETON_HEIGHT} />
+        <Skeleton height={GRID_HEIGHT} />
       )}
     </div>
   );

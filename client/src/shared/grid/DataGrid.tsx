@@ -7,6 +7,9 @@ import { noop } from "lodash";
 import DefaultColumnFilter from "./DefaultColumnFilter";
 import SelectColumnFilter from "./SelectColumnFilter";
 import classNames from "classnames";
+import GridCell from "./GridCell";
+
+export { GridCell };
 
 type DataGridProps = {
   columns: any[];
@@ -25,7 +28,7 @@ function Table({
   columns,
   data,
   handleRowClick,
-  maxHeight = 400,
+  maxHeight = Number.MAX_VALUE,
   parentWidth,
 }: TableProps) {
   // Use the state and functions returned from useTable to build your UI
@@ -129,11 +132,6 @@ function Table({
   const height = useMemo(() => {
     return Math.min(maxHeight, rows.length * ITEM_SIZE);
   }, [maxHeight, rows]);
-
-  const debug = (x: any, col: any) => {
-    console.log("debug_x", x);
-    console.log("debug_y", col);
-  };
 
   // Render the UI for your table
   return (
