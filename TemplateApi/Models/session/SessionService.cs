@@ -45,7 +45,6 @@ namespace TemplateApi.Models
             var session = Session.CreateDefault(userId);
             await _dataContext.Session.AddAsync(session);
             await _dataContext.SaveChangesAsync();
-            session.CustomMarketShareOptionMap = await GetCustomMarketShareOptionsAsync(session);
             return session;
         }
 
@@ -54,7 +53,10 @@ namespace TemplateApi.Models
 #nullable disable
         {
             var session = await _dataContext.Session.FirstOrDefaultAsync(s => s.UserId == userId);
-            session.CustomMarketShareOptionMap = await GetCustomMarketShareOptionsAsync(session);
+            if (session != null)
+            {
+                session.CustomMarketShareOptionMap = await GetCustomMarketShareOptionsAsync(session);
+            }
             return session;
         }
 
