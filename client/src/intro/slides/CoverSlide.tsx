@@ -1,11 +1,9 @@
 import React from "react";
 import { useInView } from "react-intersection-observer";
-import classNames from "classnames";
-import { Link } from "react-router-dom";
 import Slide from "../Slide";
 
 const CoverSlide = () => {
-  const { ref, inView } = useInView({
+  const { ref } = useInView({
     threshold: 0.5,
   });
 
