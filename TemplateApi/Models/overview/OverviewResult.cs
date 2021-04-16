@@ -5,11 +5,7 @@ namespace TemplateApi.Models
 {
     public class OverviewResult
     {
-        public List<int> Years { get; set; }
-
-        public int MinYear { get; set; }
-
-        public int MaxYear { get; set; }
+        public YearSummary YearSummary { get; set; }
 
         /// <summary>
         /// Region ids sorted by enrollment descending

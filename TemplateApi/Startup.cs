@@ -45,6 +45,7 @@ namespace TemplateApi
             services.AddScoped<IMarketInfoService, MarketInfoService>();
             services.AddScoped<IInstitutionService, InstitutionService>();
             services.AddScoped<IOverviewResultService, OverviewResultService>();
+            services.AddScoped<ICompareService, CompareService>();
 
             services.AddControllers();
             services.AddMemoryCache();

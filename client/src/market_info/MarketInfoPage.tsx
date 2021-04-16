@@ -19,7 +19,6 @@ const MarketInfoPage = () => {
 
     axios.get(`/api/marketinfo/${institutionId}`).then((res) => {
       setResult(res.data);
-      console.log("api/marketinfo", res.data);
     });
   }, [isLoading, institutionId]);
 

@@ -190,6 +190,7 @@ join (
 	on pmin.region_id = pmax.region_id
 left join (
 	select region_id
+		, year
 		, enrollment
 		, enrollment_share
 	from public.observed_enrollment

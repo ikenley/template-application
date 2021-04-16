@@ -26,5 +26,9 @@ namespace TemplateApi.Models
         /// Percent of total institution enrollment for given region-year
         /// </summary>
         public double? PercentTotalEnrollment { get; set; }
+
+        /// <summary>Percent changed from index year</summary>
+        [NotMapped]
+        public double? PercentChangeFromIndex { get; set; }
     }
 }

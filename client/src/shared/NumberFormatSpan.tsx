@@ -23,7 +23,7 @@ const NumberFormatSpan = ({
     <span className="number-format-span">
       {isLoading ? (
         <Skeleton width={loadingWidth} />
-      ) : (
+      ) : value === null ? null : (
         <span
           className={classNames(
             {

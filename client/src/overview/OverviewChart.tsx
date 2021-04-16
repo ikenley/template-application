@@ -28,7 +28,8 @@ const OverviewChart = ({ result, hidePredicted }: Props) => {
       return null;
     }
 
-    const { years, observedPoints, predictedPoints } = result;
+    const { yearSummary, observedPoints, predictedPoints } = result;
+    const { years } = yearSummary;
 
     const observedData = mapPointsToDataset(years, observedPoints);
     const predictedData = mapPointsToDataset(years, predictedPoints);

@@ -40,9 +40,27 @@ export type Region = {
   name: string;
 };
 
+export type YearSummary = {
+  yearRows: YearRow[];
+  years: number[];
+  firstObserved: number;
+  lastObserved: number;
+  firstPredicted: number;
+  lastPredicted: number;
+};
+
+const defaultYearSummary: YearSummary = {
+  yearRows: [],
+  years: [],
+  firstObserved: 0,
+  lastObserved: 0,
+  firstPredicted: 0,
+  lastPredicted: 0,
+};
+
 // Results
 export type OverviewResult = {
-  years: number[];
+  yearSummary: YearSummary;
   regionIds: number[];
   observedPoints: DataPoint[];
   predictedPoints: DataPoint[];
@@ -54,7 +72,7 @@ export type OverviewResult = {
 
 // Empty overview result. Useful for conditional rendering
 export const emptyOverviewResult: OverviewResult = {
-  years: [],
+  yearSummary: defaultYearSummary,
   regionIds: [],
   observedPoints: [],
   predictedPoints: [],
@@ -77,6 +95,7 @@ export type DataPoint = {
   enrollment?: number;
   marketShare?: number;
   population?: number;
+  percentChangeFromIndex?: number;
 };
 
 export type MarketShareResult = {
@@ -120,22 +139,6 @@ export type CustomMarketShareRow = {
   maxOptionId: number;
 };
 
-export type YearSummary = {
-  years: YearRow[];
-  firstObserved: number;
-  lastObserved: number;
-  firstPredicted: number;
-  lastPredicted: number;
-};
-
-const defaultYearSummary: YearSummary = {
-  years: [],
-  firstObserved: 0,
-  lastObserved: 0,
-  firstPredicted: 0,
-  lastPredicted: 0,
-};
-
 export type YearRow = {
   year: number;
   isPredicted: boolean;
@@ -162,4 +165,22 @@ export type MarketInfoRow = {
   pmaxYear: number;
   pmaxMarketEnrollment: number;
   predictedMarketGrowth: number;
+};
+
+export type ComparisonResult = {
+  yearSummary: YearSummary;
+  institutions: Institution[];
+  comparisonRows: ComparisonRow[];
+};
+
+export const emptyComparisonResult: ComparisonResult = {
+  yearSummary: defaultYearSummary,
+  institutions: [],
+  comparisonRows: [],
+};
+
+export type ComparisonRow = {
+  year: number;
+  hasData: boolean;
+  dataPoints: DataPoint[];
 };

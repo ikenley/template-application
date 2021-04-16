@@ -11,25 +11,38 @@ namespace TemplateApi.Models
     {
         private readonly DataContext _dataContext;
         private readonly IRegionService _regionService;
+        private readonly IYearService _yearService;
         private readonly ISessionService _sessionService;
 
-        public OverviewResultService(DataContext dataContext, IRegionService regionService, ISessionService sessionService)
+        public OverviewResultService(
+            DataContext dataContext,
+            IRegionService regionService,
+            IYearService yearService,
+            ISessionService sessionService
+        )
         {
             _dataContext = dataContext;
             _regionService = regionService;
+            _yearService = yearService;
             _sessionService = sessionService;
         }
 
-        public async Task<OverviewResult> GetOverviewResultAsync(Guid sessionId)
+        /// <summary>
+        /// Gets OverviewResult for a given session, optionally overriding the institutionId
+        /// </summary>
+        /// <param name="sessionId"></param>
+        /// <param name="institutionId"></param>
+        /// <returns></returns>
+        public async Task<OverviewResult> GetOverviewResultAsync(Guid sessionId, int? institutionId = null)
         {
             var session = await _sessionService.GetSession(sessionId);
-            int institutionId = session.InstitutionId;
+            int instId = institutionId ?? session.InstitutionId;
             int regionId = session.RegionId;
             int marketShareModel = (int)session.MarketShareModel;
             bool hasCustomMarketShare = session.MarketShareModel == MarketShareModel.Custom;
 
-            var observedPoints = await GetObservedPoints(institutionId, regionId);
-            var predictedPoints = await GetPredictedPoints(institutionId, regionId, marketShareModel, hasCustomMarketShare, sessionId);
+            var observedPoints = await GetObservedPoints(instId, regionId);
+            var predictedPoints = await GetPredictedPoints(instId, regionId, marketShareModel, hasCustomMarketShare, sessionId);
 
             ImputePredictedForeignDataPoints(observedPoints, predictedPoints);
 
@@ -39,16 +52,20 @@ namespace TemplateApi.Models
             result.ObservedPoints = AggreggateByYear(observedPoints);
             result.PredictedPoints = AggreggateByYear(predictedPoints);
 
-            CalculatePercentTotalEnrollment(allDataPoints, result.ObservedPoints.Concat(result.PredictedPoints));
+            var aggregatedPoints = result.ObservedPoints.Concat(result.PredictedPoints).ToList();
+            CalculatePercentTotalEnrollment(allDataPoints, aggregatedPoints);
 
             result.ObservedAverageAnnualGrowth = GetAverageAnnualGrowthRate(result.ObservedPoints);
             result.PredictedAverageAnnualGrowth = GetAverageAnnualGrowthRate(result.PredictedPoints);
             result.ProjectedChange = GetProjectedChange(result.ObservedPoints, result.PredictedPoints);
 
-            SetYears(result, allDataPoints);
             result.RegionIds = GetRegionIdsOrderedByEnrollmentDescending(allDataPoints);
 
             result.RegionRows = await GetRegionRows(allDataPoints, result.RegionIds);
+
+            result.YearSummary = await _yearService.GetYearSummaryAsync();
+
+            CalculatePercentChangedFromIndex(result.YearSummary, aggregatedPoints);
 
             return result;
         }
@@ -334,32 +351,6 @@ order by pe.year
             return rows;
         }
 
-        /// <summary>
-        /// Sets the Years, MinYear, and MaxYear properties in OverviewResult
-        /// </summary>
-        private void SetYears(OverviewResult result, List<DataPoint> dataPoints)
-        {
-            var rawYears = dataPoints
-                .Select(p => p.Year)
-                .Distinct()
-                .OrderBy(p => p)
-                .ToList();
-
-            if (rawYears.Count == 0)
-            {
-                return;
-            }
-
-            result.MinYear = rawYears.First();
-            result.MaxYear = rawYears.Last();
-
-            result.Years = new List<int>();
-            for (int year = result.MinYear; year <= result.MaxYear; year++)
-            {
-                result.Years.Add(year);
-            }
-        }
-
         private List<int> GetRegionIdsOrderedByEnrollmentDescending(List<DataPoint> dataPoints)
         {
             // TODO determine if Distinct is order-preserving
@@ -369,6 +360,24 @@ order by pe.year
                 .Select(p => p.RegionId)
                 .Distinct()
                 .ToList();
+        }
+
+        /// <summary>
+        /// Calculates percent changed from baseline year. Assumes all points are in the same region.
+        /// </summary>
+        private void CalculatePercentChangedFromIndex(YearSummary yearSummary, List<DataPoint> dataPoints)
+        {
+            var baseline = dataPoints.Where(d => d.Year == yearSummary.FirstObserved).FirstOrDefault();
+
+            if (baseline == null || baseline.Enrollment == null || baseline.Enrollment == 0)
+            {
+                return;
+            }
+
+            foreach (var point in dataPoints)
+            {
+                point.PercentChangeFromIndex = CalculatePercentChange(baseline, point);
+            }
         }
     }
 }

@@ -12,7 +12,9 @@ namespace TemplateApi.Models
     /// </summary>
     public class YearSummary
     {
-        List<YearRow> Years { get; set; }
+        public List<YearRow> YearRows { get; set; }
+
+        public List<int> Years { get; set; }
 
         public int FirstObserved { get; set; }
         public int LastObserved { get; set; }
@@ -23,7 +25,7 @@ namespace TemplateApi.Models
 
         public YearSummary(List<YearRow> years)
         {
-            Years = years;
+            YearRows = years;
 
             var observedYears = years.Where(y => !y.IsPrediction).OrderBy(y => y.Year);
             FirstObserved = observedYears.First().Year;
@@ -32,6 +34,12 @@ namespace TemplateApi.Models
             var predictedYears = years.Where(y => y.IsPrediction).OrderBy(y => y.Year);
             FirstPredicted = predictedYears.First().Year;
             LastPredicted = predictedYears.Last().Year;
+
+            Years = new List<int>();
+            for (int y = FirstObserved; y <= LastPredicted; y++)
+            {
+                Years.Add(y);
+            }
         }
     }
 }

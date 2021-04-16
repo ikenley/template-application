@@ -21,5 +21,13 @@ namespace TemplateApi.Models
             // TODO add caching
             return await _dataContext.Institutions.ToListAsync();
         }
+
+        public async Task<List<Institution>> GetInstitutionsAsync(int[] institutionIds)
+        {
+            return await _dataContext.Institutions
+                .Where(i => institutionIds.Contains(i.Id))
+                .OrderBy(i => i.Id)
+                .ToListAsync();
+        }
     }
 }
