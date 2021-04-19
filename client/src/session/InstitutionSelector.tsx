@@ -1,14 +1,13 @@
 import React, { useMemo, useCallback, useContext, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
-
 import Skeleton from "react-loading-skeleton";
 import { Column } from "react-table";
-import { Institution, SessionOptionSet } from "../../types";
+import { Institution, SessionOptionSet } from "../types";
 import DataGrid, {
   DefaultColumnFilter,
   SelectColumnFilter,
-} from "../../shared/grid/DataGrid";
-import { SessionContext } from "../SessionContext";
+} from "../shared/grid/DataGrid";
+import { SessionContext } from "./SessionContext";
 
 type Props = {
   optionSet: SessionOptionSet | null;

@@ -6,7 +6,7 @@ import { StepId } from "./YourInstitutionSlide";
 import { OverviewResult } from "../../../types";
 import OverviewChart from "../../../overview/OverviewChart";
 import useSessionOptionSet from "../../../session/useSessionOptionSet";
-import InstitutionSelector from "../../../session/filters/InstitutionSelector";
+import InstitutionSelector from "../../../session/InstitutionSelector";
 
 type Props = {
   currentStep: StepId;

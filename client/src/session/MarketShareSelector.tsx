@@ -13,8 +13,8 @@ import {
   SessionOptionSet,
   MarketShareModelOption,
   UpdateSessionParams,
-} from "../../types";
-import { SessionContext } from "../SessionContext";
+} from "../types";
+import { SessionContext } from "./SessionContext";
 import marketShareOptions from "./MarketShareOptions";
 import MarketShareResultPanel from "./MarketShareResultPanel";
 import CustomMarketSharePanel from "./CustomMarketSharePanel";

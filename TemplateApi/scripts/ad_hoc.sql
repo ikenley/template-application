@@ -182,3 +182,7 @@ order by pme.year
 
 -------------------------------------------------------------------------------
 
+select *
+from public.institutions i 
+where i.name like '%Indiana University%'
+limit 100;

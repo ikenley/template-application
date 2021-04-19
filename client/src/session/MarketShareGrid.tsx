@@ -1,10 +1,10 @@
 import React, { useMemo } from "react";
 import Skeleton from "react-loading-skeleton";
 import { Column } from "react-table";
-import DataGrid from "../../shared/grid/DataGrid";
-import GridCell from "../../shared/grid/GridCell";
-import { MarketShareResult } from "../../types";
-import { displayPredictionYears } from "../../constants";
+import DataGrid from "../shared/grid/DataGrid";
+import GridCell from "../shared/grid/GridCell";
+import { MarketShareResult } from "../types";
+import { displayPredictionYears } from "../constants";
 
 type Props = {
   result: MarketShareResult | null;

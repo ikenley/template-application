@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import Skeleton from "react-loading-skeleton";
-import { MarketShareResult, MarketShareModelOption } from "../../types";
+import { MarketShareResult, MarketShareModelOption } from "../types";
 import MarketShareGrid from "./MarketShareGrid";
 
 type Props = {

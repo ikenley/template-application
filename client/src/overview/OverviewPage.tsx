@@ -3,7 +3,7 @@ import { Alert } from "react-bootstrap";
 import axios from "axios";
 import Navbar from "../shared/Navbar";
 import { SessionContext } from "../session/SessionContext";
-import FilterPanel from "../session/filters/FilterPanel";
+import FilterPanel from "../session/FilterPanel";
 import { OverviewResult } from "../types";
 import OverviewChart from "./OverviewChart";
 import SummaryStatPanel from "./SummaryStatPanel";

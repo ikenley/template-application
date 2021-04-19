@@ -3,13 +3,13 @@ import { Alert } from "react-bootstrap";
 import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import { Column } from "react-table";
-import DataGrid from "../../shared/grid/DataGrid";
-import GridCell from "../../shared/grid/GridCell";
+import DataGrid from "../shared/grid/DataGrid";
+import GridCell from "../shared/grid/GridCell";
 import {
   CustomMarketShareResult,
   CustomMarketShareRow,
   CustomMarketShareOption,
-} from "../../types";
+} from "../types";
 import CustomMarketShareSlider from "./CustomMarketShareSlider";
 
 type Props = {

@@ -1,5 +1,5 @@
 import MarketShareModel from "./MarketShareModel";
-import { MarketShareModelOption } from "../../types";
+import { MarketShareModelOption } from "../types";
 
 const marketShareOptions: MarketShareModelOption[] = [
   {

@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import Skeleton from "react-loading-skeleton";
 import { Line } from "react-chartjs-2";
 import numeral from "numeral";
-import { ComparisonResult, emptyComparisonResult } from "../types";
+import { ComparisonResult } from "../types";
 import {
   PrimaryColor,
   SecondaryColor,
@@ -68,7 +68,7 @@ const CompareChart = ({ result }: Props) => {
       tooltips: {
         callbacks: {
           label: (point: any, context: any) => {
-            const { datasetIndex, index, value } = point;
+            const { datasetIndex, value } = point;
             const dataset = context.datasets[datasetIndex];
             const { label, numeralFormat, rawDataPoints } = dataset;
             const raw = rawDataPoints[point.index];

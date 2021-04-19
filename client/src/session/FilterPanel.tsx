@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useMemo, useCallback } from "react";
 import { Col, Form, InputGroup } from "react-bootstrap";
 import Skeleton from "react-loading-skeleton";
-import { Region } from "../../types";
-import { SessionContext } from "../SessionContext";
-import useSessionOptionSet from "../useSessionOptionSet";
+import { Region } from "../types";
+import { SessionContext } from "./SessionContext";
+import useSessionOptionSet from "./useSessionOptionSet";
 import InstitutionSelector from "./InstitutionSelector";
 import MarketShareSelector from "./MarketShareSelector";
 

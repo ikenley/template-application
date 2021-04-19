@@ -1,4 +1,4 @@
-import { MarketShareModel } from "./session/filters/MarketShareModel";
+import { MarketShareModel } from "./session/MarketShareModel";
 
 // Session
 export type Session = {
