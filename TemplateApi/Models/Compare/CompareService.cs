@@ -33,7 +33,7 @@ namespace TemplateApi.Models
         public async Task<ComparisonResult> GetComparisonResultAsync(Guid sessionId)
         {
             var session = await _sessionService.GetSession(sessionId);
-            var institutionIds = session.CompareInstitutionIds;
+            var institutionIds = session.GetInstitutionIds();
 
             var result = new ComparisonResult();
 

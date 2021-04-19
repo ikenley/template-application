@@ -62,5 +62,17 @@ namespace TemplateApi.Models
             return session;
         }
 
+        /// <summary>
+        /// Returns either CompareInstitutionIds or InstitutionId
+        /// </summary>
+        public int[] GetInstitutionIds()
+        {
+            if (CompareInstitutionIds == null || CompareInstitutionIds.Length == 0)
+            {
+                return new int[] { InstitutionId };
+            }
+            return CompareInstitutionIds;
+        }
+
     }
 }
