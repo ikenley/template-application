@@ -1,7 +1,14 @@
-import React, { useMemo, useCallback, useContext, useState } from "react";
-import { Modal, Button } from "react-bootstrap";
+import React, {
+  useMemo,
+  useCallback,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
+import { Modal, Button, Form, ListGroup, Card } from "react-bootstrap";
 import Skeleton from "react-loading-skeleton";
 import { Column } from "react-table";
+import { sortBy } from "lodash";
 import { Institution, SessionOptionSet } from "../types";
 import DataGrid, {
   DefaultColumnFilter,
@@ -11,6 +18,7 @@ import { SessionContext } from "./SessionContext";
 
 type Props = {
   optionSet: SessionOptionSet | null;
+  isMultiple: boolean;
 };
 
 type InstitutionRow = Institution & {
@@ -19,11 +27,18 @@ type InstitutionRow = Institution & {
 
 const SKELETON_HEIGHT = 45;
 const GRID_HEIGHT = 500;
+const MAX_MULTI_COUNT = 4;
 
-const InstitutionSelectionModal = ({ optionSet }: Props) => {
+const InstitutionSelectionModal = ({ optionSet, isMultiple }: Props) => {
   const [show, setShow] = useState<boolean>(false);
+  const [tempInstIds, setTempInstIds] = useState<number[]>([]);
   const { session, updateSession } = useContext(SessionContext);
-  const { isLoading, institutionName } = session;
+  const {
+    isLoading,
+    institutionId,
+    institutionName,
+    compareInstitutionIds,
+  } = session;
 
   const handleOpen = useCallback(() => {
     setShow(true);
@@ -33,7 +48,17 @@ const InstitutionSelectionModal = ({ optionSet }: Props) => {
     setShow(false);
   }, [setShow]);
 
-  // Handle institution selection
+  // Update tempInstIds when session changes
+  useEffect(() => {
+    // Use compareInstitutionIds
+    if (compareInstitutionIds && compareInstitutionIds.length) {
+      setTempInstIds(compareInstitutionIds);
+    } else {
+      setTempInstIds([institutionId]); // Default to selected institution
+    }
+  }, [institutionId, show, compareInstitutionIds]);
+
+  // Handle (single) institution selection
   const handleRowClick = useCallback(
     (row: Institution) => {
       updateSession({
@@ -45,17 +70,104 @@ const InstitutionSelectionModal = ({ optionSet }: Props) => {
     [updateSession, handleClose]
   );
 
-  const data: InstitutionRow[] = useMemo(() => {
-    return optionSet ? optionSet.institutions : [];
-  }, [optionSet]);
+  const handleInstCheck = useCallback(
+    (inst: Institution) => {
+      const { id } = inst;
+      let isSelected = !inst.isSelected;
+      // Add if selected, else remove
+      let tempIds;
+      if (isSelected) {
+        if (tempInstIds.length >= MAX_MULTI_COUNT) {
+          return;
+        }
+        tempIds = [...tempInstIds, id];
+      } else {
+        tempIds = tempInstIds.filter((i) => i !== id);
+      }
+      setTempInstIds(tempIds);
+    },
+    [tempInstIds, setTempInstIds]
+  );
 
-  const columns: Column<InstitutionRow>[] = useMemo(
-    () => [
+  const institutionRows: InstitutionRow[] = useMemo(() => {
+    let rows: InstitutionRow[] = [];
+
+    if (optionSet) {
+      rows = optionSet.institutions;
+
+      if (isMultiple) {
+        rows = optionSet.institutions.map((inst) => {
+          return { ...inst, isSelected: tempInstIds.includes(inst.id) };
+        });
+      }
+    }
+
+    return rows;
+  }, [optionSet, isMultiple, tempInstIds]);
+
+  const selInstitutions: InstitutionRow[] = useMemo(() => {
+    if (!isMultiple) {
+      return [];
+    }
+
+    const filteredRows = institutionRows.filter((r) => r.isSelected);
+    // Sort by order they were added
+    const sortedRows = sortBy(filteredRows, (r) => tempInstIds.indexOf(r.id));
+
+    return sortedRows;
+  }, [institutionRows, isMultiple, tempInstIds]);
+
+  const handleUpdateClick = useCallback(() => {
+    if (tempInstIds.length === 0 || tempInstIds.length > MAX_MULTI_COUNT) {
+      return;
+    }
+
+    const first = selInstitutions[0];
+    updateSession({
+      institutionId: first.id,
+      institutionName: first.name,
+      compareInstitutionIds: tempInstIds,
+    });
+    handleClose();
+  }, [tempInstIds, selInstitutions, updateSession, handleClose]);
+
+  const columns: Column<InstitutionRow>[] = useMemo(() => {
+    const cols: any = [];
+
+    if (isMultiple) {
+      cols.push({
+        Header: "",
+        id: "isSelected",
+        accessor: "isSelected",
+        width: 50,
+        maxWidth: 100,
+        disableFilters: true,
+        disableSortBy: true,
+        Cell: ({ row, value }: any) => {
+          const { original } = row;
+          return (
+            <div className="text-center">
+              <Form.Check
+                aria-label={original.name}
+                checked={value}
+                disabled={
+                  tempInstIds.length >= MAX_MULTI_COUNT && !original.isSelected
+                }
+                onChange={() => {}}
+              />
+            </div>
+          );
+        },
+      });
+    }
+
+    cols.push(
       {
         Header: "Name",
         accessor: "name",
         width: 300,
         maxWidth: 500,
+        disableSortBy: true,
         Filter: DefaultColumnFilter,
         disableFilters: false,
       },
@@ -64,6 +176,7 @@ const InstitutionSelectionModal = ({ optionSet }: Props) => {
         accessor: "city",
         width: 200,
         maxWidth: 300,
+        disableSortBy: true,
         Filter: DefaultColumnFilter,
         disableFilters: false,
       },
@@ -72,12 +185,14 @@ const InstitutionSelectionModal = ({ optionSet }: Props) => {
         accessor: "state",
         width: 100,
         maxWidth: 150,
+        disableSortBy: true,
         Filter: SelectColumnFilter,
         disableFilters: false,
-      },
-    ],
-    []
-  );
+      }
+    );
+
+    return cols;
+  }, [isMultiple, tempInstIds]);
 
   return (
     <div className="institution-selector">
@@ -97,24 +212,74 @@ const InstitutionSelectionModal = ({ optionSet }: Props) => {
           </span>
         </Button>
       )}
-      <Modal show={show} onHide={handleClose} size="lg">
+      <Modal show={show} onHide={handleClose} size="lg" backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>Select Your Institution</Modal.Title>
+          <Modal.Title>
+            {isMultiple ? "Select Institutions" : "Select Your Institution"}
+          </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
+          {isMultiple ? (
+            <Card className="mb-3">
+              <Card.Header className="py-2">
+                Selected Institutions{" "}
+                <small className="text-muted">({MAX_MULTI_COUNT} max)</small>
+              </Card.Header>
+              <ListGroup variant="flush">
+                {selInstitutions.length ? (
+                  selInstitutions.map((inst) => (
+                    <ListGroup.Item key={inst.id} className="py-2">
+                      <div className="d-flex w-100 justify-content-between align-items-center">
+                        <div>
+                          {inst.name}, {inst.city} {inst.state}
+                        </div>
+                        <Button
+                          variant="outline-dark"
+                          size="sm"
+                          onClick={() => {
+                            handleInstCheck(inst);
+                          }}
+                        >
+                          <i className="fas fa-minus" />
+                        </Button>
+                      </div>
+                    </ListGroup.Item>
+                  ))
+                ) : (
+                  <ListGroup.Item variant="light" className="text-center">
+                    None selected
+                  </ListGroup.Item>
+                )}
+              </ListGroup>
+            </Card>
+          ) : null}
           <DataGrid
             columns={columns}
-            data={data}
-            handleRowClick={handleRowClick}
+            data={institutionRows}
+            handleRowClick={isMultiple ? handleInstCheck : handleRowClick}
             maxHeight={GRID_HEIGHT}
           />
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="primary" onClick={handleClose}>
+          <Button
+            variant={isMultiple ? "outline-dark" : "primary"}
+            onClick={handleClose}
+          >
             Close
           </Button>
+          {isMultiple ? (
+            <Button
+              variant="primary"
+              onClick={handleUpdateClick}
+              disabled={
+                tempInstIds.length === 0 || tempInstIds.length > MAX_MULTI_COUNT
+              }
+            >
+              Update
+            </Button>
+          ) : null}
         </Modal.Footer>
       </Modal>
     </div>

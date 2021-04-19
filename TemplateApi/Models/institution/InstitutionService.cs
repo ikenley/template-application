@@ -24,10 +24,11 @@ namespace TemplateApi.Models
 
         public async Task<List<Institution>> GetInstitutionsAsync(int[] institutionIds)
         {
-            return await _dataContext.Institutions
+            var institutions = await _dataContext.Institutions
                 .Where(i => institutionIds.Contains(i.Id))
-                .OrderBy(i => i.Id)
                 .ToListAsync();
+
+            return institutions.OrderBy(i => Array.IndexOf(institutionIds, i.Id)).ToList();
         }
     }
 }

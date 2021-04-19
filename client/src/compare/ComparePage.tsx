@@ -4,6 +4,7 @@ import { Alert } from "react-bootstrap";
 import Navbar from "../shared/Navbar";
 import { ComparisonResult } from "../types";
 import { SessionContext } from "../session/SessionContext";
+import FilterPanel from "../session/FilterPanel";
 import CompareChart from "./CompareChart";
 import CompareGrid from "./CompareGrid";
 
@@ -19,7 +20,6 @@ const ComparePage = () => {
 
     axios.get(`/api/compare/${sessionId}`).then((res) => {
       setResult(res.data);
-      console.log("/api/compare", res.data);
     });
   }, [isLoading, sessionId]);
 
@@ -33,6 +33,7 @@ const ComparePage = () => {
         <div className="h1 text-center bg-primary text-white py-3 mb-2">
           Compare Institutions
         </div>
+        <FilterPanel allowMultiInstitutions />
         <Alert variant="dark">
           Integer auctor iaculis elit, id egestas dolor accumsan ac. Donec nisi
           quam, scelerisque sed auctor sit amet, viverra id lacus. Cras bibendum

@@ -46,7 +46,7 @@ const OverviewPage = () => {
           habitasse platea dictumst. Aenean mollis leo eu purus pulvinar, a
           interdum urna iaculis. Proin ac orci lacus.
         </Alert>
-        <FilterPanel />
+        <FilterPanel showRegions />
         <OverviewChart result={result} />
         <SummaryStatPanel result={result} />
         <ResultGrid result={result} />

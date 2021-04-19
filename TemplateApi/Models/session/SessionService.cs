@@ -78,6 +78,11 @@ namespace TemplateApi.Models
             {
                 session.InstitutionId = updateSessionParams.InstitutionId.Value;
                 session.InstitutionName = updateSessionParams.InstitutionName ?? "";
+
+                if (updateSessionParams.CompareInstitutionIds != null)
+                {
+                    session.CompareInstitutionIds = updateSessionParams.CompareInstitutionIds;
+                }
             }
             if (updateSessionParams.RegionId.HasValue)
             {

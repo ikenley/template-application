@@ -38,6 +38,7 @@ const CompareGrid = ({ result }: Props) => {
           headerClassName: "text-center",
           sortType: "basic",
           accessor: `dataPoints[${ix}].enrollment`,
+          width: 120,
           disableSortBy: true,
           institutionIx: ix,
           Cell: ({ row, column }: any) => {

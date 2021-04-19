@@ -33,8 +33,7 @@ namespace TemplateApi.Models
         public async Task<ComparisonResult> GetComparisonResultAsync(Guid sessionId)
         {
             var session = await _sessionService.GetSession(sessionId);
-            // TODO remove hard-coded institution id's
-            int[] institutionIds = new int[] { 171100, 204796, 214777, 151351 };
+            var institutionIds = session.CompareInstitutionIds;
 
             var result = new ComparisonResult();
 

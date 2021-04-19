@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,6 +32,9 @@ namespace TemplateApi.Models
 
         public string RegionName { get; set; }
 
+        [Required]
+        public int[] CompareInstitutionIds { get; set; }
+
         public MarketShareModel MarketShareModel { get; set; }
 
         /// <summary>
@@ -52,7 +56,8 @@ namespace TemplateApi.Models
                 RegionId = Region.AllRegionsId,
                 RegionName = Region.AllRegionsName,
                 MarketShareModel = MarketShareModel.MostRecentYear,
-                CustomMarketShareOptionMap = new Dictionary<int, int>()
+                CustomMarketShareOptionMap = new Dictionary<int, int>(),
+                CompareInstitutionIds = new int[0]
             };
             return session;
         }

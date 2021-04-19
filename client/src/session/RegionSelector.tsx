@@ -1,21 +1,19 @@
-import React, { useContext, useEffect, useMemo, useCallback } from "react";
-import { Col, Form, InputGroup } from "react-bootstrap";
+import React, { useContext, useMemo, useCallback } from "react";
+import { Form, InputGroup } from "react-bootstrap";
 import Skeleton from "react-loading-skeleton";
 import { Region } from "../types";
 import { SessionContext } from "./SessionContext";
-import useSessionOptionSet from "./useSessionOptionSet";
-import InstitutionSelector from "./InstitutionSelector";
-import MarketShareSelector from "./MarketShareSelector";
+import { SessionOptionSet } from "../types";
 
 const SKELETON_HEIGHT = 45;
 
-const FilterPanel = () => {
-  const optionSet = useSessionOptionSet();
-  const sessionContext = useContext(SessionContext);
-  const { isLoading, regionId, regionName } = sessionContext.session;
+type Props = {
+  optionSet: SessionOptionSet | null;
+};
 
-  // Update when session changes
-  useEffect(() => {}, [sessionContext]);
+const RegionSelector = ({ optionSet }: Props) => {
+  const { session, updateSession } = useContext(SessionContext);
+  const { isLoading, regionId, regionName } = session;
 
   const regions: Region[] = useMemo(() => {
     if (optionSet) {
@@ -23,59 +21,47 @@ const FilterPanel = () => {
     }
 
     // If only session loaded, temporarily use list of just selected Region
-    if (!sessionContext.session.isLoading) {
+    if (!isLoading) {
       return [{ id: regionId, name: regionName }];
     }
 
     return [];
-  }, [optionSet, sessionContext, regionId, regionName]);
+  }, [optionSet, isLoading, regionId, regionName]);
 
   const handleRegionChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const id = parseInt(e.currentTarget.value);
       const name = regions.find((r) => r.id === id)?.name;
 
-      sessionContext.updateSession({ regionId: id, regionName: name });
+      updateSession({ regionId: id, regionName: name });
     },
-    [regions, sessionContext]
+    [regions, updateSession]
   );
 
   return (
-    <div className="filter-panel">
-      <Form>
-        <Form.Row>
-          <Col lg={true} className="mb-2">
-            <InstitutionSelector optionSet={optionSet} />
-          </Col>
-          <Col lg={true} className="mb-2">
-            <MarketShareSelector optionSet={optionSet} />
-          </Col>
-          <Col lg={true} className="mb-2">
-            {isLoading ? (
-              <Skeleton height={SKELETON_HEIGHT} />
-            ) : (
-              <InputGroup size="lg" className="region-selector">
-                <InputGroup.Prepend>
-                  <InputGroup.Text id="basic-addon1">Region</InputGroup.Text>
-                </InputGroup.Prepend>
-                <Form.Control
-                  as="select"
-                  value={regionId}
-                  onChange={handleRegionChange}
-                >
-                  {regions.map((r) => (
-                    <option key={r.id} value={r.id}>
-                      {r.name}
-                    </option>
-                  ))}
-                </Form.Control>
-              </InputGroup>
-            )}
-          </Col>
-        </Form.Row>
-      </Form>
+    <div className="region-selector">
+      {isLoading ? (
+        <Skeleton height={SKELETON_HEIGHT} />
+      ) : (
+        <InputGroup size="lg">
+          <InputGroup.Prepend>
+            <InputGroup.Text id="basic-addon1">Region</InputGroup.Text>
+          </InputGroup.Prepend>
+          <Form.Control
+            as="select"
+            value={regionId}
+            onChange={handleRegionChange}
+          >
+            {regions.map((r) => (
+              <option key={r.id} value={r.id}>
+                {r.name}
+              </option>
+            ))}
+          </Form.Control>
+        </InputGroup>
+      )}
     </div>
   );
 };
 
-export default FilterPanel;
+export default RegionSelector;

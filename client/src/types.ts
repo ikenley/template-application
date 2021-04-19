@@ -10,6 +10,7 @@ export type Session = {
   regionName: string;
   marketShareModel: number;
   customMarketShareOptionMap: { [key: number]: number };
+  compareInstitutionIds: number[];
 };
 
 export type UpdateSessionParams = {
@@ -20,6 +21,7 @@ export type UpdateSessionParams = {
   regionName?: string;
   marketShareModel?: number;
   customMarketShareOptionMap?: { [key: number]: number };
+  compareInstitutionIds?: number[];
 };
 
 export type SessionOptionSet = {
@@ -33,6 +35,7 @@ export type Institution = {
   city: string;
   state: string;
   zip: string;
+  isSelected?: boolean;
 };
 
 export type Region = {

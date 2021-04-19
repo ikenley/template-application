@@ -30,5 +30,6 @@ namespace TemplateApi.Models
         public Dictionary<int, int>? CustomMarketShareOptionMap { get; set; }
 #nullable disable
 
+        public int[] CompareInstitutionIds { get; set; }
     }
 }

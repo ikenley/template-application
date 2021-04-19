@@ -19,6 +19,7 @@ const defaultSession: Session = {
   regionName: "",
   marketShareModel: 0,
   customMarketShareOptionMap: {},
+  compareInstitutionIds: [],
 };
 
 const defaultSessionProps = {

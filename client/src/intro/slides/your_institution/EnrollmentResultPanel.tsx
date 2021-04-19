@@ -32,7 +32,7 @@ const EnrollmentResultPanel = ({ currentStep }: Props) => {
   return (
     <div className="enrollment-result-panel">
       <Card className="mb-3">
-        <InstitutionSelector optionSet={sessionOptionSet} />
+        <InstitutionSelector optionSet={sessionOptionSet} isMultiple={false} />
       </Card>
       <Card>
         <Card.Body>
