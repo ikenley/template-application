@@ -113,26 +113,9 @@ const MarketShareSelector = ({ optionSet }: Props) => {
     <div className="market-share-selector">
       <InputGroup size="lg">
         <InputGroup.Prepend>
-          <InputGroup.Text id="basic-addon1">
-            Market Share Model
-            <OverlayTrigger
-              placement="bottom"
-              overlay={
-                <Tooltip id="market-share-model-button">
-                  Proin dapibus nisl id massa varius, mattis blandit metus
-                  maximus. Duis eu massa vitae ligula ultrices laoreet. Nulla
-                  fermentum elit eget lobortis mollis. Ut metus velit, vulputate
-                  quis tincidunt sed, condimentum ultricies tellus. Etiam
-                  interdum porttitor libero volutpat mattis. Nullam consequat mi
-                  non nisl pellentesque, non suscipit lacus aliquet. Mauris ac
-                  quam lacus.
-                </Tooltip>
-              }
-            >
-              <span className="ml-1">
-                <i className="fas fa-info-circle"></i>
-              </span>
-            </OverlayTrigger>
+          <InputGroup.Text id="mk-share-selector-input-group">
+            <span className="d-inline d-md-none">Scenario</span>
+            <span className="d-none d-md-inline">Market Share Scenario</span>
           </InputGroup.Text>
         </InputGroup.Prepend>
         <Button
@@ -150,7 +133,7 @@ const MarketShareSelector = ({ optionSet }: Props) => {
       </InputGroup>
       <Modal show={show} onHide={handleClose} size="lg" backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>Select Market Share Model</Modal.Title>
+          <Modal.Title>Select Market Share Scenario</Modal.Title>
           <span className="d-lg-none">
             <Button variant="primary" onClick={updateMarketShare}>
               Update
@@ -166,45 +149,50 @@ const MarketShareSelector = ({ optionSet }: Props) => {
               posuere lacus quis ultrices efficitur.
             </Alert>
             <div className="model-selection-toolbar ">
-              <InputGroup size="lg">
-                <InputGroup.Prepend>
-                  <InputGroup.Text id="basic-addon1">
-                    Market Share Model
-                    <OverlayTrigger
-                      placement="bottom"
-                      overlay={
-                        <Tooltip id="market-share-model-button">
-                          Proin dapibus nisl id massa varius, mattis blandit
-                          metus maximus. Duis eu massa vitae ligula ultrices
-                          laoreet. Nulla fermentum elit eget lobortis mollis. Ut
-                          metus velit, vulputate quis tincidunt sed, condimentum
-                          ultricies tellus. Etiam interdum porttitor libero
-                          volutpat mattis. Nullam consequat mi non nisl
-                          pellentesque, non suscipit lacus aliquet. Mauris ac
-                          quam lacus.
-                        </Tooltip>
-                      }
-                    >
-                      <span className="ml-1">
-                        <i className="fas fa-info-circle"></i>
-                      </span>
-                    </OverlayTrigger>
-                  </InputGroup.Text>
-                </InputGroup.Prepend>
-                <Form.Control
-                  className="form-control d-flex justify-content-between"
-                  size="lg"
-                  as="select"
-                  onChange={handleModelSelect}
-                  value={tempModel.id}
-                >
-                  {marketShareOptions.map((opt) => (
-                    <option key={opt.id} value={opt.id}>
-                      {opt.name}
-                    </option>
-                  ))}
-                </Form.Control>
-              </InputGroup>
+              <Form.Group controlId="formBasicEmail">
+                <Form.Label className="d-block d-md-none">
+                  Market Share Scenario
+                </Form.Label>
+                <InputGroup size="lg">
+                  <InputGroup.Prepend className="d-none d-md-inline-block">
+                    <InputGroup.Text id="model-selection-toolbar-input-group-text">
+                      Market Share Scenario
+                      <OverlayTrigger
+                        placement="bottom"
+                        overlay={
+                          <Tooltip id="market-share-model-button">
+                            Proin dapibus nisl id massa varius, mattis blandit
+                            metus maximus. Duis eu massa vitae ligula ultrices
+                            laoreet. Nulla fermentum elit eget lobortis mollis.
+                            Ut metus velit, vulputate quis tincidunt sed,
+                            condimentum ultricies tellus. Etiam interdum
+                            porttitor libero volutpat mattis. Nullam consequat
+                            mi non nisl pellentesque, non suscipit lacus
+                            aliquet. Mauris ac quam lacus.
+                          </Tooltip>
+                        }
+                      >
+                        <span className="ml-1">
+                          <i className="fas fa-info-circle"></i>
+                        </span>
+                      </OverlayTrigger>
+                    </InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <Form.Control
+                    className="form-control d-flex justify-content-between"
+                    size="lg"
+                    as="select"
+                    onChange={handleModelSelect}
+                    value={tempModel.id}
+                  >
+                    {marketShareOptions.map((opt) => (
+                      <option key={opt.id} value={opt.id}>
+                        {opt.name}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </InputGroup>
+              </Form.Group>
             </div>
             <div className="model-body my-3">
               {tempModel.id === MarketShareModel.Custom ? (

@@ -17,17 +17,17 @@ const FilterPanel = ({ showRegions, allowMultiInstitutions }: Props) => {
     <div className="filter-panel">
       <Form>
         <Form.Row>
-          <Col lg={true} className="mb-2">
+          <Col lg={showRegions ? 4 : 6} className="mb-2">
             <InstitutionSelector
               optionSet={optionSet}
               isMultiple={allowMultiInstitutions === true}
             />
           </Col>
-          <Col lg={true} className="mb-2">
+          <Col lg={showRegions ? 5 : 6} className="mb-2">
             <MarketShareSelector optionSet={optionSet} />
           </Col>
           {showRegions ? (
-            <Col lg={true} className="mb-2">
+            <Col lg={3} className="mb-2">
               <RegionSelector optionSet={optionSet} />
             </Col>
           ) : null}

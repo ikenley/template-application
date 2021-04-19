@@ -12,7 +12,9 @@ type Props = {
 const GRID_HEIGHT = 600;
 
 const CompareGrid = ({ result }: Props) => {
-  const { comparisonRows, institutions } = result || emptyComparisonResult;
+  const { comparisonRows, institutions, yearSummary } =
+    result || emptyComparisonResult;
+  const { firstObserved } = yearSummary;
 
   const data = useMemo(() => {
     return comparisonRows.filter((r) => r.hasData);
@@ -27,38 +29,43 @@ const CompareGrid = ({ result }: Props) => {
         width: 50,
         Cell: ({ value }: any) => <div className="text-center">{value}</div>,
       },
-      ...institutions.map((inst, ix) => {
-        return {
-          Header: (
-            <span>
-              {inst.name} ({inst.id})
-            </span>
-          ),
-          id: `dataPoints_${ix}`,
-          headerClassName: "text-center",
-          sortType: "basic",
-          accessor: `dataPoints[${ix}].enrollment`,
-          width: 120,
-          disableSortBy: true,
-          institutionIx: ix,
-          Cell: ({ row, column }: any) => {
-            const { original } = row;
-            const { institutionIx } = column;
-            const dataPoint = original.dataPoints[institutionIx];
-            const { enrollment, percentChangeFromIndex } = dataPoint;
-            return (
-              <div className="text-center">
-                <NumberFormatSpan value={enrollment} format="0,0" /> (
-                <NumberFormatSpan
-                  value={percentChangeFromIndex}
-                  format="0.0%"
-                />
-                )
-              </div>
-            );
-          },
-        };
-      }),
+      {
+        Header: `Enrollment (% Change from Index Year)`,
+        headerClassName: "text-center",
+        id: "enrollment_header",
+        columns: institutions.map((inst, ix) => {
+          return {
+            Header: (
+              <span>
+                {inst.name} ({inst.id})
+              </span>
+            ),
+            id: `dataPoints_${ix}`,
+            headerClassName: "text-center",
+            sortType: "basic",
+            accessor: `dataPoints[${ix}].enrollment`,
+            width: 120,
+            disableSortBy: true,
+            institutionIx: ix,
+            Cell: ({ row, column }: any) => {
+              const { original } = row;
+              const { institutionIx } = column;
+              const dataPoint = original.dataPoints[institutionIx];
+              const { enrollment, percentChangeFromIndex } = dataPoint;
+              return (
+                <div className="text-center">
+                  <NumberFormatSpan value={enrollment} format="0,0" /> (
+                  <NumberFormatSpan
+                    value={percentChangeFromIndex}
+                    format="0.0%"
+                  />
+                  )
+                </div>
+              );
+            },
+          };
+        }),
+      },
     ],
     [institutions]
   );

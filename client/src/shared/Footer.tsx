@@ -4,7 +4,7 @@ import "./footer.css";
 const Footer = () => {
   return (
     <footer className="footer bg-primary">
-      <div className="container-xl container-xxl bg-primary pl-0">
+      <div className="container-xl container-xxl bg-primary pl-md-0">
         <span className="text-white">
           © {new Date().getFullYear()} TODO. All Rights Reserved
         </span>

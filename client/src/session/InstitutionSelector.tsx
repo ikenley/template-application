@@ -194,6 +194,29 @@ const InstitutionSelectionModal = ({ optionSet, isMultiple }: Props) => {
     return cols;
   }, [isMultiple, tempInstIds]);
 
+  const buttonToolBar = (
+    <div>
+      <Button
+        variant={isMultiple ? "outline-dark" : "primary"}
+        onClick={handleClose}
+      >
+        Close
+      </Button>
+      {isMultiple ? (
+        <Button
+          variant="primary"
+          className="ml-2"
+          onClick={handleUpdateClick}
+          disabled={
+            tempInstIds.length === 0 || tempInstIds.length > MAX_MULTI_COUNT
+          }
+        >
+          Update
+        </Button>
+      ) : null}
+    </div>
+  );
+
   return (
     <div className="institution-selector">
       {isLoading ? (
@@ -213,10 +236,20 @@ const InstitutionSelectionModal = ({ optionSet, isMultiple }: Props) => {
         </Button>
       )}
       <Modal show={show} onHide={handleClose} size="lg" backdrop="static">
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title>
             {isMultiple ? "Select Institutions" : "Select Your Institution"}
           </Modal.Title>
+          <span className="ml-auto">
+            {isMultiple ? (
+              buttonToolBar
+            ) : (
+              <button type="button" className="close" onClick={handleClose}>
+                <span aria-hidden="true">×</span>
+                <span className="sr-only">Close</span>
+              </button>
+            )}
+          </span>
         </Modal.Header>
 
         <Modal.Body>
@@ -262,25 +295,7 @@ const InstitutionSelectionModal = ({ optionSet, isMultiple }: Props) => {
           />
         </Modal.Body>
 
-        <Modal.Footer>
-          <Button
-            variant={isMultiple ? "outline-dark" : "primary"}
-            onClick={handleClose}
-          >
-            Close
-          </Button>
-          {isMultiple ? (
-            <Button
-              variant="primary"
-              onClick={handleUpdateClick}
-              disabled={
-                tempInstIds.length === 0 || tempInstIds.length > MAX_MULTI_COUNT
-              }
-            >
-              Update
-            </Button>
-          ) : null}
-        </Modal.Footer>
+        <Modal.Footer>{buttonToolBar}</Modal.Footer>
       </Modal>
     </div>
   );
