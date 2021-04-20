@@ -4,6 +4,7 @@ import { Alert } from "react-bootstrap";
 import Navbar from "../shared/Navbar";
 import { MarketInfoResult } from "../types";
 import { SessionContext } from "../session/SessionContext";
+import FilterPanel from "../session/FilterPanel";
 import MarketInfoChart from "./MarketInfoChart";
 import MarketInfoGrid from "./MarketInfoGrid";
 
@@ -32,6 +33,7 @@ const MarketInfoPage = () => {
         <div className="h1 text-center bg-primary text-white py-3 mb-2">
           Market Analysis
         </div>
+        <FilterPanel />
         <Alert variant="dark">
           <p>
             Quisque scelerisque aliquam consectetur. Cras eget elit quis eros

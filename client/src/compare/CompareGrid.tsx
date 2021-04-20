@@ -12,9 +12,7 @@ type Props = {
 const GRID_HEIGHT = 600;
 
 const CompareGrid = ({ result }: Props) => {
-  const { comparisonRows, institutions, yearSummary } =
-    result || emptyComparisonResult;
-  const { firstObserved } = yearSummary;
+  const { comparisonRows, institutions } = result || emptyComparisonResult;
 
   const data = useMemo(() => {
     return comparisonRows.filter((r) => r.hasData);
