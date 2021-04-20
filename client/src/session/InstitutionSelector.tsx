@@ -195,7 +195,7 @@ const InstitutionSelectionModal = ({ optionSet, isMultiple }: Props) => {
   }, [isMultiple, tempInstIds]);
 
   const buttonToolBar = (
-    <div>
+    <div className="text-right">
       <Button
         variant={isMultiple ? "outline-dark" : "primary"}
         onClick={handleClose}
