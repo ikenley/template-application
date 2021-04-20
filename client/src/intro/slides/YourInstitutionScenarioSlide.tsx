@@ -82,7 +82,7 @@ const YourInstitutionScenarioSlide = () => {
             </Step>
             <Step
               onEnter={handleStepChange}
-              data={MarketShareModel.AllDescrease}
+              data={MarketShareModel.AllDecrease}
             >
               <Card>
                 <CardHeader>

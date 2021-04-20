@@ -117,10 +117,18 @@ const ResultGrid = ({ result }: Props) => {
     []
   );
 
+  const options = useMemo(() => {
+    return {
+      initialState: {
+        sortBy: [{ id: "yearDataPointMap[2018].enrollment", desc: true }],
+      },
+    };
+  }, []);
+
   return (
     <div className="result-grid mt-3">
       {result ? (
-        <DataGrid columns={columns} data={data} />
+        <DataGrid columns={columns} data={data} options={options} />
       ) : (
         <Skeleton height={460} />
       )}

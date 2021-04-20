@@ -63,11 +63,11 @@ namespace TemplateApi.Models
             result.PredictedAverageAnnualGrowth = GetAverageAnnualGrowthRate(result.PredictedPoints);
             result.ProjectedChange = GetProjectedChange(result.ObservedPoints, result.PredictedPoints);
 
-            result.RegionIds = GetRegionIdsOrderedByEnrollmentDescending(allDataPoints);
+            result.YearSummary = await _yearService.GetYearSummaryAsync();
+
+            result.RegionIds = GetRegionIdsOrderedByEnrollmentDescending(allDataPoints, result.YearSummary);
 
             result.RegionRows = await GetRegionRows(allDataPoints, result.RegionIds);
-
-            result.YearSummary = await _yearService.GetYearSummaryAsync();
 
             CalculatePercentChangedFromIndex(result.YearSummary, aggregatedPoints);
 
@@ -350,16 +350,15 @@ order by pe.year
                 rows.Add(row);
             }
 
-
-
             return rows;
         }
 
-        private List<int> GetRegionIdsOrderedByEnrollmentDescending(List<DataPoint> dataPoints)
+        private List<int> GetRegionIdsOrderedByEnrollmentDescending(List<DataPoint> dataPoints, YearSummary yearSummary)
         {
-            // TODO determine if Distinct is order-preserving
-            // The docs suggest it is not, but it appears to generally work
+            int year = yearSummary.LastObserved;
+
             return dataPoints
+                .Where(p => p.Year == year)
                 .OrderByDescending(p => p.Enrollment)
                 .Select(p => p.RegionId)
                 .Distinct()

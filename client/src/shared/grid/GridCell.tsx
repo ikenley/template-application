@@ -13,7 +13,7 @@ type Props = {
 const GridCell = ({
   value,
   format = "0,0",
-  className = "text-right",
+  className = "text-center",
 }: Props) => (
   <div className={classNames("result-grid-cel", className)}>
     {value === null ? null : <NumberFormatSpan value={value} format={format} />}

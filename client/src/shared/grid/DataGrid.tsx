@@ -14,6 +14,7 @@ export { GridCell };
 type DataGridProps = {
   columns: any[];
   data: any[];
+  options?: any; //TableOptions<any>
   maxHeight?: number;
   handleRowClick?: (row: any) => void;
 };
@@ -27,6 +28,7 @@ const ITEM_SIZE = 35;
 function Table({
   columns,
   data,
+  options,
   handleRowClick,
   maxHeight = Number.MAX_VALUE,
   parentWidth,
@@ -58,6 +60,17 @@ function Table({
     []
   );
 
+  const tableOptions = useMemo(() => {
+    const defaults = {
+      columns,
+      data,
+      defaultColumn,
+      filterTypes,
+    };
+
+    return { ...defaults, ...(options || {}) };
+  }, [columns, data, defaultColumn, filterTypes, options]);
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -65,17 +78,7 @@ function Table({
     rows,
     totalColumnsWidth,
     prepareRow,
-  } = useTable<any>(
-    {
-      columns,
-      data,
-      defaultColumn,
-      filterTypes,
-    },
-    useFlexLayout,
-    useFilters,
-    useSortBy
-  );
+  } = useTable<any>(tableOptions, useFlexLayout, useFilters, useSortBy);
 
   const extendHeaderProps = useCallback((column: any) => {
     const defaultProps = column.getHeaderProps(column.getSortByToggleProps());
@@ -191,6 +194,7 @@ function Table({
 const DataGrid = ({
   columns,
   data,
+  options,
   maxHeight,
   handleRowClick,
 }: DataGridProps) => {
@@ -206,6 +210,7 @@ const DataGrid = ({
             <Table
               columns={columns}
               data={data}
+              options={options}
               handleRowClick={handleRowClick}
               maxHeight={maxHeight}
               parentWidth={width - 1}

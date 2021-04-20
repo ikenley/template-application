@@ -24,8 +24,8 @@ const marketShareOptions: MarketShareModelOption[] = [
     img: "https://via.placeholder.com/450x250?text=Placeholder",
   },
   {
-    id: MarketShareModel.AllDescrease,
-    name: "All Descrease",
+    id: MarketShareModel.AllDecrease,
+    name: "All Decrease",
     description:
       " In pellentesque mattis volutpat. Mauris ultricies efficitur tortor, a sodales dolor tristique sit amet. Praesent tincidunt erat ipsum, pulvinar varius.",
     img: "https://via.placeholder.com/450x250?text=Placeholder",
