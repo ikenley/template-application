@@ -15,8 +15,9 @@ const NavbarMain = ({ launchTour }: Props) => {
 
   return (
     <Navbar bg="primary" variant="dark" expand="lg">
-      <Navbar.Brand href="#home">
-        LOGO | Enrollment Scenario Explorer
+      <Navbar.Brand href="/">
+        <span className="d-none d-md-inline">LOGO | </span>Enrollment Scenario
+        Explorer
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
