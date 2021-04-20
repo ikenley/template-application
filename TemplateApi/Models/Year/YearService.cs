@@ -10,7 +10,7 @@ namespace TemplateApi.Models
 {
     public class YearService : IYearService
     {
-        IMemoryCache _cache;
+        private readonly IMemoryCache _cache;
         private readonly DataContext _dataContext;
 
         public YearService(IMemoryCache memoryCache, DataContext dataContext)

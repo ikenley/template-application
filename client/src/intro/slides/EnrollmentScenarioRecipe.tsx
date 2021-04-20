@@ -37,9 +37,7 @@ const EnrollmentScenarioRecipe = () => {
                 </Card.Body>
               </Card>
             </div>
-          </Col>
-          <Col lg={6}>
-            <div className="mx-5">
+            <div className="mx-5 mt-5">
               <Card>
                 <CardHeader>Enrollment Projections for California</CardHeader>
                 <Card.Body className="">
@@ -104,8 +102,6 @@ const EnrollmentScenarioRecipe = () => {
               </Card>
             </div>
           </Col>
-        </Row>
-        <Row className="slide-body justify-content-center">
           <Col lg={6}>
             <div className="mx-5">
               <Card>
@@ -117,9 +113,7 @@ const EnrollmentScenarioRecipe = () => {
                 </Card.Body>
               </Card>
             </div>
-          </Col>
-          <Col lg={6}>
-            <div className="mx-5">
+            <div className="mx-5 mt-5">
               <Card>
                 <CardHeader>Students from California</CardHeader>
                 <Card.Body className="">
