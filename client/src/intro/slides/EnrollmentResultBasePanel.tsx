@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Card } from "react-bootstrap";
 import axios from "axios";
-import { SessionContext } from "../../../session/SessionContext";
-import { StepId } from "./YourInstitutionSlide";
-import { OverviewResult } from "../../../types";
-import OverviewChart from "../../../overview/OverviewChart";
-import useSessionOptionSet from "../../../session/useSessionOptionSet";
-import InstitutionSelector from "../../../session/InstitutionSelector";
+import { SessionContext } from "../../session/SessionContext";
+import { StepId } from "./YourInstitutionBaseSlide";
+import { OverviewResult } from "../../types";
+import OverviewChart from "../../overview/OverviewChart";
+import useSessionOptionSet from "../../session/useSessionOptionSet";
+import InstitutionSelector from "../../session/InstitutionSelector";
 
 type Props = {
   currentStep: StepId;

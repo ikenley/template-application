@@ -33,16 +33,20 @@ namespace TemplateApi.Models
         /// <param name="sessionId"></param>
         /// <param name="institutionId"></param>
         /// <returns></returns>
-        public async Task<OverviewResult> GetOverviewResultAsync(Guid sessionId, int? institutionId = null)
+        public async Task<OverviewResult> GetOverviewResultAsync(
+            Guid sessionId,
+            int? institutionId = null,
+            MarketShareModel? marketShareModel = null
+        )
         {
             var session = await _sessionService.GetSession(sessionId);
             int instId = institutionId ?? session.InstitutionId;
             int regionId = session.RegionId;
-            int marketShareModel = (int)session.MarketShareModel;
-            bool hasCustomMarketShare = session.MarketShareModel == MarketShareModel.Custom;
+            int msModel = (int)(marketShareModel ?? session.MarketShareModel);
+            bool hasCustomMarketShare = msModel == (int)MarketShareModel.Custom;
 
             var observedPoints = await GetObservedPoints(instId, regionId);
-            var predictedPoints = await GetPredictedPoints(instId, regionId, marketShareModel, hasCustomMarketShare, sessionId);
+            var predictedPoints = await GetPredictedPoints(instId, regionId, msModel, hasCustomMarketShare, sessionId);
 
             ImputePredictedForeignDataPoints(observedPoints, predictedPoints);
 

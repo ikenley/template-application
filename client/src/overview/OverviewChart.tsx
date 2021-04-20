@@ -6,7 +6,7 @@ import { PrimaryColor, SecondaryColor } from "../constants";
 import { OverviewResult } from "../types";
 
 type Props = {
-  result: OverviewResult | null;
+  result: OverviewResult | null | undefined;
   hidePredicted?: boolean;
 };
 

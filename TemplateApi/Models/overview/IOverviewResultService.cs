@@ -6,6 +6,10 @@ namespace TemplateApi.Models
 {
     public interface IOverviewResultService
     {
-        Task<OverviewResult> GetOverviewResultAsync(Guid sessionId, int? institutionId = null);
+        Task<OverviewResult> GetOverviewResultAsync(
+            Guid sessionId,
+            int? institutionId = null,
+            MarketShareModel? marketShareModel = null
+        );
     }
 }

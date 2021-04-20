@@ -22,9 +22,9 @@ namespace TemplateApi.Controllers
         }
 
         [HttpGet("{sessionId}")]
-        public async Task<OverviewResult> GetAsync(Guid sessionId)
+        public async Task<OverviewResult> GetAsync(Guid sessionId, MarketShareModel? marketShare)
         {
-            var result = await _resultService.GetOverviewResultAsync(sessionId);
+            var result = await _resultService.GetOverviewResultAsync(sessionId, marketShareModel: marketShare);
             return result;
         }
     }
