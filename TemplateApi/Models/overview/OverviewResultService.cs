@@ -42,34 +42,46 @@ namespace TemplateApi.Models
             var session = await _sessionService.GetSession(sessionId);
             int instId = institutionId ?? session.InstitutionId;
             int regionId = session.RegionId;
-            int msModel = (int)(marketShareModel ?? session.MarketShareModel);
-            bool hasCustomMarketShare = msModel == (int)MarketShareModel.Custom;
+            MarketShareModel msModel = marketShareModel ?? session.MarketShareModel;
+            bool hasCustomMarketShare = msModel == MarketShareModel.Custom;
+
+            var result = new OverviewResult();
+
+            result.YearSummary = await _yearService.GetYearSummaryAsync();
+            int indexYear = result.YearSummary.FirstObserved;
 
             var observedPoints = await GetObservedPoints(instId, regionId);
             var predictedPoints = await GetPredictedPoints(instId, regionId, msModel, hasCustomMarketShare, sessionId);
 
-            ImputePredictedForeignDataPoints(observedPoints, predictedPoints);
+            result.Observed = new OverviewDataset(observedPoints, null, indexYear);
+            result.Predicted = new OverviewDataset(predictedPoints, observedPoints, indexYear);
+
+            // Populate baseline model if Prediction is not alreayd Baseline
+            if (msModel != MarketShareModel.MostRecentYear)
+            {
+                var baselinePoints = await GetPredictedPoints(instId, regionId, MarketShareModel.MostRecentYear, hasCustomMarketShare, sessionId);
+                result.Baseline = new OverviewDataset(baselinePoints, observedPoints, indexYear);
+            }
+
+            //ImputePredictedForeignDataPoints(observedPoints, predictedPoints);
 
             var allDataPoints = observedPoints.Concat(predictedPoints).ToList();
 
-            var result = new OverviewResult();
-            result.ObservedPoints = AggreggateByYear(observedPoints);
-            result.PredictedPoints = AggreggateByYear(predictedPoints);
+            //result.ObservedPoints = AggreggateByYear(observedPoints);
+            //result.PredictedPoints = AggreggateByYear(predictedPoints);
 
-            var aggregatedPoints = result.ObservedPoints.Concat(result.PredictedPoints).ToList();
-            CalculatePercentTotalEnrollment(allDataPoints, aggregatedPoints);
+            //var aggregatedPoints = result.ObservedPoints.Concat(result.PredictedPoints).ToList();
+            //CalculatePercentTotalEnrollment(allDataPoints, aggregatedPoints);
 
-            result.ObservedAverageAnnualGrowth = GetAverageAnnualGrowthRate(result.ObservedPoints);
-            result.PredictedAverageAnnualGrowth = GetAverageAnnualGrowthRate(result.PredictedPoints);
-            result.ProjectedChange = GetProjectedChange(result.ObservedPoints, result.PredictedPoints);
+            //result.ObservedAverageAnnualGrowth = GetAverageAnnualGrowthRate(result.ObservedPoints);
+            //result.PredictedAverageAnnualGrowth = GetAverageAnnualGrowthRate(result.PredictedPoints);
+            //result.ProjectedChange = GetProjectedChange(result.ObservedPoints, result.PredictedPoints);
 
-            result.YearSummary = await _yearService.GetYearSummaryAsync();
-
-            result.RegionIds = GetRegionIdsOrderedByEnrollmentDescending(allDataPoints, result.YearSummary);
+            result.RegionIds = GetRegionIdsOrderedByEnrollmentDescending(observedPoints, result.YearSummary);
 
             result.RegionRows = await GetRegionRows(allDataPoints, result.RegionIds);
 
-            CalculatePercentChangedFromIndex(result.YearSummary, aggregatedPoints);
+            //CalculatePercentChangedFromIndex(result.YearSummary, aggregatedPoints);
 
             return result;
         }
@@ -100,7 +112,7 @@ order by inst.enrollment desc")
         private async Task<List<DataPoint>> GetPredictedPoints(
             int unitId,
             int regionId,
-            int marketShareModel,
+            MarketShareModel marketShareModel,
             bool hasCustomMarketShare,
             Guid sessionId
         )
@@ -112,7 +124,11 @@ order by inst.enrollment desc")
             return await GetPredictedPointsStandard(unitId, regionId, marketShareModel);
         }
 
-        private async Task<List<DataPoint>> GetPredictedPointsStandard(int unitId, int regionId, int marketShareModel)
+        private async Task<List<DataPoint>> GetPredictedPointsStandard(
+            int unitId,
+            int regionId,
+            MarketShareModel marketShareModel
+        )
         {
             // throw new NotImplementedException();
             var dataPoints = await _dataContext.DataPoints
@@ -178,159 +194,13 @@ order by pe.year
             return dataPoints;
         }
 
-        /// <summary>
-        /// Generates predicted foreign values using observed foreign data
-        /// </summary>
-        private void ImputePredictedForeignDataPoints(
-            List<DataPoint> observedPoints,
-            List<DataPoint> predictedPoints
-        )
-        {
-            // Get most recent year of foreign data
-            var latest = observedPoints
-                .Where(p => p.RegionId == Region.Foreign)
-                .OrderByDescending(p => p.Year)
-                .FirstOrDefault();
-
-            if (latest == null)
-            {
-                return;
-            }
-
-            // For each prediction year, add copy of most recent foreign data
-            int[] predictedYears = predictedPoints
-                .Select(p => p.Year)
-                .Distinct()
-                .ToArray();
-            foreach (int year in predictedYears)
-            {
-                predictedPoints.Add(new DataPoint
-                {
-                    Year = year,
-                    RegionId = Region.Foreign,
-                    IsForecast = true,
-                    Enrollment = latest.Enrollment,
-                    MarketShare = latest.MarketShare,
-                    Population = latest.Population
-                });
-            }
-        }
-
-        /// <summary>
-        /// Generates predicted foreign values using observed foreign data
-        /// </summary>
-        private void CalculatePercentTotalEnrollment(
-            List<DataPoint> allDataPoints,
-            IEnumerable<DataPoint> aggregateDataPoints
-        )
-        {
-            // Create map of year => total enrollment
-            var yearTotalEnrollmentMap = aggregateDataPoints.ToDictionary(p => p.Year, t => t.Enrollment);
-
-            // For each DataPoint calculate % of total enrollment for that year
-            foreach (var point in allDataPoints)
-            {
-                if (yearTotalEnrollmentMap.ContainsKey(point.Year))
-                {
-                    double total = yearTotalEnrollmentMap[point.Year] ?? 0;
-                    point.PercentTotalEnrollment = total > 0 ? point.Enrollment / total : null;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Aggreggates points by year
-        /// </summary>
-        /// <param name="points"></param>
-        /// <returns></returns>
-        private DataPoint[] AggreggateByYear(List<DataPoint> points)
-        {
-            return points.GroupBy(p => p.Year)
-                .Select(g => new DataPoint
-                {
-                    Year = g.First().Year,
-                    RegionId = -1,
-                    IsForecast = g.First().IsForecast,
-                    Enrollment = Math.Round(g.Sum(f => f.Enrollment) ?? 0),
-                    MarketShare = null, // TODO?
-                    Population = Math.Round(g.Sum(f => f.Population) ?? 0)
-                })
-                .OrderBy(p => p.Year)
-                .ToArray();
-        }
-
-        /// <summary>
-        /// Calculates average annual growth rate for an ordered set of data points
-        /// As described in: https://www.investopedia.com/terms/a/aagr.asp
-        /// </summary>
-        /// <param name="points"></param>
-        /// <returns></returns>
-        private double? GetAverageAnnualGrowthRate(DataPoint[] points)
-        {
-            if (points.Length == 0)
-            {
-                return null;
-            }
-            else if (points.Length == 1)
-            {
-                return 0;
-            }
-
-            // Calculate growth rate for each year
-            var growthRates = new List<double>();
-            for (int i = 0, j = 1; j < points.Length; j++)
-            {
-                if (points[i].Enrollment > 0)
-                {
-                    double growthRate = CalculatePercentChange(points[i], points[j]) ?? 0;
-                    growthRates.Add(growthRate);
-                }
-            }
-
-            double avgAnnualGrowthRate = growthRates.Sum() / growthRates.Count;
-            return avgAnnualGrowthRate;
-        }
-
-        private double? CalculatePercentChange(DataPoint previous, DataPoint current)
-        {
-            if (previous == null || current == null || previous.Enrollment == 0)
-            {
-                return null;
-            }
-
-            double prev = previous.Enrollment ?? 0;
-            double curr = current.Enrollment ?? 0;
-
-            double growthRate = (curr - prev) / prev;
-            return growthRate;
-        }
-
-        /// <summary>
-        /// Calculates overall percentage change from last observed point to last predicted point
-        /// </summary>
-        private double? GetProjectedChange(DataPoint[] observedPoints, DataPoint[] predictedPoints)
-        {
-            if (observedPoints == null
-                || observedPoints.Length == 0
-                || predictedPoints == null
-                || predictedPoints.Length == 0
-                || observedPoints[0].Enrollment == 0
-            )
-            {
-                return null;
-            }
-
-            double? change = CalculatePercentChange(observedPoints.Last(), predictedPoints.Last());
-            return change;
-        }
-
         private async Task<List<RegionRow>> GetRegionRows(List<DataPoint> dataPoints, List<int> regionIds)
         {
             List<RegionRow> rows = new List<RegionRow>();
 
             // Calculate "All Regions" total
             var totalRow = new RegionRow { RegionId = Region.AllRegionsId, RegionName = Region.AllRegionsName };
-            totalRow.YearDataPointMap = AggreggateByYear(dataPoints).ToDictionary(p => p.Year);
+            totalRow.YearDataPointMap = OverviewDataset.AggreggateByYear(dataPoints).ToDictionary(p => p.Year);
             rows.Add(totalRow);
 
             // Calculate each region
@@ -363,24 +233,6 @@ order by pe.year
                 .Select(p => p.RegionId)
                 .Distinct()
                 .ToList();
-        }
-
-        /// <summary>
-        /// Calculates percent changed from baseline year. Assumes all points are in the same region.
-        /// </summary>
-        private void CalculatePercentChangedFromIndex(YearSummary yearSummary, List<DataPoint> dataPoints)
-        {
-            var baseline = dataPoints.Where(d => d.Year == yearSummary.FirstObserved).FirstOrDefault();
-
-            if (baseline == null || baseline.Enrollment == null || baseline.Enrollment == 0)
-            {
-                return;
-            }
-
-            foreach (var point in dataPoints)
-            {
-                point.PercentChangeFromIndex = CalculatePercentChange(baseline, point);
-            }
         }
     }
 }

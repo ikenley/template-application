@@ -30,5 +30,19 @@ namespace TemplateApi.Models
         /// <summary>Percent changed from index year</summary>
         [NotMapped]
         public double? PercentChangeFromIndex { get; set; }
+
+        public double? CalculatePercentChange(DataPoint next)
+        {
+            if (next == null || next.Enrollment == 0)
+            {
+                return null;
+            }
+
+            double curr = this.Enrollment ?? 0;
+            double nxt = next.Enrollment ?? 0;
+
+            double growthRate = (nxt - curr) / curr;
+            return growthRate;
+        }
     }
 }

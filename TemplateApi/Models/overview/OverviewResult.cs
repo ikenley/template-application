@@ -13,6 +13,12 @@ namespace TemplateApi.Models
         /// <value></value>
         public List<int> RegionIds { get; set; }
 
+        public OverviewDataset Observed { get; set; }
+        public OverviewDataset Predicted { get; set; }
+
+        /// <summary>Baseline forecast</summary>
+        public OverviewDataset Baseline { get; set; }
+
         public DataPoint[] ObservedPoints { get; set; }
         public DataPoint[] PredictedPoints { get; set; }
 

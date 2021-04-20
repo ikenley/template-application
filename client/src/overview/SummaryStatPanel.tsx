@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { Alert } from "react-bootstrap";
 import { OverviewResult, emptyOverviewResult } from "../types";
 import { Row, Col } from "react-bootstrap";
@@ -11,50 +11,14 @@ type Props = {
   result: OverviewResult | null;
 };
 
-type YearRanges = {
-  minObserved: number;
-  maxObserved: number;
-  minPredicted: number;
-  maxPredicted: number;
-};
-
 const SummaryStatPanel = ({ result }: Props) => {
-  const yearRanges: YearRanges | null = useMemo(() => {
-    if (!result) {
-      return null;
-    }
-
-    const { observedPoints, predictedPoints } = result;
-
-    if (
-      !observedPoints ||
-      observedPoints.length === 0 ||
-      !predictedPoints ||
-      predictedPoints.length === 0
-    ) {
-      return null;
-    }
-
-    const minObserved = observedPoints[0].year;
-    const maxObserved = observedPoints[observedPoints.length - 1].year;
-    const minPredicted = predictedPoints[0].year;
-    const maxPredicted = predictedPoints[predictedPoints.length - 1].year;
-
-    return {
-      minObserved,
-      maxObserved,
-      minPredicted,
-      maxPredicted,
-    };
-  }, [result]);
-
+  const { observed, predicted, yearSummary } = result || emptyOverviewResult;
   const {
-    observedAverageAnnualGrowth,
-    predictedAverageAnnualGrowth,
-    projectedChange,
-  } = result || emptyOverviewResult;
-  const { minObserved, maxObserved, minPredicted, maxPredicted } =
-    yearRanges || {};
+    firstObserved,
+    lastObserved,
+    firstPredicted,
+    lastPredicted,
+  } = yearSummary;
 
   return (
     <div className="summary-stat-panel mt-1">
@@ -63,9 +27,9 @@ const SummaryStatPanel = ({ result }: Props) => {
           {result ? (
             <SummaryStatCard
               title={`Average Annual Growth`}
-              subtitle={`${minObserved}-${maxObserved}`}
-              body={`${numeral(observedAverageAnnualGrowth).format("0.00%")}`}
-              isNegative={observedAverageAnnualGrowth < 0}
+              subtitle={`${firstObserved}-${lastObserved}`}
+              body={`${numeral(observed.averageAnnualGrowth).format("0.00%")}`}
+              isNegative={observed.averageAnnualGrowth < 0}
             />
           ) : (
             <SkeletonCard />
@@ -74,9 +38,9 @@ const SummaryStatPanel = ({ result }: Props) => {
         <Col lg={true}>
           {result ? (
             <SummaryStatCard
-              title={`Projected Average Annual Growth ${minPredicted}-${maxPredicted}`}
-              body={`${numeral(predictedAverageAnnualGrowth).format("0.00%")}`}
-              isNegative={predictedAverageAnnualGrowth < 0}
+              title={`Projected Average Annual Growth ${firstPredicted}-${lastPredicted}`}
+              body={`${numeral(predicted.averageAnnualGrowth).format("0.00%")}`}
+              isNegative={predicted.averageAnnualGrowth < 0}
             />
           ) : (
             <SkeletonCard />
@@ -85,9 +49,9 @@ const SummaryStatPanel = ({ result }: Props) => {
         <Col lg={true}>
           {result ? (
             <SummaryStatCard
-              title={`Projected Change ${maxObserved}-${maxPredicted}`}
-              body={`${numeral(projectedChange).format("0.00%")}`}
-              isNegative={projectedChange < 0}
+              title={`Projected Change ${lastObserved}-${lastPredicted}`}
+              body={`${numeral(predicted.projectedChange).format("0.00%")}`}
+              isNegative={predicted.projectedChange < 0}
             />
           ) : (
             <SkeletonCard />
@@ -100,7 +64,7 @@ const SummaryStatPanel = ({ result }: Props) => {
           consequat vulputate. Suspendisse aliquet rhoncus enim, malesuada
           consequat velit fringilla{" "}
           <NumberFormatSpan
-            value={observedAverageAnnualGrowth}
+            value={observed.averageAnnualGrowth}
             format="0.00%"
             isLoading={result === null}
             loadingWidth={20}
@@ -110,7 +74,7 @@ const SummaryStatPanel = ({ result }: Props) => {
           primis in faucibus. Sed elementum tristique augue, ac volutpat mauris
           egestas a. Nulla quis lectus{" "}
           <NumberFormatSpan
-            value={predictedAverageAnnualGrowth}
+            value={predicted.averageAnnualGrowth}
             format="0.00%"
             isLoading={result === null}
             loadingWidth={20}

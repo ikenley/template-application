@@ -65,24 +65,31 @@ const defaultYearSummary: YearSummary = {
 export type OverviewResult = {
   yearSummary: YearSummary;
   regionIds: number[];
-  observedPoints: DataPoint[];
-  predictedPoints: DataPoint[];
   regionRows: RegionRow[];
-  observedAverageAnnualGrowth: number;
-  predictedAverageAnnualGrowth: number;
+  observed: OverviewDataset;
+  predicted: OverviewDataset;
+  baseline?: OverviewDataset;
+};
+
+export type OverviewDataset = {
+  aggregatedDataPoints: DataPoint[];
+  averageAnnualGrowth: number;
   projectedChange: number;
+};
+
+export const defaultOverviewDataset: OverviewDataset = {
+  aggregatedDataPoints: [],
+  averageAnnualGrowth: 0,
+  projectedChange: 0,
 };
 
 // Empty overview result. Useful for conditional rendering
 export const emptyOverviewResult: OverviewResult = {
   yearSummary: defaultYearSummary,
   regionIds: [],
-  observedPoints: [],
-  predictedPoints: [],
   regionRows: [],
-  observedAverageAnnualGrowth: 0,
-  predictedAverageAnnualGrowth: 0,
-  projectedChange: 0,
+  observed: defaultOverviewDataset,
+  predicted: defaultOverviewDataset,
 };
 
 export type RegionRow = {
