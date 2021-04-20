@@ -7,7 +7,7 @@ import Slide from "../Slide";
 import CardHeader from "../CardHeader";
 import numeral from "numeral";
 
-const BirthCliff = () => {
+const FewerFreshmen = () => {
   const { ref, inView } = useInView({
     threshold: 0.5,
   });
@@ -16,15 +16,15 @@ const BirthCliff = () => {
     <div ref={ref}>
       <Slide>
         <div className="slide-title">
-          The Great Recession Created a Birth Cliff
+          Fewer 18-Year Olds Leads to Fewer Freshmen
         </div>
         <Row className="slide-body justify-content-center">
           <Col lg={6}>
             <div className="mx-5">
               <Card>
                 <CardHeader>
-                  Births Declined Dramatically after Great Recession, Never
-                  Recovered
+                  Nationally, College Demand Projected to Decline 11% From 2025
+                  to 2030
                 </CardHeader>
                 <Card.Body>
                   <Line
@@ -54,19 +54,18 @@ const BirthCliff = () => {
           <Col lg={6}>
             <div className="mx-5">
               <Card>
-                <Card.Body className="bg-primary text-white">
-                  <Card.Title className="mb-0">
-                    Birth Cliff will impact colleges and universities after 2025
-                  </Card.Title>
+                <CardHeader>An Uneven Decline Across States </CardHeader>
+                <Card.Body className="d-flex justify-content-center">
+                  <img
+                    className="img-fluid"
+                    src="https://via.placeholder.com/600x350?text=Placeholder Map"
+                    alt="Projected Change in 4-Year Regional HEI-Going Students State
+                  by State, 2025-2035"
+                  />
                 </Card.Body>
-                <Card.Body className="">
-                  <div className="d-flex align-items-center justify-content-center">
-                    <div className="mr-3 h5">Fewer Babies Born Today </div>
-                    <i className="fas fa-arrow-right fa-lg"></i>
-                    <div className="ml-3 h5">
-                      Fewer College-aged students 18 Years Later
-                    </div>
-                  </div>
+                <Card.Body className="text-center">
+                  Projected Change in 4-Year Regional HEI-Going Students State
+                  by State, 2025-2035
                 </Card.Body>
               </Card>
             </div>
@@ -77,69 +76,55 @@ const BirthCliff = () => {
   );
 };
 
-export default BirthCliff;
+export default FewerFreshmen;
 
 const chartDataProps = {
   labels: [
-    1995,
-    1996,
-    1997,
-    1998,
-    1999,
-    2000,
-    2001,
-    2002,
-    2003,
-    2004,
-    2005,
-    2006,
-    2007,
-    2008,
-    2009,
-    2010,
-    2011,
-    2012,
-    2013,
-    2014,
-    2015,
-    2016,
-    2017,
     2018,
     2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026,
+    2027,
+    2028,
+    2029,
+    2030,
+    2031,
+    2032,
+    2033,
+    2034,
+    2035,
   ],
   datasets: [
     {
-      label: "Births",
+      label: "College-Going Students",
       fill: false,
       backgroundColor: PrimaryColor,
       borderColor: PrimaryColor,
       numeralFormat: "0,0",
       data: [
-        3899589,
-        3891494,
-        3880894,
-        3941553,
-        3959417,
-        4058814,
-        4025933,
-        4021726,
-        4089950,
-        4112052,
-        4138349,
-        4265555,
-        4316233,
-        4247694,
-        4130665,
-        3999386,
-        3953590,
-        3952841,
-        3932181,
-        3988076,
-        3978497,
-        3945875,
-        3855500,
-        3791712,
-        3747540,
+        3151435,
+        3197781,
+        3091446,
+        3168371,
+        3161791,
+        3197413,
+        3180466,
+        3294674,
+        3211028,
+        3101291,
+        3031795,
+        2968743,
+        2927282,
+        3084940,
+        3116338,
+        3021684,
+        2999693,
+        2933420,
       ],
     },
   ],

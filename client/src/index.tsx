@@ -4,6 +4,7 @@ import "./index.scss";
 import "@fortawesome/fontawesome-free/css/all.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import "./shared/chartDefaults";
 
 ReactDOM.render(<App />, document.getElementById("root"));
 

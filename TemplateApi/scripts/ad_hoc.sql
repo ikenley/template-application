@@ -162,12 +162,12 @@ order by obs.unitid, obs.region_id, p.option_id
 
 select *
 from public."session" s 
-where s.session_id = '9ca477a2-00f7-4373-a8b7-59cbca0bef70'
+where s.session_id = 'b2edb614-b0e7-40c1-adf1-2e96ba3da5e8'
 limit 100;
 
 select *
 from public.session_custom_market_share_option scmso 
-where scmso.session_id = '9ca477a2-00f7-4373-a8b7-59cbca0bef70'
+where scmso.session_id = 'b2edb614-b0e7-40c1-adf1-2e96ba3da5e8'
 limit 100;
 
 -------------------------------------------------------------------------------

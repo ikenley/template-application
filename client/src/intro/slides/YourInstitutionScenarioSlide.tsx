@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useContext } from "react";
+import React, { useState, useCallback, useContext } from "react";
 import { Row, Col, Card } from "react-bootstrap";
 import { useInView } from "react-intersection-observer";
 import { LastObservedYear, ScenarioAllIncreaseAmount } from "../../constants";
@@ -10,7 +10,7 @@ import MarketShareModel from "../../session/MarketShareModel";
 import { SessionContext } from "../../session/SessionContext";
 
 const YourInstitutionScenarioSlide = () => {
-  const { ref, inView } = useInView({
+  const { ref } = useInView({
     threshold: 0.5,
   });
   const { session } = useContext(SessionContext);
