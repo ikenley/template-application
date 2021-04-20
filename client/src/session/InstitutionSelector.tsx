@@ -117,6 +117,15 @@ const InstitutionSelectionModal = ({ optionSet, isMultiple }: Props) => {
     return sortedRows;
   }, [institutionRows, isMultiple, tempInstIds]);
 
+  const institutionNameDisplay = useMemo(() => {
+    if (isMultiple && selInstitutions && selInstitutions.length > 1) {
+      const first = selInstitutions[0];
+      return `${first.name} and ${selInstitutions.length - 1} others`;
+    }
+
+    return institutionName;
+  }, [institutionName, isMultiple, selInstitutions]);
+
   const handleUpdateClick = useCallback(() => {
     if (tempInstIds.length === 0 || tempInstIds.length > MAX_MULTI_COUNT) {
       return;
@@ -229,7 +238,7 @@ const InstitutionSelectionModal = ({ optionSet, isMultiple }: Props) => {
           block
           onClick={handleOpen}
         >
-          <span>{institutionName}</span>
+          <span>{institutionNameDisplay}</span>
           <span>
             <i className="fas fa-bars"></i>
           </span>
