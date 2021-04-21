@@ -91,6 +91,92 @@ $secondary: #ed8b00;
 $info: #00b1b0;
 $dark: #002746;
 
+$font-family-sans-serif: "Museo Sans Light", sans-serif;
+$headings-font-family: "Museo Slab", Museo Sans Light, serif;
+
+/* Fonts */
+/* Museo Sans Fonts */
+
+@font-face {
+  font-display: swap;
+  font-family: "Museo Sans Light";
+  src: url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_300-webfont.woff2")
+      format("woff2"),
+    url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_300-webfont.woff")
+      format("woff"),
+    url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_300-webfont.ttf")
+      format("truetype"),
+    url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_300-webfont.svg#museo_sans300")
+      format("svg");
+}
+
+// @font-face {
+//   font-display: swap;
+//   font-family: "Museo Sans";
+//   src: url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_500-webfont.woff2")
+//       format("woff2"),
+//     url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_500-webfont.woff")
+//       format("woff"),
+//     url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_500-webfont.ttf")
+//       format("truetype"),
+//     url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_500-webfont.svg#museo_sans500")
+//       format("svg");
+// }
+
+// @font-face {
+//   font-display: swap;
+//   font-family: "Museo Sans Bold";
+//   src: url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_700-webfont.woff2")
+//       format("woff2"),
+//     url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_700-webfont.woff")
+//       format("woff"),
+//     url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_700-webfont.ttf")
+//       format("truetype"),
+//     url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_700-webfont.svg#museo_sans700")
+//       format("svg");
+// }
+
+// /* Museo Slab Fonts */
+
+// @font-face {
+//   font-display: swap;
+//   font-family: "Museo Slab Light";
+//   src: url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-slab/Museo_Slab_300-webfont.woff2")
+//       format("woff2"),
+//     url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-slab/Museo_Slab_300-webfont.woff")
+//       format("woff"),
+//     url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-slab/Museo_Slab_300-webfont.ttf")
+//       format("truetype"),
+//     url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-slab/Museo_Slab_300-webfont.svg#museo_slab300")
+//       format("svg");
+// }
+
+@font-face {
+  font-display: swap;
+  font-family: "Museo Slab";
+  src: url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-slab/Museo_Slab_500-webfont.woff2")
+      format("woff2"),
+    url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-slab/Museo_Slab_500-webfont.woff")
+      format("woff"),
+    url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-slab/Museo_Slab_500-webfont.ttf")
+      format("truetype"),
+    url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-slab/Museo_Slab_500-webfont.svg#museo_slab500")
+      format("svg");
+}
+
+// @font-face {
+//   font-display: swap;
+//   font-family: "Museo Slab Bold";
+//   src: url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-slab/Museo_Slab_700-webfont.woff2")
+//       format("woff2"),
+//     url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-slab/Museo_Slab_700-webfont.woff")
+//       format("woff"),
+//     url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-slab/Museo_Slab_700-webfont.ttf")
+//       format("truetype"),
+//     url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-slab/Museo_Slab_700-webfont.svg#museo_slab700")
+//       format("svg");
+// }
+
 /*
 alert info e0f1f1
 */

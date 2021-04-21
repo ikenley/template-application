@@ -1,10 +1,7 @@
-.intro-page {
-  font-size: 1.15rem;
-}
-
 .intro-page .container-fluid {
-  /* background-color: #004b87; */
   background-color: inherit;
+  font-size: 1.15rem;
+  line-height: 1.5;
 }
 
 .slide {
@@ -22,7 +19,7 @@
 .slide-title {
   color: white;
   margin: 60px;
-  font-family: "Museo Slab", serif;
+  font-family: "Museo Slab", Museo Sans Light, serif;
   font-weight: 500;
   font-size: 45px;
   text-align: center;
