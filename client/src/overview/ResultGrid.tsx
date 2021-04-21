@@ -4,6 +4,7 @@ import { take } from "lodash";
 import { Column } from "react-table";
 import DataGrid from "../shared/grid/DataGrid";
 import { OverviewResult, emptyOverviewResult } from "../types";
+import { PrimaryColor, SecondaryColor, TertiaryColor } from "../constants";
 import GridCell from "../shared/grid/GridCell";
 import OverlayTooltip from "../shared/OverlayTooltip";
 
@@ -12,6 +13,7 @@ type Props = {
 };
 
 const MAX_ROW_COUNT = 11;
+const DEFAULT_COL_WIDTH = 75;
 
 const ResultGrid = ({ result }: Props) => {
   const { regionRows } = result || emptyOverviewResult;
@@ -26,24 +28,28 @@ const ResultGrid = ({ result }: Props) => {
         Header: <span className="font-weight-bold">Region</span>,
         headerClassName: "text-center",
         accessor: "regionName",
-        width: 250,
+        width: 140,
       },
       {
         Header: () => (
-          <div className="text-center font-weight-bold">Reported Data</div>
+          <div style={{ backgroundColor: PrimaryColor, color: "#fff" }}>
+            Reported Data
+          </div>
         ),
         id: "reported_data",
         columns: [
           {
             Header: "2012",
-            accessor: "yearDataPointMap[2012].enrollment",
+            accessor: "yearObservedMap[2012].enrollment",
             sortType: "basic",
+            width: DEFAULT_COL_WIDTH,
             Cell: ({ value }) => <GridCell value={value} />,
           },
           {
             Header: "2018",
-            accessor: "yearDataPointMap[2018].enrollment",
+            accessor: "yearObservedMap[2018].enrollment",
             sortType: "basic",
+            width: DEFAULT_COL_WIDTH,
             Cell: ({ value }) => <GridCell value={value} />,
           },
           {
@@ -54,13 +60,16 @@ const ResultGrid = ({ result }: Props) => {
                 tooltip="Mauris a varius justo. Integer id scelerisque erat. Nam eget
               dolor efficitur, iaculis sapien a, imperdiet elit."
               >
-                <span className="abbr">% of Enrollment</span>
+                <span className="abbr">
+                  % of <span className="d-none d-md-inline">Enrollment</span>
+                  <span className="d-inline d-md-none">Enroll-ment</span>
+                </span>
               </OverlayTooltip>
             ),
-            accessor: "yearDataPointMap[2018].percentTotalEnrollment",
+            accessor: "yearObservedMap[2018].percentTotalEnrollment",
             sortType: "basic",
+            width: DEFAULT_COL_WIDTH,
             Cell: ({ value }) => <GridCell value={value} format="0.00%" />,
-            width: 150,
           },
           {
             Header: (
@@ -72,43 +81,85 @@ const ResultGrid = ({ result }: Props) => {
                 <span className="abbr">2018 Market Share</span>
               </OverlayTooltip>
             ),
-            accessor: "yearDataPointMap[2018].marketShare",
+            accessor: "yearObservedMap[2018].marketShare",
             sortType: "basic",
+            width: DEFAULT_COL_WIDTH,
             Cell: ({ value }) => <GridCell value={value} format="0.0000%" />,
-            width: 150,
           },
         ],
       },
       {
         Header: () => (
-          <div className="text-center font-weight-bold">
-            Estimated Enrollment Demand
+          <div style={{ backgroundColor: SecondaryColor, color: "#fff" }}>
+            Baseline Enrollment Forecast
           </div>
         ),
-        id: "estimated_enrollment_demand",
+        id: "baseline",
         columns: [
           {
             Header: "2022",
-            accessor: "yearDataPointMap[2022].enrollment",
+            accessor: "yearBaselineMap[2022].enrollment",
             sortType: "basic",
+            width: DEFAULT_COL_WIDTH,
             Cell: ({ value }) => <GridCell value={value} />,
           },
           {
             Header: "2025",
-            accessor: "yearDataPointMap[2025].enrollment",
+            accessor: "yearBaselineMap[2025].enrollment",
             sortType: "basic",
+            width: DEFAULT_COL_WIDTH,
             Cell: ({ value }) => <GridCell value={value} />,
           },
           {
             Header: "2030",
-            accessor: "yearDataPointMap[2030].enrollment",
+            accessor: "yearBaselineMap[2030].enrollment",
             sortType: "basic",
+            width: DEFAULT_COL_WIDTH,
             Cell: ({ value }) => <GridCell value={value} />,
           },
           {
             Header: "2035",
-            accessor: "yearDataPointMap[2035].enrollment",
+            accessor: "yearBaselineMap[2035].enrollment",
             sortType: "basic",
+            width: DEFAULT_COL_WIDTH,
+            Cell: ({ value }) => <GridCell value={value} />,
+          },
+        ],
+      },
+      {
+        Header: () => (
+          <div style={{ backgroundColor: TertiaryColor, color: "#fff" }}>
+            Alternative Forecast Scenario
+          </div>
+        ),
+        id: "alternative",
+        columns: [
+          {
+            Header: "2022",
+            accessor: "yearPredictedMap[2022].enrollment",
+            sortType: "basic",
+            width: DEFAULT_COL_WIDTH,
+            Cell: ({ value }) => <GridCell value={value} />,
+          },
+          {
+            Header: "2025",
+            accessor: "yearPredictedMap[2025].enrollment",
+            sortType: "basic",
+            width: DEFAULT_COL_WIDTH,
+            Cell: ({ value }) => <GridCell value={value} />,
+          },
+          {
+            Header: "2030",
+            accessor: "yearPredictedMap[2030].enrollment",
+            sortType: "basic",
+            width: DEFAULT_COL_WIDTH,
+            Cell: ({ value }) => <GridCell value={value} />,
+          },
+          {
+            Header: "2035",
+            accessor: "yearPredictedMap[2035].enrollment",
+            sortType: "basic",
+            width: DEFAULT_COL_WIDTH,
             Cell: ({ value }) => <GridCell value={value} />,
           },
         ],
@@ -120,7 +171,7 @@ const ResultGrid = ({ result }: Props) => {
   const options = useMemo(() => {
     return {
       initialState: {
-        sortBy: [{ id: "yearDataPointMap[2018].enrollment", desc: true }],
+        sortBy: [{ id: "yearObservedMap[2018].enrollment", desc: true }],
       },
     };
   }, []);

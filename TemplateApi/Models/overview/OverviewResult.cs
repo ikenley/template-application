@@ -29,6 +29,17 @@ namespace TemplateApi.Models
     {
         public int RegionId { get; set; }
         public string RegionName { get; set; }
-        public Dictionary<int, DataPoint> YearDataPointMap { get; set; }
+        public Dictionary<int, DataPoint> YearObservedMap { get; set; }
+        public Dictionary<int, DataPoint> YearBaselineMap { get; set; }
+        public Dictionary<int, DataPoint> YearPredictedMap { get; set; }
+
+        public RegionRow(int regionId, string regionName)
+        {
+            RegionId = regionId;
+            RegionName = regionName;
+            YearObservedMap = new Dictionary<int, DataPoint>();
+            YearBaselineMap = new Dictionary<int, DataPoint>();
+            YearPredictedMap = new Dictionary<int, DataPoint>();
+        }
     }
 }

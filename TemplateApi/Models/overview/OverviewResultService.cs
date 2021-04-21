@@ -56,7 +56,7 @@ namespace TemplateApi.Models
             result.Observed = new OverviewDataset(observedPoints, null, indexYear);
             result.Predicted = new OverviewDataset(predictedPoints, observedPoints, indexYear);
 
-            // Use predicted dataset if baseline scenario selected
+            // If MostRecentYear scenario selected, just copy Prediction into Baseline
             if (msModel == MarketShareModel.MostRecentYear)
             {
                 result.Baseline = result.Predicted;
@@ -68,25 +68,7 @@ namespace TemplateApi.Models
                 result.HasPredicted = true;
             }
 
-            //ImputePredictedForeignDataPoints(observedPoints, predictedPoints);
-
-            var allDataPoints = observedPoints.Concat(predictedPoints).ToList();
-
-            //result.ObservedPoints = AggreggateByYear(observedPoints);
-            //result.PredictedPoints = AggreggateByYear(predictedPoints);
-
-            //var aggregatedPoints = result.ObservedPoints.Concat(result.PredictedPoints).ToList();
-            //CalculatePercentTotalEnrollment(allDataPoints, aggregatedPoints);
-
-            //result.ObservedAverageAnnualGrowth = GetAverageAnnualGrowthRate(result.ObservedPoints);
-            //result.PredictedAverageAnnualGrowth = GetAverageAnnualGrowthRate(result.PredictedPoints);
-            //result.ProjectedChange = GetProjectedChange(result.ObservedPoints, result.PredictedPoints);
-
-            result.RegionIds = GetRegionIdsOrderedByEnrollmentDescending(observedPoints, result.YearSummary);
-
-            result.RegionRows = await GetRegionRows(allDataPoints, result.RegionIds);
-
-            //CalculatePercentChangedFromIndex(result.YearSummary, aggregatedPoints);
+            result.RegionRows = await GetRegionRows(result.YearSummary, result.Observed, result.Baseline, result.Predicted, result.HasPredicted);
 
             return result;
         }
@@ -199,28 +181,46 @@ order by pe.year
             return dataPoints;
         }
 
-        private async Task<List<RegionRow>> GetRegionRows(List<DataPoint> dataPoints, List<int> regionIds)
+        private async Task<List<RegionRow>> GetRegionRows(
+            YearSummary yearSummary,
+            OverviewDataset observed,
+            OverviewDataset baseline,
+            OverviewDataset predicted,
+            bool hasPredicted
+        )
         {
             List<RegionRow> rows = new List<RegionRow>();
 
             // Calculate "All Regions" total
-            var totalRow = new RegionRow { RegionId = Region.AllRegionsId, RegionName = Region.AllRegionsName };
-            totalRow.YearDataPointMap = OverviewDataset.AggreggateByYear(dataPoints).ToDictionary(p => p.Year);
+            var totalRow = new RegionRow(Region.AllRegionsId, Region.AllRegionsName);
+            totalRow.YearObservedMap = observed.AggregatedDataPoints.ToDictionary(p => p.Year);
+            totalRow.YearBaselineMap = baseline.AggregatedDataPoints.ToDictionary(p => p.Year);
+            if (hasPredicted)
+            {
+                totalRow.YearPredictedMap = predicted.AggregatedDataPoints.ToDictionary(p => p.Year);
+            }
             rows.Add(totalRow);
 
             // Calculate each region
-            ILookup<int, DataPoint> regionDataPointMap = dataPoints.ToLookup(p => p.RegionId);
+            ILookup<int, DataPoint> regionObservedMap = observed.DataPoints.ToLookup(p => p.RegionId);
+            ILookup<int, DataPoint> regionBaselineMap = baseline.DataPoints.ToLookup(p => p.RegionId);
+            ILookup<int, DataPoint> regionPredictedMap = hasPredicted ? predicted.DataPoints.ToLookup(p => p.RegionId) : null;
 
+            var regionIds = GetRegionIdsOrderedByEnrollmentDescending(observed.DataPoints, yearSummary);
             var regions = await _regionService.GetRegionsAsync();
             var regionMap = regions.ToDictionary(r => r.Id);
 
             foreach (int regionId in regionIds)
             {
-                var row = new RegionRow { RegionId = regionId };
+                string regionName = regionMap.ContainsKey(regionId) ? regionMap[regionId].Name : null;
+                var row = new RegionRow(regionId, regionName);
 
-                row.RegionName = regionMap.ContainsKey(regionId) ? regionMap[regionId].Name : null;
-
-                row.YearDataPointMap = regionDataPointMap[regionId].ToDictionary(p => p.Year);
+                row.YearObservedMap = regionObservedMap[regionId].ToDictionary(p => p.Year);
+                row.YearBaselineMap = regionBaselineMap[regionId].ToDictionary(p => p.Year);
+                if (hasPredicted)
+                {
+                    row.YearPredictedMap = regionPredictedMap[regionId].ToDictionary(p => p.Year);
+                }
 
                 rows.Add(row);
             }

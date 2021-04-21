@@ -98,7 +98,9 @@ export const emptyOverviewResult: OverviewResult = {
 export type RegionRow = {
   regionId: number;
   regionName: string | null;
-  yearDataPointMap: { [key: number]: DataPoint };
+  yearObservedMap: { [key: number]: DataPoint };
+  yearBaselineMap: { [key: number]: DataPoint };
+  yearPredictedMap: { [key: number]: DataPoint };
 };
 
 export type DataPoint = {

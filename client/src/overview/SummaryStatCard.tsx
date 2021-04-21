@@ -16,7 +16,7 @@ const SummaryStatCard = ({ title, subtitle, body }: Props) => {
             <span className="text-primary">{title}</span>
             <span className=""> {subtitle}</span>
           </Card.Title>
-          <Card.Text>{body}</Card.Text>
+          {body}
         </Card.Body>
       </Card>
     </div>

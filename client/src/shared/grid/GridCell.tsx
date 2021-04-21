@@ -1,6 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import NumberFormatSpan from "../NumberFormatSpan";
+import { isNil } from "lodash";
 
 // Grid cell which renders a formatted number
 
@@ -16,7 +17,7 @@ const GridCell = ({
   className = "text-center",
 }: Props) => (
   <div className={classNames("result-grid-cel", className)}>
-    {value === null ? null : <NumberFormatSpan value={value} format={format} />}
+    {isNil(value) ? "-" : <NumberFormatSpan value={value} format={format} />}
   </div>
 );
 
