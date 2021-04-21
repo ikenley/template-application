@@ -5,7 +5,7 @@ import Slide from "../Slide";
 import CardHeader from "../CardHeader";
 
 const GrowthStrategy = () => {
-  const { ref, inView } = useInView({
+  const { ref } = useInView({
     threshold: 0.5,
   });
 

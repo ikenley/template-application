@@ -56,11 +56,12 @@ const FewerFreshmen = () => {
               <Card>
                 <CardHeader>An Uneven Decline Across States </CardHeader>
                 <Card.Body className="d-flex justify-content-center">
-                  <img
+                  <Card.Img
                     className="img-fluid"
-                    src="https://via.placeholder.com/600x350?text=Placeholder Map"
+                    src="/img/regional_demographics.png"
                     alt="Projected Change in 4-Year Regional HEI-Going Students State
                   by State, 2025-2035"
+                    style={{ maxWidth: "450px" }}
                   />
                 </Card.Body>
                 <Card.Body className="text-center">
