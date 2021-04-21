@@ -7,10 +7,11 @@ import { OverviewResult } from "../types";
 
 type Props = {
   result: OverviewResult | null | undefined;
+  hideBaseline?: Boolean;
   hidePredicted?: boolean;
 };
 
-const OverviewChart = ({ result, hidePredicted }: Props) => {
+const OverviewChart = ({ result, hideBaseline, hidePredicted }: Props) => {
   // Converts DataPoint[] array into chart.js data format
   const mapPointsToDataset = (years: number[], dataPoints: any[]) => {
     const yearMap = keyBy<any>(dataPoints, "year");
@@ -58,7 +59,7 @@ const OverviewChart = ({ result, hidePredicted }: Props) => {
       ],
     };
 
-    if (!hidePredicted) {
+    if (!hideBaseline) {
       chartData.datasets.push({
         label: "Baseline Estimate",
         fill: false,
@@ -66,20 +67,20 @@ const OverviewChart = ({ result, hidePredicted }: Props) => {
         borderColor: SecondaryColor,
         data: baselineData,
       });
+    }
 
-      if (hasPredicted) {
-        chartData.datasets.push({
-          label: "Alternate Forecast Scenario",
-          fill: false,
-          backgroundColor: TertiaryColor,
-          borderColor: TertiaryColor,
-          data: predictedData,
-        });
-      }
+    if (!hidePredicted && hasPredicted) {
+      chartData.datasets.push({
+        label: "Alternate Forecast Scenario",
+        fill: false,
+        backgroundColor: TertiaryColor,
+        borderColor: TertiaryColor,
+        data: predictedData,
+      });
     }
 
     return chartData;
-  }, [result, hidePredicted]);
+  }, [result, hideBaseline, hidePredicted]);
 
   return (
     <div className="overview-chart mt-1">

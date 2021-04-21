@@ -38,7 +38,8 @@ const EnrollmentResultPanel = ({ currentStep }: Props) => {
         <Card.Body>
           <OverviewChart
             result={result}
-            hidePredicted={currentStep === StepId.Observed}
+            hideBaseline={currentStep === StepId.Observed}
+            hidePredicted
           />
         </Card.Body>
       </Card>
