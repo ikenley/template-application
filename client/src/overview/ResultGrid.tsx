@@ -33,10 +33,16 @@ const ResultGrid = ({ result }: Props) => {
       {
         Header: () => (
           <div style={{ backgroundColor: PrimaryColor, color: "#fff" }}>
-            Reported Data
+            <OverlayTooltip
+              id="result-grid-reported"
+              placement="top"
+              tooltip="Vivamus non pellentesque mi. Ut ultrices nisl massa, a luctus enim vulputate porta."
+            >
+              <span className="abbr">Reported Data</span>
+            </OverlayTooltip>
           </div>
         ),
-        id: "reported_data",
+        id: "reported",
         columns: [
           {
             Header: "2012",
@@ -91,7 +97,13 @@ const ResultGrid = ({ result }: Props) => {
       {
         Header: () => (
           <div style={{ backgroundColor: SecondaryColor, color: "#fff" }}>
-            Baseline Enrollment Forecast
+            <OverlayTooltip
+              id="result-grid-baseline"
+              placement="top"
+              tooltip="Proin nunc eros, aliquet sit amet viverra a, elementum vel diam. Nulla non metus in leo posuere suscipit."
+            >
+              <span className="abbr">Baseline Enrollment Forecast</span>
+            </OverlayTooltip>
           </div>
         ),
         id: "baseline",
@@ -129,7 +141,13 @@ const ResultGrid = ({ result }: Props) => {
       {
         Header: () => (
           <div style={{ backgroundColor: TertiaryColor, color: "#fff" }}>
-            Alternative Forecast Scenario
+            <OverlayTooltip
+              id="result-grid-alternative"
+              placement="top"
+              tooltip="Suspendisse id lorem sed urna commodo tempus eu ac nulla. Sed vel faucibus elit, vitae vestibulum ante."
+            >
+              <span className="abbr">Alternative Forecast Scenario</span>
+            </OverlayTooltip>
           </div>
         ),
         id: "alternative",
