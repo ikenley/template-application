@@ -115,7 +115,7 @@ const MarketShareSelector = ({ optionSet }: Props) => {
         <InputGroup.Prepend>
           <InputGroup.Text id="mk-share-selector-input-group">
             <span className="d-inline d-md-none">Scenario</span>
-            <span className="d-none d-md-inline">Market Share Scenario</span>
+            <span className="d-none d-md-inline">Forecast Scenario</span>
           </InputGroup.Text>
         </InputGroup.Prepend>
         <Button
@@ -133,7 +133,7 @@ const MarketShareSelector = ({ optionSet }: Props) => {
       </InputGroup>
       <Modal show={show} onHide={handleClose} size="lg" backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>Select Market Share Scenario</Modal.Title>
+          <Modal.Title>Select Forecast Scenario</Modal.Title>
           <span className="d-lg-none">
             <Button variant="primary" onClick={updateMarketShare}>
               Update
@@ -151,12 +151,12 @@ const MarketShareSelector = ({ optionSet }: Props) => {
             <div className="model-selection-toolbar ">
               <Form.Group controlId="formBasicEmail">
                 <Form.Label className="d-block d-md-none">
-                  Market Share Scenario
+                  Forecast Scenario
                 </Form.Label>
                 <InputGroup size="lg">
                   <InputGroup.Prepend className="d-none d-md-inline-block">
                     <InputGroup.Text id="model-selection-toolbar-input-group-text">
-                      Market Share Scenario
+                      Forecast Scenario
                       <OverlayTrigger
                         placement="bottom"
                         overlay={

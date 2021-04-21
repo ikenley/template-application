@@ -19,14 +19,10 @@ namespace TemplateApi.Models
         /// <summary>Baseline forecast</summary>
         public OverviewDataset Baseline { get; set; }
 
-        public DataPoint[] ObservedPoints { get; set; }
-        public DataPoint[] PredictedPoints { get; set; }
+        public bool HasPredicted { get; set; }
 
         public List<RegionRow> RegionRows { get; set; }
 
-        public double? ObservedAverageAnnualGrowth { get; set; }
-        public double? PredictedAverageAnnualGrowth { get; set; }
-        public double? ProjectedChange { get; set; }
     }
 
     public class RegionRow

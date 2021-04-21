@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import Skeleton from "react-loading-skeleton";
 import { Line } from "react-chartjs-2";
 import { keyBy } from "lodash";
-import { PrimaryColor, SecondaryColor } from "../constants";
+import { PrimaryColor, SecondaryColor, TertiaryColor } from "../constants";
 import { OverviewResult } from "../types";
 
 type Props = {
@@ -28,12 +28,16 @@ const OverviewChart = ({ result, hidePredicted }: Props) => {
       return null;
     }
 
-    const { yearSummary, observed, predicted } = result;
+    const { yearSummary, observed, predicted, baseline, hasPredicted } = result;
     const { years } = yearSummary;
 
     const observedData = mapPointsToDataset(
       years,
       observed.aggregatedDataPoints
+    );
+    const baselineData = mapPointsToDataset(
+      years,
+      baseline?.aggregatedDataPoints || []
     );
     const predictedData = mapPointsToDataset(
       years,
@@ -56,12 +60,22 @@ const OverviewChart = ({ result, hidePredicted }: Props) => {
 
     if (!hidePredicted) {
       chartData.datasets.push({
-        label: "Projected",
+        label: "Baseline Estimate",
         fill: false,
         backgroundColor: SecondaryColor,
         borderColor: SecondaryColor,
-        data: predictedData,
+        data: baselineData,
       });
+
+      if (hasPredicted) {
+        chartData.datasets.push({
+          label: "Alternate Forecast Scenario",
+          fill: false,
+          backgroundColor: TertiaryColor,
+          borderColor: TertiaryColor,
+          data: predictedData,
+        });
+      }
     }
 
     return chartData;

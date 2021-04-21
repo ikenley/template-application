@@ -54,8 +54,8 @@ namespace TemplateApi.Models
             for (int i = 0; i < institutionIds.Length; i++)
             {
                 var overview = await _overviewResultService.GetOverviewResultAsync(sessionId, institutionIds[i]);
-                yearDataPointMaps[i] = overview.ObservedPoints
-                    .Concat(overview.PredictedPoints)
+                yearDataPointMaps[i] = overview.Observed.AggregatedDataPoints
+                    .Concat(overview.Predicted.AggregatedDataPoints)
                     .ToDictionary(d => d.Year);
             }
 

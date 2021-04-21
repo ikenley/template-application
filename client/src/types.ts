@@ -67,8 +67,9 @@ export type OverviewResult = {
   regionIds: number[];
   regionRows: RegionRow[];
   observed: OverviewDataset;
+  baseline: OverviewDataset;
   predicted: OverviewDataset;
-  baseline?: OverviewDataset;
+  hasPredicted: boolean;
 };
 
 export type OverviewDataset = {
@@ -89,7 +90,9 @@ export const emptyOverviewResult: OverviewResult = {
   regionIds: [],
   regionRows: [],
   observed: defaultOverviewDataset,
+  baseline: defaultOverviewDataset,
   predicted: defaultOverviewDataset,
+  hasPredicted: false,
 };
 
 export type RegionRow = {

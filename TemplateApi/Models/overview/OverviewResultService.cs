@@ -56,11 +56,16 @@ namespace TemplateApi.Models
             result.Observed = new OverviewDataset(observedPoints, null, indexYear);
             result.Predicted = new OverviewDataset(predictedPoints, observedPoints, indexYear);
 
-            // Populate baseline model if Prediction is not alreayd Baseline
-            if (msModel != MarketShareModel.MostRecentYear)
+            // Use predicted dataset if baseline scenario selected
+            if (msModel == MarketShareModel.MostRecentYear)
+            {
+                result.Baseline = result.Predicted;
+            }
+            else
             {
                 var baselinePoints = await GetPredictedPoints(instId, regionId, MarketShareModel.MostRecentYear, hasCustomMarketShare, sessionId);
                 result.Baseline = new OverviewDataset(baselinePoints, observedPoints, indexYear);
+                result.HasPredicted = true;
             }
 
             //ImputePredictedForeignDataPoints(observedPoints, predictedPoints);
