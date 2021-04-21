@@ -9,13 +9,13 @@ const CoverSlide = () => {
 
   return (
     <div ref={ref}>
-      <Slide isFullScreen>
-        <div className="">
+      <Slide isFullScreen bgImg="/img/intro-cover.jpg" className="cover">
+        <div>
           <div className="slide-title mb-3 mt-0">
             Enrollment Scenario Explorer
           </div>
           <div className="text-center">
-            <div className="lead text-white mb-5">
+            <div className="lead text-white mb-5 backdrop-filter">
               Integer ut hendrerit nunc. Maecenas sollicitudin pharetra arcu
               quis vulputate. Sed ac ex mauris. Nullam ullamcorper commodo nunc
               sed dignissim. Praesent pellentesque, ante at posuere semper.
