@@ -40,7 +40,7 @@ const YourInstitutionScenarioSlide = () => {
               <Card>
                 <CardHeader>
                   If {institutionName}{" "}
-                  <span className="text-secondary">
+                  <span className="text-secondary font-weight-bold">
                     Increases Share by {ScenarioAllIncreaseAmount}%
                   </span>
                 </CardHeader>
@@ -62,7 +62,7 @@ const YourInstitutionScenarioSlide = () => {
               <Card>
                 <CardHeader>
                   If {institutionName}'s Market Share{" "}
-                  <span className="text-secondary">
+                  <span className="text-secondary font-weight-bold">
                     Continues to Grow/Shrink
                   </span>
                 </CardHeader>
@@ -87,7 +87,7 @@ const YourInstitutionScenarioSlide = () => {
               <Card>
                 <CardHeader>
                   If {institutionName}{" "}
-                  <span className="text-secondary">
+                  <span className="text-secondary font-weight-bold">
                     Decreases Market Share by {ScenarioAllIncreaseAmount}%
                   </span>
                 </CardHeader>
@@ -111,7 +111,7 @@ const YourInstitutionScenarioSlide = () => {
               <Card>
                 <CardHeader>
                   First-Time Fall Enrollments at {institutionName}:
-                  <div className="text-secondary">
+                  <div className="text-secondary font-weight-bold">
                     {currentStep === MarketShareModel.AllIncrease
                       ? "If Market Share Increases Across All States"
                       : currentStep === MarketShareModel.Trend

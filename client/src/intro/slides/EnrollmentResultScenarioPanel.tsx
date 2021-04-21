@@ -45,10 +45,10 @@ const EnrollmentResultScenarioPanel = ({ scenario }: Props) => {
 
   return (
     <div className="enrollment-result-panel">
-      <Card className="mb-3">
+      <Card className="bg-white mb-3">
         <InstitutionSelector optionSet={sessionOptionSet} isMultiple={false} />
       </Card>
-      <Card>
+      <Card className="bg-white">
         <Card.Body>
           <OverviewChart result={result[scenario]} />
         </Card.Body>

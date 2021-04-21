@@ -21,12 +21,12 @@ const BirthCliff = () => {
         <Row className="slide-body justify-content-center">
           <Col lg={6}>
             <div className="mx-md-5">
-              <Card>
+              <Card bg="primary" text="white">
                 <CardHeader>
                   Births Declined Dramatically after Great Recession, Never
                   Recovered
                 </CardHeader>
-                <Card.Body>
+                <Card.Body className="bg-white">
                   <Line
                     redraw={inView}
                     options={{

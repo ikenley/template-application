@@ -31,11 +31,11 @@ const EnrollmentResultPanel = ({ currentStep }: Props) => {
 
   return (
     <div className="enrollment-result-panel">
-      <Card className="mb-3">
+      <Card className="bg-white mb-3">
         <InstitutionSelector optionSet={sessionOptionSet} isMultiple={false} />
       </Card>
       <Card>
-        <Card.Body>
+        <Card.Body className="bg-white">
           <OverviewChart
             result={result}
             hideBaseline={currentStep === StepId.Observed}

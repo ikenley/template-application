@@ -40,7 +40,7 @@ const EnrollmentScenarioRecipe = () => {
             <div className="mx-md-5 mt-5">
               <Card>
                 <CardHeader>Enrollment Projections for California</CardHeader>
-                <Card.Body className="">
+                <Card.Body className="bg-white">
                   <Row className="align-items-center">
                     <Col sm={3}>
                       <span className="text-primary">
@@ -116,7 +116,7 @@ const EnrollmentScenarioRecipe = () => {
             <div className="mx-md-5 mt-5">
               <Card>
                 <CardHeader>Students from California</CardHeader>
-                <Card.Body className="">
+                <Card.Body className="bg-white text-body">
                   <Row className="align-items-center">
                     <Col sm={3}>
                       <span className="text-primary">

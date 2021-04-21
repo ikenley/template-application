@@ -30,7 +30,7 @@ const GrowthStrategy = () => {
                   {" "}
                   Recruit in States with More Favorable Demographics
                 </CardHeader>
-                <div className="text-center">
+                <div className="text-center bg-white">
                   <Card.Img
                     src="/img/change_region.png"
                     style={{ maxWidth: "500px" }}
@@ -51,7 +51,7 @@ const GrowthStrategy = () => {
                   Take a Larger Share of A Shrinking Pool of Students (Market
                   Share)
                 </CardHeader>
-                <div className="text-center">
+                <div className="text-center bg-white">
                   <Card.Img
                     src="/img/change_market_share.png"
                     style={{ maxWidth: "500px" }}

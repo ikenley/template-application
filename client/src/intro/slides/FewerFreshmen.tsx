@@ -26,7 +26,7 @@ const FewerFreshmen = () => {
                   Nationally, College Demand Projected to Decline 11% From 2025
                   to 2030
                 </CardHeader>
-                <Card.Body>
+                <Card.Body className="bg-white">
                   <Line
                     redraw={inView}
                     options={{
