@@ -16,7 +16,7 @@ const SummaryStatScenarioComp = ({ result, propName }: Props) => {
     <div className="summary-stat-scenario-comp">
       <Row noGutters>
         <Col>
-          <div className="h6">Baseline Scenario</div>
+          <div className="h6">Baseline Estimate</div>
         </Col>
         <Col>
           <div className="h6">Alternate Scenario</div>
