@@ -30,7 +30,7 @@ const ComparePage = () => {
         role="main"
         className="container-xl container-xxl min-height-100-vh pt-3 pb-5"
       >
-        <div className="h1 text-center bg-primary text-white py-3 mb-2">
+        <div className="h1 text-center bg-dark text-white py-3 mb-2">
           Compare Institutions
         </div>
         <FilterPanel allowMultiInstitutions />

@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import Skeleton from "react-loading-skeleton";
 import { Line } from "react-chartjs-2";
 import { keyBy } from "lodash";
-import { PrimaryColor, SecondaryColor, TertiaryColor } from "../constants";
+import { Primary } from "../shared/Colors";
 import { OverviewResult } from "../types";
 
 type Props = {
@@ -51,8 +51,8 @@ const OverviewChart = ({ result, hideBaseline, hidePredicted }: Props) => {
         {
           label: "Reported",
           fill: false,
-          backgroundColor: PrimaryColor,
-          borderColor: PrimaryColor,
+          backgroundColor: Primary.Blue,
+          borderColor: Primary.Blue,
           spanGaps: 1,
           data: observedData,
         },
@@ -63,8 +63,8 @@ const OverviewChart = ({ result, hideBaseline, hidePredicted }: Props) => {
       chartData.datasets.push({
         label: "Baseline Estimate",
         fill: false,
-        backgroundColor: SecondaryColor,
-        borderColor: SecondaryColor,
+        backgroundColor: Primary.Orange,
+        borderColor: Primary.Orange,
         data: baselineData,
       });
     }
@@ -73,8 +73,8 @@ const OverviewChart = ({ result, hideBaseline, hidePredicted }: Props) => {
       chartData.datasets.push({
         label: "Alternate Forecast Scenario",
         fill: false,
-        backgroundColor: TertiaryColor,
-        borderColor: TertiaryColor,
+        backgroundColor: Primary.Teal,
+        borderColor: Primary.Teal,
         data: predictedData,
       });
     }

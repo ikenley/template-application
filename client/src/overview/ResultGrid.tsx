@@ -4,7 +4,7 @@ import { take } from "lodash";
 import { Column } from "react-table";
 import DataGrid from "../shared/grid/DataGrid";
 import { OverviewResult, emptyOverviewResult } from "../types";
-import { PrimaryColor, SecondaryColor, TertiaryColor } from "../constants";
+import { Primary } from "../shared/Colors";
 import GridCell from "../shared/grid/GridCell";
 import OverlayTooltip from "../shared/OverlayTooltip";
 
@@ -32,7 +32,7 @@ const ResultGrid = ({ result }: Props) => {
       },
       {
         Header: () => (
-          <div style={{ backgroundColor: PrimaryColor, color: "#fff" }}>
+          <div style={{ backgroundColor: Primary.Blue, color: "#fff" }}>
             <OverlayTooltip
               id="result-grid-reported"
               placement="top"
@@ -96,7 +96,7 @@ const ResultGrid = ({ result }: Props) => {
       },
       {
         Header: () => (
-          <div style={{ backgroundColor: SecondaryColor, color: "#fff" }}>
+          <div style={{ backgroundColor: Primary.Orange, color: "#fff" }}>
             <OverlayTooltip
               id="result-grid-baseline"
               placement="top"
@@ -140,7 +140,7 @@ const ResultGrid = ({ result }: Props) => {
       },
       {
         Header: () => (
-          <div style={{ backgroundColor: TertiaryColor, color: "#fff" }}>
+          <div style={{ backgroundColor: Primary.Teal, color: "#fff" }}>
             <OverlayTooltip
               id="result-grid-alternative"
               placement="top"

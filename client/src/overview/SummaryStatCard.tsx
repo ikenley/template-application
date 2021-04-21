@@ -13,7 +13,7 @@ const SummaryStatCard = ({ title, subtitle, body }: Props) => {
       <Card className="h-100">
         <Card.Body className="text-center">
           <Card.Title>
-            <span className="text-primary">{title}</span>
+            <span className="">{title}</span>
             <span className=""> {subtitle}</span>
           </Card.Title>
           {body}

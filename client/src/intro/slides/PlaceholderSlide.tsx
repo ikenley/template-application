@@ -3,6 +3,7 @@ import { Row, Col, Card } from "react-bootstrap";
 import { useInView } from "react-intersection-observer";
 import Slide from "../Slide";
 import PlaceholderChart from "../PlaceholderChart";
+import CardHeader from "../CardHeader";
 
 const PlaceholderSlide = ({ title }: any) => {
   const { ref, inView } = useInView({
@@ -31,11 +32,9 @@ const PlaceholderSlide = ({ title }: any) => {
           <Col lg={6}>
             <div className="mx-5">
               <Card>
-                <Card.Body className="bg-primary text-white">
-                  <Card.Title className="mb-0">
-                    Birth Cliff will impact colleges and universities after 2025
-                  </Card.Title>
-                </Card.Body>
+                <CardHeader>
+                  Birth Cliff will impact colleges and universities after 2025
+                </CardHeader>
                 <Card.Body className="">
                   <div className="d-flex align-items-center justify-content-center">
                     <div className="mr-3 h5">Fewer Babies Born Today </div>

@@ -27,7 +27,6 @@ const NumberFormatSpan = ({
         <span
           className={classNames(
             {
-              "text-primary": !isNegative,
               "text-danger": isNegative,
             },
             className

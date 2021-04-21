@@ -11,7 +11,7 @@ const PlaceholderChart = ({ redraw, title }: any) => {
   return (
     <div className="placeholder-chart">
       <Card>
-        <Card.Body className="bg-primary text-white">
+        <Card.Body className="bg-dark text-white">
           <Card.Title className="mb-0">{title}</Card.Title>
         </Card.Body>
         <Card.Body>

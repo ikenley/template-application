@@ -14,7 +14,7 @@ const NavbarMain = ({ launchTour }: Props) => {
   }, [launchTour]);
 
   return (
-    <Navbar bg="primary" variant="dark" expand="lg">
+    <Navbar bg="dark" variant="dark" expand="lg">
       <Navbar.Brand href="/">
         <span className="d-none d-md-inline">LOGO | </span>Enrollment Scenario
         Explorer

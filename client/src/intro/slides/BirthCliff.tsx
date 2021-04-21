@@ -2,10 +2,10 @@ import React from "react";
 import { Row, Col, Card } from "react-bootstrap";
 import { useInView } from "react-intersection-observer";
 import { Line } from "react-chartjs-2";
-import { PrimaryColor } from "../../constants";
+import numeral from "numeral";
+import { PrimaryBlue } from "../../shared/Colors";
 import Slide from "../Slide";
 import CardHeader from "../CardHeader";
-import numeral from "numeral";
 
 const BirthCliff = () => {
   const { ref, inView } = useInView({
@@ -54,11 +54,9 @@ const BirthCliff = () => {
           <Col lg={6}>
             <div className="mx-5">
               <Card>
-                <Card.Body className="bg-primary text-white">
-                  <Card.Title className="mb-0">
-                    Birth Cliff will impact colleges and universities after 2025
-                  </Card.Title>
-                </Card.Body>
+                <CardHeader>
+                  Birth Cliff will impact colleges and universities after 2025
+                </CardHeader>
                 <Card.Body className="">
                   <div className="d-flex align-items-center justify-content-center">
                     <div className="mr-3 h5">Fewer Babies Born Today </div>
@@ -111,8 +109,8 @@ const chartDataProps = {
     {
       label: "Births",
       fill: false,
-      backgroundColor: PrimaryColor,
-      borderColor: PrimaryColor,
+      backgroundColor: PrimaryBlue,
+      borderColor: PrimaryBlue,
       numeralFormat: "0,0",
       data: [
         3899589,

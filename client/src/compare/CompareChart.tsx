@@ -3,18 +3,11 @@ import Skeleton from "react-loading-skeleton";
 import { Line } from "react-chartjs-2";
 import numeral from "numeral";
 import { ComparisonResult } from "../types";
-import {
-  PrimaryColor,
-  SecondaryColor,
-  TertiaryColor,
-  QuaternaryColor,
-} from "../constants";
+import { primaryPalette as colors } from "../shared/Colors";
 
 type Props = {
   result: ComparisonResult | null;
 };
-
-const colors = [PrimaryColor, SecondaryColor, TertiaryColor, QuaternaryColor];
 
 const CompareChart = ({ result }: Props) => {
   const chartDataProps = useMemo(() => {

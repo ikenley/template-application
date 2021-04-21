@@ -9,7 +9,7 @@ type Props = {
 
 const CardHeader = ({ children }: Props) => {
   return (
-    <Card.Body className="card-header bg-primary text-white">
+    <Card.Body className="card-header bg-dark text-white">
       <Card.Title className="mb-0">{children}</Card.Title>
     </Card.Body>
   );

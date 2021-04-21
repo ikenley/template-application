@@ -2,7 +2,7 @@ import React from "react";
 import { Row, Col, Card } from "react-bootstrap";
 import { useInView } from "react-intersection-observer";
 import { Line } from "react-chartjs-2";
-import { PrimaryColor } from "../../constants";
+import { PrimaryBlue } from "../../shared/Colors";
 import Slide from "../Slide";
 import CardHeader from "../CardHeader";
 import numeral from "numeral";
@@ -103,8 +103,8 @@ const chartDataProps = {
     {
       label: "College-Going Students",
       fill: false,
-      backgroundColor: PrimaryColor,
-      borderColor: PrimaryColor,
+      backgroundColor: PrimaryBlue,
+      borderColor: PrimaryBlue,
       numeralFormat: "0,0",
       data: [
         3151435,
