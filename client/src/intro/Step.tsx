@@ -30,7 +30,7 @@ const Step = ({ data, onEnter, onLeave, children }: Props) => {
   }, [inView, data, hasEntered, setHasEntered, onEnter, onLeave]);
 
   return (
-    <div ref={ref} className="step mx-5 h-100-vh">
+    <div ref={ref} className="step mx-md-5 h-100-vh">
       {children}
     </div>
   );

@@ -67,7 +67,7 @@ const YourInstitutionSlide = () => {
             </Step>
           </Col>
           <Col>
-            <div className="sticky-top mr-5" style={{ top: "50px" }}>
+            <div className="sticky-top mr-md-5" style={{ top: "50px" }}>
               <EnrollmentResultPanel currentStep={currentStep} />
             </div>
           </Col>

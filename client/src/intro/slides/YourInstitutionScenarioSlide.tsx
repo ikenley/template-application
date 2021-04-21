@@ -107,7 +107,7 @@ const YourInstitutionScenarioSlide = () => {
             </Step>
           </Col>
           <Col>
-            <div className="sticky-top mr-5" style={{ top: "50px" }}>
+            <div className="sticky-top mr-md-5" style={{ top: "50px" }}>
               <Card>
                 <CardHeader>
                   First-Time Fall Enrollments at {institutionName}:

@@ -20,7 +20,7 @@ const BirthCliff = () => {
         </div>
         <Row className="slide-body justify-content-center">
           <Col lg={6}>
-            <div className="mx-5">
+            <div className="mx-md-5">
               <Card>
                 <CardHeader>
                   Births Declined Dramatically after Great Recession, Never
@@ -52,7 +52,7 @@ const BirthCliff = () => {
             </div>
           </Col>
           <Col lg={6}>
-            <div className="mx-5">
+            <div className="mx-md-5">
               <Card>
                 <CardHeader>
                   Birth Cliff will impact colleges and universities after 2025

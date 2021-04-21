@@ -18,11 +18,17 @@
 
 .slide-title {
   color: white;
-  margin: 60px;
+  margin: 60px 0;
   font-family: "Museo Slab", Museo Sans Light, serif;
   font-weight: 500;
   font-size: 45px;
   text-align: center;
+}
+
+@media (min-width: 576px) {
+  .slide-title {
+    margin: 60px;
+  }
 }
 
 .slide.cover .slide-title {
@@ -42,6 +48,7 @@
 
 .slide .card {
   border: none;
+  margin-bottom: 2rem;
 }
 
 .wrapper {

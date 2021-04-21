@@ -22,7 +22,7 @@ const PlaceholderSlide = ({ title }: any) => {
         <div className="slide-title">{title}</div>
         <Row className="slide-body justify-content-center">
           <Col lg={6}>
-            <div className="mx-5">
+            <div className="mx-md-5">
               <PlaceholderChart
                 redraw={inView}
                 title="In orci neque, efficitur sed venenatis ac, consequat non orci."
@@ -30,7 +30,7 @@ const PlaceholderSlide = ({ title }: any) => {
             </div>
           </Col>
           <Col lg={6}>
-            <div className="mx-5">
+            <div className="mx-md-5">
               <Card>
                 <CardHeader>
                   Birth Cliff will impact colleges and universities after 2025

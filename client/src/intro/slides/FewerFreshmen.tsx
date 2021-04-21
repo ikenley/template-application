@@ -20,7 +20,7 @@ const FewerFreshmen = () => {
         </div>
         <Row className="slide-body justify-content-center">
           <Col lg={6}>
-            <div className="mx-5">
+            <div className="mx-md-5">
               <Card>
                 <CardHeader>
                   Nationally, College Demand Projected to Decline 11% From 2025
@@ -52,7 +52,7 @@ const FewerFreshmen = () => {
             </div>
           </Col>
           <Col lg={6}>
-            <div className="mx-5">
+            <div className="mx-md-5">
               <Card>
                 <CardHeader>An Uneven Decline Across States </CardHeader>
                 <Card.Body className="d-flex justify-content-center">
