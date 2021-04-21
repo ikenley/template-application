@@ -1,9 +1,7 @@
 import React from "react";
 import { Alert } from "react-bootstrap";
-import classNames from "classnames";
 import { OverviewResult, emptyOverviewResult } from "../types";
 import { Row, Col } from "react-bootstrap";
-import numeral from "numeral";
 import SummaryStatCard from "./SummaryStatCard";
 import SummaryStatScenarioComp from "./SummaryStatScenarioComp";
 import SkeletonCard from "./SkeletonCard";
