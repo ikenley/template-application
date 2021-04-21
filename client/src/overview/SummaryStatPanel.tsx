@@ -1,9 +1,11 @@
 import React from "react";
 import { Alert } from "react-bootstrap";
+import classNames from "classnames";
 import { OverviewResult, emptyOverviewResult } from "../types";
 import { Row, Col } from "react-bootstrap";
 import numeral from "numeral";
 import SummaryStatCard from "./SummaryStatCard";
+import SummaryStatScenarioComp from "./SummaryStatScenarioComp";
 import SkeletonCard from "./SkeletonCard";
 import NumberFormatSpan from "../shared/NumberFormatSpan";
 
@@ -28,8 +30,13 @@ const SummaryStatPanel = ({ result }: Props) => {
             <SummaryStatCard
               title={`Average Annual Growth`}
               subtitle={`${firstObserved}-${lastObserved}`}
-              body={`${numeral(observed.averageAnnualGrowth).format("0.00%")}`}
-              isNegative={observed.averageAnnualGrowth < 0}
+              body={
+                <NumberFormatSpan
+                  value={observed.averageAnnualGrowth}
+                  format="0.00%"
+                  className="h3"
+                />
+              }
             />
           ) : (
             <SkeletonCard />
@@ -39,8 +46,12 @@ const SummaryStatPanel = ({ result }: Props) => {
           {result ? (
             <SummaryStatCard
               title={`Projected Average Annual Growth ${firstPredicted}-${lastPredicted}`}
-              body={`${numeral(predicted.averageAnnualGrowth).format("0.00%")}`}
-              isNegative={predicted.averageAnnualGrowth < 0}
+              body={
+                <SummaryStatScenarioComp
+                  result={result}
+                  propName="averageAnnualGrowth"
+                />
+              }
             />
           ) : (
             <SkeletonCard />
@@ -50,8 +61,12 @@ const SummaryStatPanel = ({ result }: Props) => {
           {result ? (
             <SummaryStatCard
               title={`Projected Change ${lastObserved}-${lastPredicted}`}
-              body={`${numeral(predicted.projectedChange).format("0.00%")}`}
-              isNegative={predicted.projectedChange < 0}
+              body={
+                <SummaryStatScenarioComp
+                  result={result}
+                  propName="projectedChange"
+                />
+              }
             />
           ) : (
             <SkeletonCard />
