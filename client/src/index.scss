@@ -47,6 +47,10 @@ html {
   background-position: center center;
 }
 
+.bg-standard {
+  background-color: #00355f !important;
+}
+
 .backdrop-filter {
   backdrop-filter: saturate(180%) blur(5px);
 }

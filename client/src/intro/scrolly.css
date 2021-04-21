@@ -70,3 +70,11 @@
   width: 25%;
   height: 25vh;
 }
+
+.intro-page .card-badge {
+  /* position: absolute;
+  top: -15px;
+  left: -15px; */
+  font-size: 1.5rem;
+  padding: 1em;
+}
