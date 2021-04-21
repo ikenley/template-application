@@ -10,7 +10,7 @@ const CoverSlide = () => {
   return (
     <div ref={ref}>
       <Slide isFullScreen bgImg="/img/intro-cover.jpg" className="cover">
-        <div>
+        <div className="container-fluid">
           <div className="slide-title mb-3 mt-0">
             Enrollment Scenario Explorer
           </div>

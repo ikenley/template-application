@@ -14,7 +14,7 @@ const IntroPage = () => {
   return (
     <div className="intro-page">
       <Navbar />
-      <main role="main">
+      <main role="main" className="">
         <CoverSlide />
         <BirthCliff />
         <FewerFreshmen />
