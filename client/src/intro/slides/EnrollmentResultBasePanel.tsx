@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Card } from "react-bootstrap";
 import axios from "axios";
+import { useInView } from "react-intersection-observer";
 import { SessionContext } from "../../session/SessionContext";
 import { StepId } from "./YourInstitutionBaseSlide";
 import { OverviewResult } from "../../types";
@@ -13,24 +14,27 @@ type Props = {
 };
 
 const EnrollmentResultPanel = ({ currentStep }: Props) => {
+  const { ref, inView } = useInView({ triggerOnce: true });
   const sessionOptionSet = useSessionOptionSet();
   const [result, setResult] = useState<OverviewResult | null>(null);
-  const sessionContext = useContext(SessionContext);
+  const { session } = useContext(SessionContext);
 
   useEffect(() => {
-    if (sessionContext.session.isLoading) {
-      setResult(null);
+    const { isLoading, sessionId } = session;
+
+    if (!inView || isLoading) {
       return;
     }
 
-    const sessionId = sessionContext.session.sessionId;
+    setResult(null);
+
     axios.get(`/api/Overview/${sessionId}`).then((res) => {
       setResult(res.data);
     });
-  }, [sessionContext]);
+  }, [inView, session]);
 
   return (
-    <div className="enrollment-result-panel">
+    <div ref={ref} className="enrollment-result-panel">
       <Card className="bg-white mb-3">
         <InstitutionSelector optionSet={sessionOptionSet} isMultiple={false} />
       </Card>

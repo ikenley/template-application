@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { Card } from "react-bootstrap";
 import axios from "axios";
+import { useInView } from "react-intersection-observer";
 import { SessionContext } from "../../session/SessionContext";
-import { OverviewResult } from "../../types";
+import { OverviewResult, emptyOverviewResult } from "../../types";
 import MarketShareModel from "../../session/MarketShareModel";
 import OverviewChart from "../../overview/OverviewChart";
 import useSessionOptionSet from "../../session/useSessionOptionSet";
@@ -17,40 +18,43 @@ type ScenarioResultMap = {
 };
 
 const EnrollmentResultScenarioPanel = ({ scenario }: Props) => {
+  const { ref, inView } = useInView({ triggerOnce: true });
   const sessionOptionSet = useSessionOptionSet();
-  const [result, setResult] = useState<ScenarioResultMap>({});
+  const resultCache = useRef<ScenarioResultMap>({});
+  const [result, setResult] = useState<OverviewResult | null>(null);
   const { session } = useContext(SessionContext);
 
   useEffect(() => {
     const { isLoading, sessionId } = session;
 
-    if (isLoading) {
-      setResult({});
+    if (!inView || isLoading) {
+      resultCache.current = {};
       return;
     }
 
     // If result already exists for scenario, skip
-    if (result[scenario]) {
+    if (resultCache.current[scenario]) {
+      const nextResult = resultCache.current[scenario];
+      setResult(nextResult || emptyOverviewResult);
       return;
     }
 
     axios
       .get(`/api/Overview/${sessionId}?marketShare=${scenario}`)
       .then((res) => {
-        setResult((r) => {
-          return { ...r, [scenario]: res.data };
-        });
+        resultCache.current[scenario] = res.data;
+        setResult(res.data);
       });
   }, [session, scenario, result, setResult]);
 
   return (
-    <div className="enrollment-result-panel">
+    <div ref={ref} className="enrollment-result-panel">
       <Card className="bg-white mb-3">
         <InstitutionSelector optionSet={sessionOptionSet} isMultiple={false} />
       </Card>
       <Card className="bg-white">
         <Card.Body>
-          <OverviewChart result={result[scenario]} />
+          <OverviewChart result={result} />
         </Card.Body>
       </Card>
     </div>
