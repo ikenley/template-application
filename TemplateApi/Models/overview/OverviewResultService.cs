@@ -68,7 +68,14 @@ namespace TemplateApi.Models
                 result.HasPredicted = true;
             }
 
-            result.RegionRows = await GetRegionRows(result.YearSummary, result.Observed, result.Baseline, result.Predicted, result.HasPredicted);
+            result.RegionRows = await GetRegionRows(
+                result.YearSummary,
+                result.Observed,
+                result.Baseline,
+                result.Predicted,
+                result.HasPredicted,
+                regionId
+            );
 
             return result;
         }
@@ -186,20 +193,24 @@ order by pe.year
             OverviewDataset observed,
             OverviewDataset baseline,
             OverviewDataset predicted,
-            bool hasPredicted
+            bool hasPredicted,
+            int selectedRegionId
         )
         {
             List<RegionRow> rows = new List<RegionRow>();
 
-            // Calculate "All Regions" total
-            var totalRow = new RegionRow(Region.AllRegionsId, Region.AllRegionsName);
-            totalRow.YearObservedMap = observed.AggregatedDataPoints.ToDictionary(p => p.Year);
-            totalRow.YearBaselineMap = baseline.AggregatedDataPoints.ToDictionary(p => p.Year);
-            if (hasPredicted)
+            // If "All Regions" is selected, calculate "All Regions" total
+            if (selectedRegionId == Region.AllRegionsId)
             {
-                totalRow.YearPredictedMap = predicted.AggregatedDataPoints.ToDictionary(p => p.Year);
+                var totalRow = new RegionRow(Region.AllRegionsId, Region.AllRegionsName);
+                totalRow.YearObservedMap = observed.AggregatedDataPoints.ToDictionary(p => p.Year);
+                totalRow.YearBaselineMap = baseline.AggregatedDataPoints.ToDictionary(p => p.Year);
+                if (hasPredicted)
+                {
+                    totalRow.YearPredictedMap = predicted.AggregatedDataPoints.ToDictionary(p => p.Year);
+                }
+                rows.Add(totalRow);
             }
-            rows.Add(totalRow);
 
             // Calculate each region
             ILookup<int, DataPoint> regionObservedMap = observed.DataPoints.ToLookup(p => p.RegionId);
