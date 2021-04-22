@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import Skeleton from "react-loading-skeleton";
 import { Line } from "react-chartjs-2";
+import { createScales } from "../shared/chart/chartExtensions";
 import { keyBy } from "lodash";
 import { Primary } from "../shared/Colors";
 import { OverviewResult } from "../types";
@@ -51,9 +52,10 @@ const OverviewChart = ({ result, hideBaseline, hidePredicted }: Props) => {
         {
           label: "Reported",
           fill: false,
+          spanGaps: 1,
+          numeralFormat: "0,0",
           backgroundColor: Primary.Blue,
           borderColor: Primary.Blue,
-          spanGaps: 1,
           data: observedData,
         },
       ],
@@ -63,6 +65,7 @@ const OverviewChart = ({ result, hideBaseline, hidePredicted }: Props) => {
       chartData.datasets.push({
         label: "Baseline Estimate",
         fill: false,
+        numeralFormat: "0,0",
         backgroundColor: Primary.Orange,
         borderColor: Primary.Orange,
         data: baselineData,
@@ -73,6 +76,7 @@ const OverviewChart = ({ result, hideBaseline, hidePredicted }: Props) => {
       chartData.datasets.push({
         label: "Alternate Forecast Scenario",
         fill: false,
+        numeralFormat: "0,0",
         backgroundColor: Primary.Teal,
         borderColor: Primary.Teal,
         data: predictedData,
@@ -82,22 +86,23 @@ const OverviewChart = ({ result, hideBaseline, hidePredicted }: Props) => {
     return chartData;
   }, [result, hideBaseline, hidePredicted]);
 
+  const options = useMemo(() => {
+    return {
+      maintainAspectRatio: false,
+      legend: { position: "bottom" },
+      title: {
+        display: true,
+        fontSize: 16,
+        text: "First-time Fall Enrollments",
+      },
+      scales: createScales("0,0"),
+    };
+  }, []);
+
   return (
     <div className="overview-chart mt-1">
       {result ? (
-        <Line
-          options={{
-            maintainAspectRatio: false,
-            legend: { position: "bottom" },
-            title: {
-              display: true,
-              fontSize: 16,
-              text: "First-time Fall Enrollments",
-            },
-          }}
-          height={300}
-          data={chartDataProps}
-        />
+        <Line options={options} height={300} data={chartDataProps} />
       ) : (
         <Skeleton height={300} />
       )}
