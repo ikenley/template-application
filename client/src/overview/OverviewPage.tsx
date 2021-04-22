@@ -14,23 +14,23 @@ import tourSteps from "./tourSteps";
 const OverviewPage = () => {
   const [showTour, setShowTour] = useState<boolean>(false);
   const [result, setResult] = useState<OverviewResult | null>(null);
-  const sessionContext = useContext(SessionContext);
+  const { session } = useContext(SessionContext);
 
   const launchTour = useCallback(() => {
     setShowTour(true);
   }, [setShowTour]);
 
   useEffect(() => {
-    if (sessionContext.session.isLoading) {
+    if (session.isLoading) {
       setResult(null);
       return;
     }
 
-    const sessionId = sessionContext.session.sessionId;
+    const sessionId = session.sessionId;
     axios.get(`/api/Overview/${sessionId}`).then((res) => {
       setResult(res.data);
     });
-  }, [sessionContext]);
+  }, [session]);
 
   return (
     <div className="overview-page">

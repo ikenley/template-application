@@ -24,7 +24,7 @@ const FilterPanel = ({ showRegions, allowMultiInstitutions }: Props) => {
             />
           </Col>
           <Col lg={showRegions ? 5 : 6} className="mb-2">
-            <MarketShareSelector optionSet={optionSet} />
+            <MarketShareSelector />
           </Col>
           {showRegions ? (
             <Col lg={3} className="mb-2">

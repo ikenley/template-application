@@ -9,24 +9,16 @@ import {
   Form,
 } from "react-bootstrap";
 import Skeleton from "react-loading-skeleton";
-import {
-  SessionOptionSet,
-  MarketShareModelOption,
-  UpdateSessionParams,
-} from "../types";
-import { SessionContext } from "./SessionContext";
+import { MarketShareModelOption, UpdateSessionParams } from "../types";
+import SessionContext from "./SessionContext";
 import marketShareOptions from "./MarketShareOptions";
 import MarketShareResultPanel from "./MarketShareResultPanel";
 import CustomMarketSharePanel from "./CustomMarketSharePanel";
 import MarketShareModel from "./MarketShareModel";
 
-type Props = {
-  optionSet: SessionOptionSet | null;
-};
-
 const SKELETON_HEIGHT = 45;
 
-const MarketShareSelector = ({ optionSet }: Props) => {
+const MarketShareSelector = () => {
   // sessionModel is derived from Session
   const [sessionModel, setSessionModel] = useState<MarketShareModelOption>(
     marketShareOptions[0]

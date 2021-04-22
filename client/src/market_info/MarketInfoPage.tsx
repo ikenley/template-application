@@ -9,8 +9,8 @@ import MarketInfoChart from "./MarketInfoChart";
 import MarketInfoGrid from "./MarketInfoGrid";
 
 const MarketInfoPage = () => {
-  const sessionContext = useContext(SessionContext);
-  const { isLoading, institutionId } = sessionContext.session;
+  const { session } = useContext(SessionContext);
+  const { isLoading, institutionId } = session;
   const [result, setResult] = useState<MarketInfoResult | null>(null);
 
   useEffect(() => {

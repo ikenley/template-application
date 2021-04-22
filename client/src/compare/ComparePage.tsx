@@ -9,8 +9,8 @@ import CompareChart from "./CompareChart";
 import CompareGrid from "./CompareGrid";
 
 const ComparePage = () => {
-  const sessionContext = useContext(SessionContext);
-  const { isLoading, sessionId } = sessionContext.session;
+  const { session } = useContext(SessionContext);
+  const { isLoading, sessionId } = session;
   const [result, setResult] = useState<ComparisonResult | null>(null);
 
   useEffect(() => {
