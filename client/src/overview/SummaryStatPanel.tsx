@@ -43,7 +43,8 @@ const SummaryStatPanel = ({ result }: Props) => {
         <Col lg={true}>
           {result ? (
             <SummaryStatCard
-              title={`Projected Average Annual Growth ${firstPredicted}-${lastPredicted}`}
+              title="Projected Average Annual Growth"
+              subtitle={`${firstPredicted}-${lastPredicted}`}
               body={
                 <SummaryStatScenarioComp
                   result={result}
@@ -58,7 +59,8 @@ const SummaryStatPanel = ({ result }: Props) => {
         <Col lg={true}>
           {result ? (
             <SummaryStatCard
-              title={`Projected Change ${lastObserved}-${lastPredicted}`}
+              title="Projected Change"
+              subtitle={`${lastObserved}-${lastPredicted}`}
               body={
                 <SummaryStatScenarioComp
                   result={result}

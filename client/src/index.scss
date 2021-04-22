@@ -1,5 +1,13 @@
-/* Top-level styles */
+/* Bootstrap overrides */
+$primary: #0072ce;
+$secondary: #ed8b00;
+$info: #00b1b0;
+$dark: #002746;
 
+$font-family-sans-serif: "Museo Sans", sans-serif;
+$headings-font-family: "Museo Slab", Museo Sans Light, serif;
+
+/* Top-level styles */
 html {
   position: relative;
   min-height: 100%;
@@ -56,6 +64,12 @@ html {
 }
 
 /* Navbar */
+.navbar {
+  font-family: "Museo Sans Light", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  line-height: 24px;
+}
+
 .app .navbar-nav .navbar-context-menu .nav-link {
   color: #ed8b00;
 }
@@ -108,30 +122,21 @@ html {
   font-size: 1.15rem;
 }
 
-/* Bootstrap overrides */
-$primary: #0072ce;
-$secondary: #ed8b00;
-$info: #00b1b0;
-$dark: #002746;
-
-$font-family-sans-serif: "Museo Sans", sans-serif;
-$headings-font-family: "Museo Slab", Museo Sans Light, serif;
-
 /* Fonts */
 /* Museo Sans Fonts */
 
-// @font-face {
-//   font-display: swap;
-//   font-family: "Museo Sans Light";
-//   src: url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_300-webfont.woff2")
-//       format("woff2"),
-//     url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_300-webfont.woff")
-//       format("woff"),
-//     url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_300-webfont.ttf")
-//       format("truetype"),
-//     url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_300-webfont.svg#museo_sans300")
-//       format("svg");
-// }
+@font-face {
+  font-display: swap;
+  font-family: "Museo Sans Light";
+  src: url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_300-webfont.woff2")
+      format("woff2"),
+    url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_300-webfont.woff")
+      format("woff"),
+    url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_300-webfont.ttf")
+      format("truetype"),
+    url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_300-webfont.svg#museo_sans300")
+      format("svg");
+}
 
 @font-face {
   font-display: swap;
