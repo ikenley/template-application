@@ -142,15 +142,15 @@ const ResultGrid = ({ result }: Props) => {
         Header: () => (
           <div style={{ backgroundColor: Primary.Teal, color: "#fff" }}>
             <OverlayTooltip
-              id="result-grid-alternative"
+              id="result-grid-alternate"
               placement="top"
               tooltip="Suspendisse id lorem sed urna commodo tempus eu ac nulla. Sed vel faucibus elit, vitae vestibulum ante."
             >
-              <span className="abbr">Alternative Forecast Scenario</span>
+              <span className="abbr">Alternate Forecast Scenario</span>
             </OverlayTooltip>
           </div>
         ),
-        id: "alternative",
+        id: "alternate",
         columns: [
           {
             Header: "2022",
