@@ -4,7 +4,7 @@ import axios from "axios";
 import { Line } from "react-chartjs-2";
 import numeral from "numeral";
 import Skeleton from "react-loading-skeleton";
-import { SessionContext } from "../../session/SessionContext";
+import { useInView } from "react-intersection-observer";
 import Slide from "../Slide";
 import CardHeader from "../CardHeader";
 import { RegionDataPoint, PredictedMarketEnrollment } from "../../types";
@@ -13,12 +13,12 @@ import RegionLabel from "./RegionLabel";
 
 type Props = {
   region: RegionDataPoint | null;
-  inView: boolean;
 };
 
 const TITLE = "Estimated College-bound High School Graduates";
 
-const PredictedMarketEnrollmentPanel = ({ region, inView }: Props) => {
+const PredictedMarketEnrollmentPanel = ({ region }: Props) => {
+  const { ref, inView } = useInView();
   const [dataPoints, setDataPoints] = useState<
     PredictedMarketEnrollment[] | null
   >(null);
@@ -59,7 +59,7 @@ const PredictedMarketEnrollmentPanel = ({ region, inView }: Props) => {
   }, [dataPoints]);
 
   return (
-    <div className="predicted-market-enrollment-panel">
+    <div className="predicted-market-enrollment-panel" ref={ref}>
       <Card>
         <CardHeader>
           Enrollment Projections for <RegionLabel region={region} />

@@ -48,7 +48,7 @@ const EnrollmentScenarioRecipe = () => {
               </Card>
             </div>
             <div className="mx-md-5 mt-5">
-              <PredictedMarketEnrollmentPanel inView={inView} region={region} />
+              <PredictedMarketEnrollmentPanel region={region} />
             </div>
           </Col>
           <Col lg={6}>
