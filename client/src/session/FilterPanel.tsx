@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Col, Form } from "react-bootstrap";
-import useSessionOptionSet from "./useSessionOptionSet";
+import SessionContext from "./SessionContext";
 import InstitutionSelector from "./InstitutionSelector";
 import MarketShareSelector from "./MarketShareSelector";
 import RegionSelector from "./RegionSelector";
@@ -11,7 +11,7 @@ type Props = {
 };
 
 const FilterPanel = ({ showRegions, allowMultiInstitutions }: Props) => {
-  const optionSet = useSessionOptionSet();
+  const { optionSet } = useContext(SessionContext);
 
   return (
     <div className="filter-panel">

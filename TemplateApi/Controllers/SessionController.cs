@@ -54,8 +54,8 @@ namespace TemplateApi.Controllers
             return session;
         }
 
-        // GET /api/session/sessionoptionset
-        [HttpGet("sessionoptionset")]
+        // GET /api/session/optionset
+        [HttpGet("optionset")]
         public async Task<ActionResult<SessionOptionSet>> GetSessionOptionSet()
         {
             var optionSet = await _sessionService.GetSessionOptionSet();

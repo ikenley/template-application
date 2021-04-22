@@ -2,11 +2,10 @@ import React, { useEffect, useState, useContext, useRef } from "react";
 import { Card } from "react-bootstrap";
 import axios from "axios";
 import { useInView } from "react-intersection-observer";
-import { SessionContext } from "../../session/SessionContext";
+import SessionContext from "../../session/SessionContext";
 import { OverviewResult, emptyOverviewResult } from "../../types";
 import MarketShareModel from "../../session/MarketShareModel";
 import OverviewChart from "../../overview/OverviewChart";
-import useSessionOptionSet from "../../session/useSessionOptionSet";
 import InstitutionSelector from "../../session/InstitutionSelector";
 
 type Props = {
@@ -19,10 +18,9 @@ type ScenarioResultMap = {
 
 const EnrollmentResultScenarioPanel = ({ scenario }: Props) => {
   const { ref, inView } = useInView({ triggerOnce: true });
-  const sessionOptionSet = useSessionOptionSet();
   const resultCache = useRef<ScenarioResultMap>({});
   const [result, setResult] = useState<OverviewResult | null>(null);
-  const { session } = useContext(SessionContext);
+  const { session, optionSet } = useContext(SessionContext);
 
   useEffect(() => {
     const { isLoading, sessionId } = session;
@@ -50,7 +48,7 @@ const EnrollmentResultScenarioPanel = ({ scenario }: Props) => {
   return (
     <div ref={ref} className="enrollment-result-panel">
       <Card className="bg-white mb-3">
-        <InstitutionSelector optionSet={sessionOptionSet} isMultiple={false} />
+        <InstitutionSelector optionSet={optionSet} isMultiple={false} />
       </Card>
       <Card className="bg-white">
         <Card.Body>

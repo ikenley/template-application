@@ -7,7 +7,12 @@ import React, {
   useEffect,
 } from "react";
 import axios from "axios";
-import { Session, UpdateSessionParams } from "../types";
+import {
+  Session,
+  UpdateSessionParams,
+  SessionOptionSet,
+  defaultSessionOptionSet,
+} from "../types";
 import { AuthContext } from "../auth/AuthContext";
 
 const defaultSession: Session = {
@@ -24,6 +29,7 @@ const defaultSession: Session = {
 
 const defaultSessionProps = {
   session: defaultSession,
+  optionSet: defaultSessionOptionSet,
   updateSession: (s: UpdateSessionParams) => {},
 };
 
@@ -31,6 +37,9 @@ export const SessionContext = createContext(defaultSessionProps);
 
 export const SessionContextProvider = ({ children }: any) => {
   const [session, setState] = useState<Session>(defaultSession);
+  const [optionSet, setOptionSet] = useState<SessionOptionSet>(
+    defaultSessionOptionSet
+  );
   const authContext = useContext(AuthContext);
   const { sessionId } = session;
 
@@ -43,7 +52,11 @@ export const SessionContextProvider = ({ children }: any) => {
     axios.get(`/api/session/createorget/${authContext.userId}`).then((res) => {
       setState(res.data);
     });
-  }, [authContext, setState]);
+
+    axios.get("/api/session/optionset").then((res) => {
+      setOptionSet(res.data);
+    });
+  }, [authContext, setState, setOptionSet]);
 
   const updateSession = useCallback(
     (s: UpdateSessionParams) => {
@@ -62,10 +75,12 @@ export const SessionContextProvider = ({ children }: any) => {
   );
 
   const value = useMemo(() => {
-    return { session, updateSession };
-  }, [session, updateSession]);
+    return { session, optionSet, updateSession };
+  }, [session, optionSet, updateSession]);
 
   return (
     <SessionContext.Provider value={value}>{children}</SessionContext.Provider>
   );
 };
+
+export default SessionContext;

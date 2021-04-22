@@ -6,7 +6,6 @@ import { SessionContext } from "../../session/SessionContext";
 import { StepId } from "./YourInstitutionBaseSlide";
 import { OverviewResult } from "../../types";
 import OverviewChart from "../../overview/OverviewChart";
-import useSessionOptionSet from "../../session/useSessionOptionSet";
 import InstitutionSelector from "../../session/InstitutionSelector";
 
 type Props = {
@@ -15,9 +14,8 @@ type Props = {
 
 const EnrollmentResultPanel = ({ currentStep }: Props) => {
   const { ref, inView } = useInView({ triggerOnce: true });
-  const sessionOptionSet = useSessionOptionSet();
   const [result, setResult] = useState<OverviewResult | null>(null);
-  const { session } = useContext(SessionContext);
+  const { session, optionSet } = useContext(SessionContext);
 
   useEffect(() => {
     const { isLoading, sessionId } = session;
@@ -36,7 +34,7 @@ const EnrollmentResultPanel = ({ currentStep }: Props) => {
   return (
     <div ref={ref} className="enrollment-result-panel">
       <Card className="bg-white mb-3">
-        <InstitutionSelector optionSet={sessionOptionSet} isMultiple={false} />
+        <InstitutionSelector optionSet={optionSet} isMultiple={false} />
       </Card>
       <Card>
         <Card.Body className="bg-white">

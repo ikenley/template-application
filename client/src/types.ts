@@ -25,8 +25,15 @@ export type UpdateSessionParams = {
 };
 
 export type SessionOptionSet = {
+  isLoading: boolean;
   institutions: Institution[];
   regions: Region[];
+};
+
+export const defaultSessionOptionSet: SessionOptionSet = {
+  isLoading: true,
+  institutions: [],
+  regions: [],
 };
 
 export type Institution = {
