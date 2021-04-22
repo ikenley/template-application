@@ -221,7 +221,7 @@ const ResultGrid = ({
   }, []);
 
   return (
-    <div className="result-grid">
+    <div className="result-grid" style={{ minHeight: "500px" }}>
       {result ? (
         <DataGrid columns={columns} data={data} options={options} />
       ) : (
