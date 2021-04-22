@@ -11,7 +11,7 @@ namespace TemplateApi.Models
     /// </summary>
     public class CustomMarketShareResult
     {
-        public List<Region> Regions { get; set; }
+        public List<RegionDataPoint> Regions { get; set; }
 
         /// <summary>
         /// Map of Year => RegionId => MarketShareRow

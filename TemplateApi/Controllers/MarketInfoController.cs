@@ -30,5 +30,12 @@ namespace TemplateApi.Controllers
             var result = await _marketInfoService.GetMarketInfoResultAsync(institutionId);
             return result;
         }
+
+        [HttpGet("predicted-enrollment/{regionId}")]
+        public async Task<ActionResult<List<PredictedMarketEnrollment>>> GetPredictedMarketEnrollment(int regionId)
+        {
+            var result = await _marketInfoService.GetPredictedMarketEnrollmentsAsync(regionId);
+            return result;
+        }
     }
 }

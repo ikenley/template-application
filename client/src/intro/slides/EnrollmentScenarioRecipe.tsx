@@ -1,22 +1,32 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Row, Col, Card } from "react-bootstrap";
 import { useInView } from "react-intersection-observer";
-import Slide from "../Slide";
-import Skeleton from "react-loading-skeleton";
-import CardHeader from "../CardHeader";
+import axios from "axios";
 import { Line } from "react-chartjs-2";
 import numeral from "numeral";
+import Skeleton from "react-loading-skeleton";
+import { SessionContext } from "../../session/SessionContext";
+import Slide from "../Slide";
+import CardHeader from "../CardHeader";
+import { RegionDataPoint } from "../../types";
+import RegionLabel from "./RegionLabel";
+import PredictedMarketEnrollmentPanel from "./PredictedMarketEnrollmentPanel";
 
 const EnrollmentScenarioRecipe = () => {
-  const { ref, inView } = useInView({
-    threshold: 0.5,
-  });
+  const { ref, inView } = useInView({ triggerOnce: true });
+  const { session } = useContext(SessionContext);
+  const [region, setRegion] = useState<RegionDataPoint | null>(null);
 
   useEffect(() => {
-    if (inView) {
-      console.log(`inView EnrollmentScenarioRecipe`);
+    const { isLoading, institutionId } = session;
+    if (!inView || isLoading) {
+      return;
     }
-  }, [inView]);
+
+    axios.get(`/api/region/top/${institutionId}`).then((res) => {
+      setRegion(res.data);
+    });
+  }, [inView, session]);
 
   const isLoading = false;
   const chartDataProps = fakeData;
@@ -38,68 +48,7 @@ const EnrollmentScenarioRecipe = () => {
               </Card>
             </div>
             <div className="mx-md-5 mt-5">
-              <Card>
-                <CardHeader>Enrollment Projections for California</CardHeader>
-                <Card.Body className="bg-white">
-                  <Row className="align-items-center">
-                    <Col sm={3}>
-                      <span className="text-primary">
-                        <i className="fas fa-map-marked fa-10x"></i>
-                      </span>
-                      <div className="text-muted text-center">
-                        TODO region icons
-                      </div>
-                    </Col>
-                    <Col sm={9}>
-                      {isLoading ? (
-                        <Skeleton height={300} />
-                      ) : (
-                        <Line
-                          redraw={inView}
-                          options={{
-                            maintainAspectRatio: false,
-                            legend: { display: false },
-                            scales: {
-                              yAxes: [
-                                {
-                                  ticks: {
-                                    callback: (value: any) => {
-                                      return numeral(value).format("0,0a");
-                                    },
-                                  },
-                                },
-                              ],
-                            },
-                            tooltips: {
-                              callbacks: {
-                                label: function (dataPoint: any, context: any) {
-                                  const { value, datasetIndex } = dataPoint;
-                                  const dataset =
-                                    context.datasets[datasetIndex];
-                                  if (dataset.numeralFormat) {
-                                    return numeral(value).format(
-                                      dataset.numeralFormat
-                                    );
-                                  }
-                                  return value;
-                                },
-                              },
-                            },
-                            title: {
-                              display: true,
-                              fontSize: 16,
-                              text:
-                                "Estimated College-bound High School Graduates",
-                            },
-                          }}
-                          height={300}
-                          data={chartDataProps}
-                        />
-                      )}
-                    </Col>
-                  </Row>
-                </Card.Body>
-              </Card>
+              <PredictedMarketEnrollmentPanel inView={inView} region={region} />
             </div>
           </Col>
           <Col lg={6}>
@@ -115,7 +64,9 @@ const EnrollmentScenarioRecipe = () => {
             </div>
             <div className="mx-md-5 mt-5">
               <Card>
-                <CardHeader>Students from California</CardHeader>
+                <CardHeader>
+                  Students from <RegionLabel region={region} />
+                </CardHeader>
                 <Card.Body className="bg-white text-body">
                   <Row className="align-items-center">
                     <Col sm={3}>
@@ -125,12 +76,17 @@ const EnrollmentScenarioRecipe = () => {
                     </Col>
                     <Col sm={9}>
                       <div className="h5 mb-0">
-                        Students from California who attend your institution:
+                        Students from <RegionLabel region={region} /> who attend
+                        your institution:
                       </div>
                       <div className="h1 mb-0">
-                        <span className="text-secondary font-weight-bold">
-                          0.0023%
-                        </span>{" "}
+                        {region ? (
+                          <span className="text-secondary font-weight-bold">
+                            {numeral(region.marketShare).format("0.0000%")}
+                          </span>
+                        ) : (
+                          <Skeleton width={150} />
+                        )}{" "}
                         share
                       </div>
                     </Col>

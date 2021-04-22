@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TemplateApi.Models;
@@ -9,9 +10,10 @@ using TemplateApi.Models;
 namespace TemplateApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210422140517_RegionLongName")]
+    partial class RegionLongName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,26 +169,6 @@ namespace TemplateApi.Migrations
                         .HasColumnName("year");
 
                     b.ToTable("MarketShareRow", t => t.ExcludeFromMigrations());
-                });
-
-            modelBuilder.Entity("TemplateApi.Models.PredictedMarketEnrollment", b =>
-                {
-                    b.Property<int>("RegionId")
-                        .HasColumnType("integer")
-                        .HasColumnName("region_id");
-
-                    b.Property<int>("Year")
-                        .HasColumnType("integer")
-                        .HasColumnName("year");
-
-                    b.Property<double>("Enrollment")
-                        .HasColumnType("double precision")
-                        .HasColumnName("enrollment");
-
-                    b.HasKey("RegionId", "Year")
-                        .HasName("pk_predicted_market_enrollment");
-
-                    b.ToTable("predicted_market_enrollment");
                 });
 
             modelBuilder.Entity("TemplateApi.Models.Region", b =>

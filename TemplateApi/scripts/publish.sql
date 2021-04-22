@@ -112,14 +112,15 @@ limit 100
 -------------------------------------------------------------------------------
 -- predicted_market_enrollment
 
-drop table if exists public.predicted_market_enrollment;
+truncate table public.predicted_market_enrollment;
 
-CREATE TABLE public.predicted_market_enrollment (
-	region_id int,	
-	year int,
-	enrollment float null,
-	constraint pk_predicted_market_enrollment primary key (year, region_id)
-);
+-- managed by EF Migrations
+--CREATE TABLE public.predicted_market_enrollment (
+--	region_id int,	
+--	year int,
+--	enrollment float null,
+--	constraint pk_predicted_market_enrollment primary key (year, region_id)
+--);
 
 insert into public.predicted_market_enrollment
 select region_id
@@ -144,6 +145,7 @@ truncate table public.regions;
 insert into public.regions
 select id
 	, name
+	, long_name
 from base.regions 
 ;
 

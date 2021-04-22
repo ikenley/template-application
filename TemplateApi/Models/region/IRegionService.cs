@@ -9,6 +9,6 @@ namespace TemplateApi.Models
         Task<List<Region>> GetRegionsAsync();
 
         /// <summary>Gets top x Regions for a given Institution</summary>
-        Task<List<Region>> GetTopRegionsAsync(int institutionId);
+        Task<List<RegionDataPoint>> GetTopRegionsAsync(int institutionId, int limit = 10);
     }
 }

@@ -12,7 +12,7 @@ namespace TemplateApi.Models
     [Keyless]
     public class MarketShareResult
     {
-        public List<Region> Regions { get; set; }
+        public List<RegionDataPoint> Regions { get; set; }
 
         /// <summary>
         /// Map of Year => RegionId => MarketShareRow

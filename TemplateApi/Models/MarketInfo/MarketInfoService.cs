@@ -85,5 +85,13 @@ order by predicted_market_growth desc
 
             return rows;
         }
+
+        public async Task<List<PredictedMarketEnrollment>> GetPredictedMarketEnrollmentsAsync(int regionId)
+        {
+            return await _dataContext.PredictedMarketEnrollment
+                .Where(pm => pm.RegionId == regionId)
+                .OrderBy(pm => pm.Year)
+                .ToListAsync();
+        }
     }
 }

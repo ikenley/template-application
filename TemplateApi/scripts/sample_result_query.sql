@@ -106,20 +106,27 @@ where r.id <> 0
 
 select r.id 
 	, r.name
+	, r.long_name 
+	, e.enrollment 
+	, e.enrollment_share as market_share
+	, mk.enrollment as population
 from public.observed_enrollment e
 join public.regions r
 	on e.region_id = r.id
+join public.observed_market_enrollment mk
+	on r.id = mk.region_id 
+join (
+	select max(year) as last_observed_year
+	from public.years
+	where is_prediction = false
+) y
+	on e.year = y.last_observed_year
+		and mk.year = y.last_observed_year
 where e.unitid = 194824
 	and r.id <> 90 -- exclude foreign
-	and e.year = (
-		select max(year)
-		from public.years
-		where is_prediction = false
-	)
 order by e.enrollment desc
 limit 10
 ;
-
 
 -------------------------------------------------------------------------------
 -- Predicted market share for institution's top regions
@@ -205,3 +212,14 @@ left join (
 order by predicted_market_growth desc
 ;
 
+-------------------------------------------------------------------------------
+-- predicted_market_enrollment
+
+-- Predicted regional enrollment (standard market share model)
+
+select pm.*
+from public.predicted_market_enrollment pm 
+where pm.region_id = 25
+--order by pe.year
+--	, pe.region_id
+;

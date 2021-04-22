@@ -308,7 +308,8 @@ drop table if exists base.regions;
 
 CREATE TABLE base.regions (
 	id int,
-	name varchar(50) NULL
+	name varchar(50) null,
+	long_name varchar(50) null
 );
 
 SELECT aws_s3.table_import_from_s3(

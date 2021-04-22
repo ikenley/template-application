@@ -41,6 +41,13 @@ export type Institution = {
 export type Region = {
   id: number;
   name: string;
+  longName: string;
+};
+
+export type RegionDataPoint = Region & {
+  enrollment?: number;
+  marketShare?: number;
+  population?: number;
 };
 
 export type YearSummary = {
@@ -180,6 +187,12 @@ export type MarketInfoRow = {
   pmaxYear: number;
   pmaxMarketEnrollment: number;
   predictedMarketGrowth: number;
+};
+
+export type PredictedMarketEnrollment = {
+  regionId: number;
+  year: number;
+  enrollment: number;
 };
 
 export type ComparisonResult = {

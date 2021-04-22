@@ -22,7 +22,7 @@ const RegionSelector = ({ optionSet }: Props) => {
 
     // If only session loaded, temporarily use list of just selected Region
     if (!isLoading) {
-      return [{ id: regionId, name: regionName }];
+      return [{ id: regionId, name: regionName, longName: "" }];
     }
 
     return [];
