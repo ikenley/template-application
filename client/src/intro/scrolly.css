@@ -79,12 +79,7 @@
 }
 
 .intro-page .card-badge {
-  /* position: absolute;
-  top: -15px;
-  left: -15px; */
   font-size: 1.5rem;
   padding: 1em;
-
   border: 2px solid #7fcfcf;
-  margin-bottom: 5px;
 }

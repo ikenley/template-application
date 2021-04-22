@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { Row, Col, Card } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import axios from "axios";
 import { Line } from "react-chartjs-2";
 import numeral from "numeral";
 import Skeleton from "react-loading-skeleton";
 import { useInView } from "react-intersection-observer";
-import Slide from "../Slide";
 import CardHeader from "../CardHeader";
 import { RegionDataPoint, PredictedMarketEnrollment } from "../../types";
 import { PrimaryBlue } from "../../shared/Colors";
@@ -18,7 +17,7 @@ type Props = {
 const TITLE = "Estimated College-bound High School Graduates";
 
 const PredictedMarketEnrollmentPanel = ({ region }: Props) => {
-  const { ref, inView } = useInView();
+  const { ref, inView } = useInView({ triggerOnce: true });
   const [dataPoints, setDataPoints] = useState<
     PredictedMarketEnrollment[] | null
   >(null);

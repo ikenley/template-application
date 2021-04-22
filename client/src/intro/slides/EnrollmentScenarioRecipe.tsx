@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext } from "react";
 import { Row, Col, Card } from "react-bootstrap";
 import { useInView } from "react-intersection-observer";
 import axios from "axios";
-import { Line } from "react-chartjs-2";
 import numeral from "numeral";
 import Skeleton from "react-loading-skeleton";
 import { SessionContext } from "../../session/SessionContext";
@@ -27,9 +26,6 @@ const EnrollmentScenarioRecipe = () => {
       setRegion(res.data);
     });
   }, [inView, session]);
-
-  const isLoading = false;
-  const chartDataProps = fakeData;
 
   return (
     <div ref={ref}>
@@ -102,53 +98,3 @@ const EnrollmentScenarioRecipe = () => {
 };
 
 export default EnrollmentScenarioRecipe;
-
-const fakeData = {
-  labels: [
-    2019,
-    2020,
-    2021,
-    2022,
-    2023,
-    2024,
-    2025,
-    2026,
-    2027,
-    2028,
-    2029,
-    2030,
-    2031,
-    2032,
-    2033,
-    2034,
-    2035,
-  ],
-  datasets: [
-    {
-      fill: false,
-      backgroundColor: "#002746",
-      borderColor: "#002746",
-      spanGaps: 1,
-      numeralFormat: "0,0.0a",
-      data: [
-        151189.7225985909,
-        144165.68120383282,
-        146260.04194465885,
-        146578.06988526747,
-        151929.16786703933,
-        141868.21262076736,
-        150269.6902302389,
-        144953.04778905367,
-        138133.7874986647,
-        135415.49918137706,
-        135162.35852491597,
-        128475.05259668466,
-        142085.79361129092,
-        140962.37452367786,
-        137815.58312565467,
-        132523.50462784118,
-        120541.92333383033,
-      ],
-    },
-  ],
-};

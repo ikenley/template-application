@@ -1,6 +1,5 @@
-import React, { useState, useCallback, useContext, useEffect } from "react";
+import React, { useState, useCallback, useContext } from "react";
 import { Row, Col, Card } from "react-bootstrap";
-import { useInView } from "react-intersection-observer";
 import { LastObservedYear, ScenarioAllIncreaseAmount } from "../../constants";
 import Slide from "../Slide";
 import Step from "../Step";
@@ -10,9 +9,6 @@ import MarketShareModel from "../../session/MarketShareModel";
 import { SessionContext } from "../../session/SessionContext";
 
 const YourInstitutionScenarioSlide = () => {
-  const { ref, inView } = useInView({
-    threshold: 0.5,
-  });
   const { session } = useContext(SessionContext);
   const { institutionName } = session;
 
@@ -27,14 +23,8 @@ const YourInstitutionScenarioSlide = () => {
     [setCurrentStep]
   );
 
-  useEffect(() => {
-    if (inView) {
-      console.log(`inView YourInstitutionScenarioSlide`);
-    }
-  }, [inView]);
-
   return (
-    <div ref={ref}>
+    <div className="your-institution-scenario-slide">
       <Slide>
         <div className="slide-title">What this Means for Your Institution</div>
         <Row className="slide-body justify-content-center">

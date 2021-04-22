@@ -1,16 +1,11 @@
 import React from "react";
 import { Row, Col, Card } from "react-bootstrap";
-import { useInView } from "react-intersection-observer";
 import Slide from "../Slide";
 import CardHeader from "../CardHeader";
 
 const GrowthStrategy = () => {
-  const { ref } = useInView({
-    threshold: 0.5,
-  });
-
   return (
-    <div ref={ref}>
+    <div>
       <Slide>
         <div className="slide-title">
           How Will Institutions Adjust to Decline?
@@ -22,7 +17,7 @@ const GrowthStrategy = () => {
             <div className="d-flex justify-content-center">
               <Card className="justify-content-center">
                 <div className="bg-standard">
-                  <span className="badge badge-pill badge-primary card-badge">
+                  <span className="badge badge-pill badge-primary card-badge mb-3">
                     1
                   </span>
                 </div>
@@ -43,7 +38,7 @@ const GrowthStrategy = () => {
             <div className="d-flex justify-content-center">
               <Card className="justify-content-center">
                 <div className="bg-standard">
-                  <span className="badge badge-pill badge-primary card-badge">
+                  <span className="badge badge-pill badge-primary card-badge mb-3">
                     2
                   </span>
                 </div>

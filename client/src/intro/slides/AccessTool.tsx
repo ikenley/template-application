@@ -6,7 +6,7 @@ import Slide from "../Slide";
 
 const AccessTool = () => {
   const { ref, inView } = useInView({
-    threshold: 0.5,
+    threshold: 0.75,
   });
 
   return (

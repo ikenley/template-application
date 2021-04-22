@@ -1,14 +1,9 @@
 import React from "react";
-import { useInView } from "react-intersection-observer";
 import Slide from "../Slide";
 
 const CoverSlide = () => {
-  const { ref } = useInView({
-    threshold: 0.5,
-  });
-
   return (
-    <div ref={ref}>
+    <div>
       <Slide isFullScreen bgImg="/img/intro-cover.jpg" className="cover">
         <div className="container-fluid">
           <div className="slide-title mb-3 mt-0">

@@ -45,7 +45,7 @@ const EnrollmentResultScenarioPanel = ({ scenario }: Props) => {
         resultCache.current[scenario] = res.data;
         setResult(res.data);
       });
-  }, [session, scenario, result, setResult]);
+  }, [inView, session, scenario, result, setResult]);
 
   return (
     <div ref={ref} className="enrollment-result-panel">

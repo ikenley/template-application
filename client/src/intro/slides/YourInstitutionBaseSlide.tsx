@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { Row, Col, Card } from "react-bootstrap";
-import { useInView } from "react-intersection-observer";
 import Slide from "../Slide";
 import Step from "../Step";
 import CardHeader from "../CardHeader";
@@ -12,17 +11,7 @@ export enum StepId {
 }
 
 const YourInstitutionSlide = () => {
-  const { ref, inView } = useInView({
-    threshold: 0.5,
-  });
-
   const [currentStep, setCurrentStep] = useState<StepId>(StepId.Observed);
-
-  useEffect(() => {
-    if (inView) {
-      console.log(`inView PlaceholderSlide YourInstitutionSlide`);
-    }
-  }, [inView]);
 
   const handleStepChange = useCallback(
     (stepId: StepId) => {
@@ -32,7 +21,7 @@ const YourInstitutionSlide = () => {
   );
 
   return (
-    <div ref={ref}>
+    <div className="your-institution-base-slide">
       <Slide>
         <div className="slide-title">What this Means for Your Institution</div>
         <Row className="slide-body justify-content-center">
