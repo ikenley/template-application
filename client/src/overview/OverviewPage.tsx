@@ -7,7 +7,7 @@ import FilterPanel from "../session/FilterPanel";
 import { OverviewResult } from "../types";
 import OverviewChart from "./OverviewChart";
 import SummaryStatPanel from "./SummaryStatPanel";
-import ResultGrid from "./ResultGrid";
+import ResultGridContainer from "./ResultGridContainer";
 import Tour from "../shared/Tour";
 import tourSteps from "./tourSteps";
 
@@ -49,7 +49,7 @@ const OverviewPage = () => {
         <FilterPanel showRegions />
         <OverviewChart result={result} />
         <SummaryStatPanel result={result} />
-        <ResultGrid result={result} />
+        <ResultGridContainer result={result} />
       </main>
       <Tour
         steps={tourSteps}

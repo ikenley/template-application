@@ -116,6 +116,12 @@ html {
   }
 }
 
+/* nav */
+.app .nav-tabs .nav-link.active,
+.app .nav-tabs .nav-item.show .nav-link {
+  color: #fff;
+}
+
 /* Component-specific styles */
 /* TODO consider moving to inline style */
 .summary-stat-card .card-title.h5 {

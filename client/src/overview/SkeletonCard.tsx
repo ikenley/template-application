@@ -4,10 +4,11 @@ import Skeleton from "react-loading-skeleton";
 
 const SkeletonCard = () => {
   return (
-    <div className="skeleton-card mb-1 h-100">
-      <Card className="h-100">
-        <Card.Body className="text-center">
+    <div className="skeleton-card mb-1">
+      <Card className="h-100" style={{ minHeight: "170px" }}>
+        <Card.Body className="text-center d-flex flex-column justify-content-between">
           <Card.Title>
+            <Skeleton />
             <Skeleton />
           </Card.Title>
           <Card.Text>

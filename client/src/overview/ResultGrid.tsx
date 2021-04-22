@@ -10,12 +10,22 @@ import OverlayTooltip from "../shared/OverlayTooltip";
 
 type Props = {
   result: OverviewResult | null;
+  propName: "enrollment" | "marketShare";
+  numeralFormat: string;
+  baseHeader: string;
+  altHeader: string;
 };
 
 const MAX_ROW_COUNT = 11;
 const DEFAULT_COL_WIDTH = 75;
 
-const ResultGrid = ({ result }: Props) => {
+const ResultGrid = ({
+  result,
+  propName,
+  numeralFormat,
+  baseHeader,
+  altHeader,
+}: Props) => {
   const { regionRows } = result || emptyOverviewResult;
 
   const data = useMemo(() => {
@@ -28,7 +38,7 @@ const ResultGrid = ({ result }: Props) => {
         Header: <span className="font-weight-bold">Region</span>,
         headerClassName: "text-center",
         accessor: "regionName",
-        width: 140,
+        width: 150,
       },
       {
         Header: () => (
@@ -49,14 +59,14 @@ const ResultGrid = ({ result }: Props) => {
             accessor: "yearObservedMap[2012].enrollment",
             sortType: "basic",
             width: DEFAULT_COL_WIDTH,
-            Cell: ({ value }) => <GridCell value={value} />,
+            Cell: ({ value }) => <GridCell value={value} format="0,0" />,
           },
           {
             Header: "2018",
             accessor: "yearObservedMap[2018].enrollment",
             sortType: "basic",
             width: DEFAULT_COL_WIDTH,
-            Cell: ({ value }) => <GridCell value={value} />,
+            Cell: ({ value }) => <GridCell value={value} format="0,0" />,
           },
           {
             Header: (
@@ -102,7 +112,7 @@ const ResultGrid = ({ result }: Props) => {
               placement="top"
               tooltip="Proin nunc eros, aliquet sit amet viverra a, elementum vel diam. Nulla non metus in leo posuere suscipit."
             >
-              <span className="abbr">Baseline Enrollment Forecast</span>
+              <span className="abbr">{baseHeader}</span>
             </OverlayTooltip>
           </div>
         ),
@@ -110,31 +120,39 @@ const ResultGrid = ({ result }: Props) => {
         columns: [
           {
             Header: "2022",
-            accessor: "yearBaselineMap[2022].enrollment",
+            accessor: `yearBaselineMap[2022][${propName}]`,
             sortType: "basic",
             width: DEFAULT_COL_WIDTH,
-            Cell: ({ value }) => <GridCell value={value} />,
+            Cell: ({ value }) => (
+              <GridCell value={value} format={numeralFormat} />
+            ),
           },
           {
             Header: "2025",
-            accessor: "yearBaselineMap[2025].enrollment",
+            accessor: `yearBaselineMap[2025][${propName}]`,
             sortType: "basic",
             width: DEFAULT_COL_WIDTH,
-            Cell: ({ value }) => <GridCell value={value} />,
+            Cell: ({ value }) => (
+              <GridCell value={value} format={numeralFormat} />
+            ),
           },
           {
             Header: "2030",
-            accessor: "yearBaselineMap[2030].enrollment",
+            accessor: `yearBaselineMap[2030][${propName}]`,
             sortType: "basic",
             width: DEFAULT_COL_WIDTH,
-            Cell: ({ value }) => <GridCell value={value} />,
+            Cell: ({ value }) => (
+              <GridCell value={value} format={numeralFormat} />
+            ),
           },
           {
             Header: "2035",
-            accessor: "yearBaselineMap[2035].enrollment",
+            accessor: `yearBaselineMap[2035][${propName}]`,
             sortType: "basic",
             width: DEFAULT_COL_WIDTH,
-            Cell: ({ value }) => <GridCell value={value} />,
+            Cell: ({ value }) => (
+              <GridCell value={value} format={numeralFormat} />
+            ),
           },
         ],
       },
@@ -146,7 +164,7 @@ const ResultGrid = ({ result }: Props) => {
               placement="top"
               tooltip="Suspendisse id lorem sed urna commodo tempus eu ac nulla. Sed vel faucibus elit, vitae vestibulum ante."
             >
-              <span className="abbr">Alternate Forecast Scenario</span>
+              <span className="abbr">{altHeader}</span>
             </OverlayTooltip>
           </div>
         ),
@@ -154,36 +172,44 @@ const ResultGrid = ({ result }: Props) => {
         columns: [
           {
             Header: "2022",
-            accessor: "yearPredictedMap[2022].enrollment",
+            accessor: `yearPredictedMap[2022][${propName}]`,
             sortType: "basic",
             width: DEFAULT_COL_WIDTH,
-            Cell: ({ value }) => <GridCell value={value} />,
+            Cell: ({ value }) => (
+              <GridCell value={value} format={numeralFormat} />
+            ),
           },
           {
             Header: "2025",
-            accessor: "yearPredictedMap[2025].enrollment",
+            accessor: `yearPredictedMap[2025][${propName}]`,
             sortType: "basic",
             width: DEFAULT_COL_WIDTH,
-            Cell: ({ value }) => <GridCell value={value} />,
+            Cell: ({ value }) => (
+              <GridCell value={value} format={numeralFormat} />
+            ),
           },
           {
             Header: "2030",
-            accessor: "yearPredictedMap[2030].enrollment",
+            accessor: `yearPredictedMap[2030][${propName}]`,
             sortType: "basic",
             width: DEFAULT_COL_WIDTH,
-            Cell: ({ value }) => <GridCell value={value} />,
+            Cell: ({ value }) => (
+              <GridCell value={value} format={numeralFormat} />
+            ),
           },
           {
             Header: "2035",
-            accessor: "yearPredictedMap[2035].enrollment",
+            accessor: `yearPredictedMap[2035][${propName}]`,
             sortType: "basic",
             width: DEFAULT_COL_WIDTH,
-            Cell: ({ value }) => <GridCell value={value} />,
+            Cell: ({ value }) => (
+              <GridCell value={value} format={numeralFormat} />
+            ),
           },
         ],
       },
     ],
-    []
+    [propName, numeralFormat, baseHeader, altHeader]
   );
 
   const options = useMemo(() => {
@@ -195,7 +221,7 @@ const ResultGrid = ({ result }: Props) => {
   }, []);
 
   return (
-    <div className="result-grid mt-3">
+    <div className="result-grid">
       {result ? (
         <DataGrid columns={columns} data={data} options={options} />
       ) : (

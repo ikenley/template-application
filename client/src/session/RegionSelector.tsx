@@ -2,7 +2,7 @@ import React, { useContext, useMemo, useCallback } from "react";
 import { Form, InputGroup } from "react-bootstrap";
 import Skeleton from "react-loading-skeleton";
 import { Region } from "../types";
-import { SessionContext } from "./SessionContext";
+import SessionContext from "./SessionContext";
 import { SessionOptionSet } from "../types";
 
 const SKELETON_HEIGHT = 45;
