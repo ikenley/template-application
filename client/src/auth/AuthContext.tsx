@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-//import axios from "axios";
+import axios from "axios";
 import Cookies from "js-cookie";
 import { v4 as uuidv4 } from "uuid";
 
@@ -28,6 +28,10 @@ export const AuthContextProvider = ({ children }: any) => {
       userId = uuidv4();
       Cookies.set(USER_COOKIE_NAME, userId);
     }
+
+    // Append userId to all requests
+    // TODO make this an Authorization token
+    axios.defaults.headers.common["X-APP-USERID"] = userId;
 
     const state = { isLoading: false, userId };
     setState(state);

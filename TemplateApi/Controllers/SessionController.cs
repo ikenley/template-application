@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using TemplateApi.Models;
 
 namespace TemplateApi.Controllers
@@ -15,11 +16,13 @@ namespace TemplateApi.Controllers
     public class SessionController : ControllerBase
     {
         private readonly ILogger<SessionController> _logger;
+        readonly IDiagnosticContext _diagnosticContext;
         private readonly ISessionService _sessionService;
 
-        public SessionController(ILogger<SessionController> logger, ISessionService sessionService)
+        public SessionController(ILogger<SessionController> logger, IDiagnosticContext diagnosticContext, ISessionService sessionService)
         {
             _logger = logger;
+            _diagnosticContext = diagnosticContext ?? throw new ArgumentNullException(nameof(diagnosticContext));
             _sessionService = sessionService;
         }
 
@@ -29,6 +32,7 @@ namespace TemplateApi.Controllers
         public async Task<ActionResult<Session>> CreateOrGetSession(string userId)
         {
             var session = await _sessionService.CreateOrGetSession(userId);
+            _logger.LogInformation("CreateOrGetSession {session}", session);
             return session;
         }
 
@@ -51,6 +55,7 @@ namespace TemplateApi.Controllers
         public async Task<ActionResult<Session>> UpdateSession(UpdateSessionParams updateSessionParams)
         {
             var session = await _sessionService.UpdateSession(updateSessionParams);
+            _logger.LogInformation("UpdateSession {session}", session);
             return session;
         }
 
