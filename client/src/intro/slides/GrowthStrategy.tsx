@@ -12,7 +12,7 @@ const GrowthStrategy = () => {
           <br />
           <small>Go Big or Go (Farther from) Home</small>
         </div>
-        <Row className="slide-body justify-content-center mb-5" noGutters>
+        <Row className="slide-body justify-content-center mb-5">
           <Col lg={6}>
             <div className="d-flex justify-content-center">
               <Card className="justify-content-center">
@@ -28,7 +28,7 @@ const GrowthStrategy = () => {
                 <div className="text-center bg-white">
                   <Card.Img
                     src="/img/change_region.png"
-                    style={{ maxWidth: "500px" }}
+                    style={{ maxWidth: "800px" }}
                   />
                 </div>
               </Card>
@@ -49,7 +49,7 @@ const GrowthStrategy = () => {
                 <div className="text-center bg-white">
                   <Card.Img
                     src="/img/change_market_share.png"
-                    style={{ maxWidth: "500px" }}
+                    style={{ maxWidth: "800px" }}
                   />
                 </div>
               </Card>

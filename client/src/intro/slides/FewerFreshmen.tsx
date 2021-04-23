@@ -58,10 +58,10 @@ const FewerFreshmen = () => {
                     src="/img/regional_demographics.png"
                     alt="Projected Change in 4-Year Regional HEI-Going Students State
                   by State, 2025-2035"
-                    style={{ maxWidth: "450px" }}
+                    style={{ maxWidth: "700px" }}
                   />
                 </Card.Body>
-                <Card.Body className="text-center">
+                <Card.Body className="text-center pt-0">
                   Projected Change in 4-Year Regional HEI-Going Students State
                   by State, 2025-2035
                 </Card.Body>
