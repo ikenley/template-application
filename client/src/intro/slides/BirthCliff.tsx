@@ -55,10 +55,12 @@ const BirthCliff = () => {
                   Birth Cliff will impact colleges and universities after 2025
                 </CardHeader>
                 <Card.Body className="">
-                  <div className="d-flex align-items-center justify-content-center">
-                    <div className="mr-3 h5">Fewer Babies Born Today </div>
-                    <i className="fas fa-arrow-right fa-lg"></i>
-                    <div className="ml-3 h5">
+                  <div className="d-flex flex-column align-items-center justify-content-center my-4">
+                    <div className="h3 mb-0">Fewer Babies Born Today </div>
+                    <span className="my-3">
+                      <i className="fas fa-arrow-down fa-lg" />
+                    </span>
+                    <div className="h3">
                       Fewer College-aged students 18 Years Later
                     </div>
                   </div>
