@@ -25,7 +25,7 @@ const SummaryStatScenarioComp = ({ result, propName }: Props) => {
         <Col>
           <NumberFormatSpan
             value={baseline[propName]}
-            format="0.00%"
+            format="0.0%"
             className="h3"
           />
         </Col>
@@ -33,7 +33,7 @@ const SummaryStatScenarioComp = ({ result, propName }: Props) => {
           {hasPredicted ? (
             <NumberFormatSpan
               value={predicted[propName]}
-              format="0.00%"
+              format="0.0%"
               className="h3"
             />
           ) : (

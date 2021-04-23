@@ -186,3 +186,10 @@ select *
 from public.institutions i 
 where i.name like '%Indiana University%'
 limit 100;
+
+-------------------------------------------------------------------------------
+
+select sum(enrollment)
+from observed_market_enrollment ome 
+where year = 2018
+limit 100;

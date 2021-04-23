@@ -31,7 +31,7 @@ const SummaryStatPanel = ({ result }: Props) => {
               body={
                 <NumberFormatSpan
                   value={observed.averageAnnualGrowth}
-                  format="0.00%"
+                  format="0.0%"
                   className="h3"
                 />
               }

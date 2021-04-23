@@ -54,28 +54,6 @@ const YourInstitutionScenarioSlide = () => {
                 </Card.Body>
               </Card>
             </Step>
-            <Step onEnter={handleStepChange} data={MarketShareModel.Trend}>
-              <Card>
-                <CardHeader>
-                  If {institutionName}'s Market Share{" "}
-                  <span className="text-secondary font-weight-bold">
-                    Continues to Grow/Shrink
-                  </span>
-                </CardHeader>
-                <Card.Body>
-                  <ul>
-                    <li>Based on 2002-2018 trends in market share</li>
-                    <li>State-by-state trends</li>
-                  </ul>
-                </Card.Body>
-              </Card>
-              <Card className="mt-5">
-                <CardHeader>Key Assumption</CardHeader>
-                <Card.Body>
-                  Drivers of market-share change continue along previous trends
-                </Card.Body>
-              </Card>
-            </Step>
             <Step
               onEnter={handleStepChange}
               data={MarketShareModel.AllDecrease}

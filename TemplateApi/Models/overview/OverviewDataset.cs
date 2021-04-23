@@ -112,7 +112,7 @@ namespace TemplateApi.Models
 
             // Calculate growth rate for each year
             var growthRates = new List<double>();
-            for (int i = 0, j = 1; j < points.Length; j++)
+            for (int i = 0, j = 1; j < points.Length; i++, j++)
             {
                 if (points[i].Enrollment > 0)
                 {
