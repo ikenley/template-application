@@ -269,6 +269,35 @@ from public.custom_market_share_option
 ;
 
 -------------------------------------------------------------------------------
+-- predicted_custom_market_share
+
+drop table if exists public.predicted_custom_market_share;
+
+CREATE TABLE public.predicted_custom_market_share (
+	unitid int,
+	region_id int,
+	option_id int,
+	year int,
+	market_share float,
+	constraint pk_predicted_custom_market_share primary key (unitid, region_id, option_id, year)
+);
+
+insert into public.predicted_custom_market_share
+select p.unitid 
+	, p.region_id
+	, p.option_id
+	, p.year
+	, p.market_share  
+from staging.predicted_custom_market_share p
+;
+
+CLUSTER public.predicted_custom_market_share USING pk_predicted_custom_market_share;
+
+select COUNT(*)
+from public.predicted_custom_market_share
+;
+
+-------------------------------------------------------------------------------
 -- Access
 
 --ACCESS DB

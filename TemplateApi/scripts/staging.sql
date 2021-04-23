@@ -468,26 +468,6 @@ select COUNT(*)
 from staging.predicted_market_share
 ;
 
-select obs.unitid 
-	, 2 as market_share_model_id -- AllIncrease
-	, obs.region_id
-	, p.year as year
-	, obs.enrollment_share * (1 + 0.15 * ((p.year - obs.year) / 17.0)) as market_share  
-from staging.observed_enrollment obs
-cross join (
-	select year 
-	from staging.years 
-	where is_prediction = true
-) p
-where obs.year = (
-	select max(year) from staging.years where is_prediction = false
-)
-	and obs.unitid = 194824
-	and obs.region_id = 25
-group by obs.unitid, obs.region_id, obs.year, obs.enrollment_share, p.year
-order by obs.unitid, obs.region_id, p.year
-;
-
 -------------------------------------------------------------------------------
 -- custom_market_share_option
 
@@ -524,6 +504,51 @@ CLUSTER staging.custom_market_share_option USING pk_custom_market_share_option;
 
 select COUNT(*)
 from staging.custom_market_share_option
+;
+
+-------------------------------------------------------------------------------
+-- predicted_custom_market_share
+
+drop table if exists staging.predicted_custom_market_share;
+
+CREATE TABLE staging.predicted_custom_market_share (
+	unitid int,
+	region_id int,
+	option_id int,
+	year int,
+	market_share float,
+	constraint pk_predicted_custom_market_share primary key (unitid, region_id, option_id, year)
+);
+
+insert into staging.predicted_custom_market_share
+select obs.unitid 
+	, obs.region_id
+	, p.option_id
+	, y.year
+	, obs.enrollment_share * (1 + (p.shift * (y.year - obs.year) / 17.0)) as market_share  
+from staging.observed_enrollment obs
+cross join (
+	select -2 as option_id, -0.15 as shift
+	union select -1, -0.075
+	union select 0, 0
+	union select 1, 0.075
+	union select 2, 0.15
+) p
+cross join (
+	select year 
+	from staging.years
+	where is_prediction = true
+) y
+where obs.year = (
+	select max(year) from staging.years where is_prediction = false
+)
+order by obs.unitid, obs.region_id, p.option_id, y.year
+;
+
+CLUSTER staging.predicted_custom_market_share USING pk_predicted_custom_market_share;
+
+select COUNT(*)
+from staging.predicted_custom_market_share
 ;
 
 

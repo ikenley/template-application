@@ -60,23 +60,23 @@ select pe.year
 from public.predicted_market_enrollment pe 
 join (
 	select r.id as region_id
-		, opt.market_share 
+		, cms.year
+		, cms.market_share 
 	from public.regions r 
 	left outer join (
 		select *
 		from public.session_custom_market_share_option
-		where session_id = '9ca477a2-00f7-4373-a8b7-59cbca0bef70'
+		where session_id = '931f3794-57e3-4e60-96aa-1bdb91e34d78'
 	) s
 		on r.id = s.region_id
-	join public.custom_market_share_option opt
-		on r.id = opt.region_id 
-			and coalesce(s.option_id, 0) = opt.option_id 
+	join public.predicted_custom_market_share cms
+		on r.id = cms.region_id 
+			and coalesce(s.option_id, 0) = cms.option_id 
 	where r.id <> 0
-		and opt.unit_id = 194824
+		and cms.unitid = 194824
 ) shr
 	on pe.region_id = shr.region_id
---left join public.regions r 
---	on pe.region_id = r.id 
+		and pe.year = shr.year
 -- Show all regions for type 0, else filter by regionId
 where (0 = 0 or shr.region_id = 0)
 order by pe.year

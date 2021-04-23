@@ -63,7 +63,7 @@ namespace TemplateApi.Models
             }
             else
             {
-                var baselinePoints = await GetPredictedPoints(instId, regionId, MarketShareModel.MostRecentYear, hasCustomMarketShare, sessionId);
+                var baselinePoints = await GetPredictedPoints(instId, regionId, MarketShareModel.MostRecentYear, false, sessionId);
                 result.Baseline = new OverviewDataset(baselinePoints, observedPoints, indexYear);
                 result.HasPredicted = true;
             }
@@ -164,7 +164,8 @@ order by pe.year
 from public.predicted_market_enrollment pe 
 join (
 	select r.id as region_id
-		, opt.market_share 
+		, cms.year
+		, cms.market_share 
 	from public.regions r 
 	left outer join (
 		select *
@@ -172,17 +173,19 @@ join (
 		where session_id = {sessionId}
 	) s
 		on r.id = s.region_id
-	join public.custom_market_share_option opt
-		on r.id = opt.region_id 
-			and coalesce(s.option_id, 0) = opt.option_id 
+	join public.predicted_custom_market_share cms
+		on r.id = cms.region_id 
+			and coalesce(s.option_id, 0) = cms.option_id 
 	where r.id <> 0
-		and opt.unit_id = {unitId}
+		and cms.unitid = {unitId}
 ) shr
 	on pe.region_id = shr.region_id
+		and pe.year = shr.year
 -- Show all regions for type 0, else filter by regionId
 where (0 = {regionId} or shr.region_id = {regionId})
 order by pe.year
-	, pe.region_id")
+	, pe.region_id
+;")
                 .ToListAsync();
 
             return dataPoints;
