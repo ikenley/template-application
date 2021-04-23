@@ -97,10 +97,13 @@ const OverviewChart = ({ result, hideBaseline, hidePredicted }: Props) => {
         fontSize: 16,
         text: "First-time Fall Enrollments",
       },
-      scales: createScales({
-        x: { label: "Year" },
-        y: { numeralFormat: "0,0", label: "First-Time Fall Enrollments" },
-      }),
+      scales: createScales(
+        {
+          x: { label: "Year" },
+          y: { numeralFormat: "0,0", label: "First-Time Fall Enrollments" },
+        },
+        { yAxes: [{ ticks: { beginAtZero: true } }] }
+      ),
     };
   }, []);
 
