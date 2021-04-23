@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import Skeleton from "react-loading-skeleton";
 import { Scatter } from "react-chartjs-2";
+import { createScales } from "../shared/chart/chartExtensions";
 import numeral from "numeral";
 import { MarketInfoResult, emptyMarketInfoResult } from "../types";
 
@@ -47,34 +48,10 @@ const MarketInfoChart = ({ result }: Props) => {
         fontSize: 16,
         text: `${xAxisLabel} vs ${yAxisLabel}`,
       },
-      scales: {
-        xAxes: [
-          {
-            scaleLabel: {
-              display: true,
-              labelString: xAxisLabel,
-            },
-            ticks: {
-              callback: (value: any) => {
-                return numeral(value).format(xAxisNumeralFormat);
-              },
-            },
-          },
-        ],
-        yAxes: [
-          {
-            scaleLabel: {
-              display: true,
-              labelString: yAxisLabel,
-            },
-            ticks: {
-              callback: (value: any) => {
-                return numeral(value).format(yAxisNumeralFormat);
-              },
-            },
-          },
-        ],
-      },
+      scales: createScales({
+        x: { numeralFormat: xAxisNumeralFormat, label: xAxisLabel },
+        y: { numeralFormat: yAxisNumeralFormat, label: yAxisLabel },
+      }),
       tooltips: {
         callbacks: {
           title: (points: any, context: any) => {

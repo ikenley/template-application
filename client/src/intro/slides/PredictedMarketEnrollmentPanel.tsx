@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import { Card } from "react-bootstrap";
 import axios from "axios";
 import { Line } from "react-chartjs-2";
-import numeral from "numeral";
+import { createScales } from "../../shared/chart/chartExtensions";
 import Skeleton from "react-loading-skeleton";
 import { useInView } from "react-intersection-observer";
 import CardHeader from "../CardHeader";
@@ -57,6 +57,22 @@ const PredictedMarketEnrollmentPanel = ({ region }: Props) => {
     };
   }, [dataPoints]);
 
+  const options = useMemo(() => {
+    return {
+      maintainAspectRatio: false,
+      legend: { display: false },
+      scales: createScales({
+        x: { label: "Year" },
+        y: { label: "Students", numeralFormat: "0,0" },
+      }),
+      title: {
+        display: true,
+        fontSize: 16,
+        text: TITLE,
+      },
+    };
+  }, []);
+
   return (
     <div className="predicted-market-enrollment-panel" ref={ref}>
       <Card>
@@ -67,26 +83,7 @@ const PredictedMarketEnrollmentPanel = ({ region }: Props) => {
           {dataPoints ? (
             <Line
               redraw={inView}
-              options={{
-                maintainAspectRatio: false,
-                legend: { display: false },
-                scales: {
-                  yAxes: [
-                    {
-                      ticks: {
-                        callback: (value: any) => {
-                          return numeral(value).format("0,0a");
-                        },
-                      },
-                    },
-                  ],
-                },
-                title: {
-                  display: true,
-                  fontSize: 16,
-                  text: TITLE,
-                },
-              }}
+              options={options}
               height={300}
               data={chartDataProps}
             />

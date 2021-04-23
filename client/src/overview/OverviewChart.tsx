@@ -68,6 +68,7 @@ const OverviewChart = ({ result, hideBaseline, hidePredicted }: Props) => {
         numeralFormat: "0,0",
         backgroundColor: Primary.Orange,
         borderColor: Primary.Orange,
+        borderDash: [5, 5],
         data: baselineData,
       });
     }
@@ -79,6 +80,7 @@ const OverviewChart = ({ result, hideBaseline, hidePredicted }: Props) => {
         numeralFormat: "0,0",
         backgroundColor: Primary.Teal,
         borderColor: Primary.Teal,
+        borderDash: [5, 5],
         data: predictedData,
       });
     }
@@ -95,7 +97,10 @@ const OverviewChart = ({ result, hideBaseline, hidePredicted }: Props) => {
         fontSize: 16,
         text: "First-time Fall Enrollments",
       },
-      scales: createScales("0,0"),
+      scales: createScales({
+        x: { label: "Year" },
+        y: { numeralFormat: "0,0", label: "First-Time Fall Enrollments" },
+      }),
     };
   }, []);
 

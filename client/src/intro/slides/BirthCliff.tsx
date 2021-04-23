@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Row, Col, Card } from "react-bootstrap";
 import { useInView } from "react-intersection-observer";
 import { Line } from "react-chartjs-2";
-import numeral from "numeral";
+import { createScales } from "../../shared/chart/chartExtensions";
 import { PrimaryBlue } from "../../shared/Colors";
 import Slide from "../Slide";
 import CardHeader from "../CardHeader";
@@ -11,6 +11,17 @@ const BirthCliff = () => {
   const { ref, inView } = useInView({
     threshold: 0.5,
   });
+
+  const options = useMemo(() => {
+    return {
+      maintainAspectRatio: false,
+      legend: { display: false },
+      scales: createScales({
+        x: { label: "Year" },
+        y: { numeralFormat: "0,0", label: "Births" },
+      }),
+    };
+  }, []);
 
   return (
     <div ref={ref}>
@@ -29,21 +40,7 @@ const BirthCliff = () => {
                 <Card.Body className="bg-white">
                   <Line
                     redraw={inView}
-                    options={{
-                      maintainAspectRatio: false,
-                      legend: { display: false },
-                      scales: {
-                        yAxes: [
-                          {
-                            ticks: {
-                              callback: (value: any) => {
-                                return numeral(value).format("0,0");
-                              },
-                            },
-                          },
-                        ],
-                      },
-                    }}
+                    options={options}
                     height={300}
                     data={chartDataProps}
                   />

@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import Skeleton from "react-loading-skeleton";
 import { Line } from "react-chartjs-2";
+import { createScales } from "../shared/chart/chartExtensions";
 import numeral from "numeral";
 import { ComparisonResult } from "../types";
 import { primaryPalette as colors } from "../shared/Colors";
@@ -57,7 +58,10 @@ const CompareChart = ({ result }: Props) => {
           "(Index Year = 100)",
         ],
       },
-
+      scales: createScales({
+        x: { label: "Year" },
+        y: { label: "Enrollments (Index Year = 100)", numeralFormat: "0,0" },
+      }),
       tooltips: {
         callbacks: {
           label: (point: any, context: any) => {
