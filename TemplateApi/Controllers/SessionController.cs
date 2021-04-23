@@ -32,7 +32,7 @@ namespace TemplateApi.Controllers
         public async Task<ActionResult<Session>> CreateOrGetSession(string userId)
         {
             var session = await _sessionService.CreateOrGetSession(userId);
-            _logger.LogInformation("CreateOrGetSession {session}", session);
+            _logger.LogInformation("CreateOrGetSession {@session}", session);
             return session;
         }
 
@@ -55,7 +55,7 @@ namespace TemplateApi.Controllers
         public async Task<ActionResult<Session>> UpdateSession(UpdateSessionParams updateSessionParams)
         {
             var session = await _sessionService.UpdateSession(updateSessionParams);
-            _logger.LogInformation("UpdateSession {session}", session);
+            _logger.LogInformation("UpdateSession {@session}", session);
             return session;
         }
 
