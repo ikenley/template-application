@@ -193,3 +193,100 @@ select sum(enrollment)
 from observed_market_enrollment ome 
 where year = 2018
 limit 100;
+
+-------------------------------------------------------------------------------
+-- Calculate avg percent change
+
+select inst.year
+	--, inst.region_id
+   -- , false as is_forecast
+	, SUM(inst.enrollment) as enrollment
+	--, inst.enrollment_share as market_share
+   -- , null as population
+    --, null as percent_total_enrollment
+from public.observed_enrollment inst
+join public.regions r
+	on inst.region_id = r.id
+where inst.unitid = 194824
+    -- Show all regions for type 0, else filter by regionId
+	and (0 = 0 or inst.region_id = 0)
+group by inst.year
+order by inst.year
+;
+
+select pe.year
+	--, pe.region_id
+	--, true as is_forecast
+	, SUM(pe.enrollment * shr.market_share) + 268 as enrollment
+	--, shr.market_share
+	--, pe.enrollment as population
+    --, null as percent_total_enrollment
+from public.predicted_market_enrollment pe 
+join public.predicted_market_share shr
+	on pe.region_id = shr.region_id
+		and pe.year = shr.year
+left join public.regions r 
+	on pe.region_id = r.id 
+where shr.unitid = 194824
+	and shr.market_share_model_id = 0
+    -- Show all regions for type 0, else filter by regionId
+	and (0 = 0 or shr.region_id = 0)
+group by pe.year
+order by pe.year
+;
+
+-------------------------------------------------------------------------------
+---- custom market share
+
+select * 
+--	, r.id as region_id
+--	, cms.year
+--	, cms.market_share 
+from public.regions r 
+left outer join (
+	select *
+	from public.session_custom_market_share_option
+	where session_id = '931f3794-57e3-4e60-96aa-1bdb91e34d78'
+) s
+	on r.id = s.region_id
+join public.predicted_custom_market_share cms
+	on r.id = cms.region_id 
+		and coalesce(s.option_id, 0) = cms.option_id 
+where r.id <> 0
+	and cms.unitid = 194824
+	and cms."year" = 2019
+;
+
+select pe.year
+	, pe.region_id
+	, true as is_forecast
+	, pe.enrollment * shr.market_share as enrollment
+	, shr.market_share
+	, pe.enrollment as population
+    , null as percent_total_enrollment
+from public.predicted_market_enrollment pe 
+join (
+	select r.id as region_id
+		, cms.year
+		, cms.market_share 
+	from public.regions r 
+	left outer join (
+		select *
+		from public.session_custom_market_share_option
+		where session_id = '931f3794-57e3-4e60-96aa-1bdb91e34d78'
+	) s
+		on r.id = s.region_id
+	join public.predicted_custom_market_share cms
+		on r.id = cms.region_id 
+			and coalesce(s.option_id, 0) = cms.option_id 
+	where r.id <> 0
+		and cms.unitid = 194824
+		and cms.region_id = 5
+) shr
+	on pe.region_id = shr.region_id
+		and pe.year = shr.year
+-- Show all regions for type 0, else filter by regionId
+where shr.region_id = 5
+order by pe.year
+	, pe.region_id
+;
