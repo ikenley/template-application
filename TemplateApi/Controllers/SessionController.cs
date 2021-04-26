@@ -66,5 +66,15 @@ namespace TemplateApi.Controllers
             var optionSet = await _sessionService.GetSessionOptionSet();
             return optionSet;
         }
+
+        /// <summary>
+        /// Generate exception for debugging
+        /// </summary>
+        [HttpGet("exception")]
+        public void GenerateException()
+        {
+            int zero = 0;
+            var error = 1 / zero;
+        }
     }
 }
