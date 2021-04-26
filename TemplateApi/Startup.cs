@@ -62,6 +62,7 @@ namespace TemplateApi
             }
 
             app.UseSerilogRequestLogging();
+            app.UseMiddleware<LogVersionMiddleware>();
             app.UseMiddleware<LogIpMiddleware>();
             app.UseMiddleware<LogUserIdMiddleware>();
 

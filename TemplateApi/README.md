@@ -20,6 +20,7 @@ docker run --rm -it -p 5000:5000 template-api
 
 - [Create a web API with ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-5.0&tabs=visual-studio-code)
 - [Entity Framework Core Migrations](https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/?tabs=dotnet-core-cli)
+- [Configuration in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-5.0)
 
 ```
 # Create a migration and apply it to DB
@@ -41,4 +42,8 @@ dotnet add package Microsoft.EntityFrameworkCore.Design
 dotnet add package Microsoft.EntityFrameworkCore.SqlServer
 dotnet tool install -g dotnet-aspnet-codegenerator
 dotnet aspnet-codegenerator controller -name SessionController -async -api -m TemplateApi.Models.Session -dc DataContext -outDir Controllers
+
+# Set ENV configuration variable
+# (Must use cmd as Administrator)
+setx TEMPLATE_APP_VERSION "local" /M
 ```

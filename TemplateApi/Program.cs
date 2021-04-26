@@ -52,6 +52,10 @@ namespace TemplateApi
                     .ReadFrom.Services(services)
                     .Enrich.FromLogContext()
                     .WriteTo.Console(new RenderedCompactJsonFormatter()))
+                .ConfigureAppConfiguration((hostingContext, config) =>
+                {
+                    config.AddEnvironmentVariables(prefix: "TEMPLATE_APP_");
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
