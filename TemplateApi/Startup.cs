@@ -40,6 +40,8 @@ namespace TemplateApi
                     .UseSnakeCaseNamingConvention()
             );
 
+            services.AddHttpContextAccessor();
+
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<IRegionService, RegionService>();
             services.AddScoped<IYearService, YearService>();
@@ -63,7 +65,6 @@ namespace TemplateApi
 
             app.UseSerilogRequestLogging();
             app.UseMiddleware<LogVersionMiddleware>();
-            app.UseMiddleware<LogIpMiddleware>();
             app.UseMiddleware<LogUserIdMiddleware>();
 
             //app.UseHttpsRedirection();
