@@ -1,7 +1,6 @@
 import React, { useEffect, useCallback } from "react";
 import Joyride, { Step, CallBackProps } from "react-joyride";
 import Cookies from "js-cookie";
-import { PrimaryBlue } from "../shared/Colors";
 
 // Extends the Joyride library and adds defaults
 
@@ -48,9 +47,6 @@ const Tour = ({ steps, show, setShow, launchCookiePrefix }: Props) => {
         showSkipButton
         locale={{ last: "End Tour" }}
         styles={{
-          options: {
-            primaryColor: PrimaryBlue,
-          },
           tooltip: { borderRadius: 0 },
           buttonNext: { borderRadius: 0 },
           spotlight: { borderRadius: 0 },

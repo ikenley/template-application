@@ -1,19 +1,13 @@
 import React, { useState, useEffect, useContext, useCallback } from "react";
 import { Alert } from "react-bootstrap";
-import axios from "axios";
+//import axios from "axios";
 import Navbar from "../shared/Navbar";
 import { SessionContext } from "../session/SessionContext";
-import FilterPanel from "../session/FilterPanel";
-import { OverviewResult } from "../types";
-import OverviewChart from "./OverviewChart";
-import SummaryStatPanel from "./SummaryStatPanel";
-import ResultGridContainer from "./ResultGridContainer";
 import Tour from "../shared/Tour";
 import tourSteps from "./tourSteps";
 
 const OverviewPage = () => {
   const [showTour, setShowTour] = useState<boolean>(false);
-  const [result, setResult] = useState<OverviewResult | null>(null);
   const { session } = useContext(SessionContext);
 
   const launchTour = useCallback(() => {
@@ -22,14 +16,14 @@ const OverviewPage = () => {
 
   useEffect(() => {
     if (session.isLoading) {
-      setResult(null);
+      //setResult(null);
       return;
     }
 
-    const sessionId = session.sessionId;
-    axios.get(`/api/Overview/${sessionId}`).then((res) => {
-      setResult(res.data);
-    });
+    //const sessionId = session.sessionId;
+    // axios.get(`/api/Overview/${sessionId}`).then((res) => {
+    //   setResult(res.data);
+    // });
   }, [session]);
 
   return (
@@ -46,10 +40,6 @@ const OverviewPage = () => {
           habitasse platea dictumst. Aenean mollis leo eu purus pulvinar, a
           interdum urna iaculis. Proin ac orci lacus.
         </Alert>
-        <FilterPanel showRegions />
-        <OverviewChart result={result} />
-        <SummaryStatPanel result={result} />
-        <ResultGridContainer result={result} />
       </main>
       <Tour
         steps={tourSteps}

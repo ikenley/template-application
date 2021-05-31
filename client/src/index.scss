@@ -1,11 +1,5 @@
 /* Bootstrap overrides */
-$primary: #0072ce;
-$secondary: #ed8b00;
-$info: #00b1b0;
-$dark: #002746;
-
-$font-family-sans-serif: "Museo Sans", sans-serif;
-$headings-font-family: "Museo Slab", Museo Sans Light, serif;
+// $primary: #0072ce;
 
 /* Top-level styles */
 html {
@@ -70,32 +64,6 @@ html {
   line-height: 24px;
 }
 
-.app .navbar-nav .navbar-context-menu .nav-link {
-  color: #ed8b00;
-}
-
-.app .navbar-nav .navbar-context-menu .nav-link:hover,
-.app .navbar-nav .navbar-context-menu .nav-link:focus {
-  color: #a15e00;
-}
-
-.app .navbar-dark .navbar-nav .nav-link:hover {
-  color: #74c4ee;
-  outline: 0;
-  text-decoration: none;
-}
-
-.app .navbar-dark .navbar-nav .nav-link.dropdown-toggle:hover {
-  color: #fff;
-}
-
-// .app .navbar-dark .navbar-nav .show > .nav-link,
-// .app .navbar-dark .navbar-nav .active > .nav-link,
-// .app .navbar-dark .navbar-nav .nav-link.show,
-// .app .navbar-dark .navbar-nav .nav-link.active {
-//   border-bottom: 1.5px solid #ed8b00;
-// }
-
 /* table */
 .app .table-sm th,
 .app .table-sm td {
@@ -116,106 +84,7 @@ html {
   }
 }
 
-/* nav */
-.app .nav-tabs .nav-link.active,
-.app .nav-tabs .nav-item.show .nav-link {
-  color: #fff;
-}
-
-/* Component-specific styles */
-/* TODO consider moving to inline style */
-.summary-stat-card .card-title.h5 {
-  font-size: 1.15rem;
-}
-
-/* Fonts */
-/* Museo Sans Fonts */
-
-@font-face {
-  font-display: swap;
-  font-family: "Museo Sans Light";
-  src: url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_300-webfont.woff2")
-      format("woff2"),
-    url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_300-webfont.woff")
-      format("woff"),
-    url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_300-webfont.ttf")
-      format("truetype"),
-    url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_300-webfont.svg#museo_sans300")
-      format("svg");
-}
-
-@font-face {
-  font-display: swap;
-  font-family: "Museo Sans";
-  src: url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_500-webfont.woff2")
-      format("woff2"),
-    url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_500-webfont.woff")
-      format("woff"),
-    url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_500-webfont.ttf")
-      format("truetype"),
-    url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_500-webfont.svg#museo_sans500")
-      format("svg");
-}
-
-// @font-face {
-//   font-display: swap;
-//   font-family: "Museo Sans Bold";
-//   src: url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_700-webfont.woff2")
-//       format("woff2"),
-//     url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_700-webfont.woff")
-//       format("woff"),
-//     url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_700-webfont.ttf")
-//       format("truetype"),
-//     url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-sans/MuseoSans_700-webfont.svg#museo_sans700")
-//       format("svg");
-// }
-
-// /* Museo Slab Fonts */
-
-// @font-face {
-//   font-display: swap;
-//   font-family: "Museo Slab Light";
-//   src: url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-slab/Museo_Slab_300-webfont.woff2")
-//       format("woff2"),
-//     url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-slab/Museo_Slab_300-webfont.woff")
-//       format("woff"),
-//     url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-slab/Museo_Slab_300-webfont.ttf")
-//       format("truetype"),
-//     url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-slab/Museo_Slab_300-webfont.svg#museo_slab300")
-//       format("svg");
-// }
-
-@font-face {
-  font-display: swap;
-  font-family: "Museo Slab";
-  src: url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-slab/Museo_Slab_500-webfont.woff2")
-      format("woff2"),
-    url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-slab/Museo_Slab_500-webfont.woff")
-      format("woff"),
-    url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-slab/Museo_Slab_500-webfont.ttf")
-      format("truetype"),
-    url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-slab/Museo_Slab_500-webfont.svg#museo_slab500")
-      format("svg");
-}
-
-// @font-face {
-//   font-display: swap;
-//   font-family: "Museo Slab Bold";
-//   src: url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-slab/Museo_Slab_700-webfont.woff2")
-//       format("woff2"),
-//     url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-slab/Museo_Slab_700-webfont.woff")
-//       format("woff"),
-//     url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-slab/Museo_Slab_700-webfont.ttf")
-//       format("truetype"),
-//     url("https://attachment.eab.com/wp-content/themes/eab/assets/fonts/museo-slab/Museo_Slab_700-webfont.svg#museo_slab700")
-//       format("svg");
-// }
-
-/*
-alert info e0f1f1
-*/
-
-$body-bg: #00355f;
+// $body-bg: #00355f;
 
 $tooltip-max-width: 300px;
 
@@ -231,11 +100,3 @@ $enable-rounded: false;
 @import "~bootstrap/scss/bootstrap";
 
 @import "/src/shared/grid/tables.scss";
-
-/* Individual Components */
-
-/* ResultGrid */
-
-.result-grid .th {
-  text-align: center;
-}

@@ -7,12 +7,7 @@ import React, {
   useEffect,
 } from "react";
 import axios from "axios";
-import {
-  Session,
-  UpdateSessionParams,
-  SessionOptionSet,
-  defaultSessionOptionSet,
-} from "../types";
+import { Session, UpdateSessionParams } from "../types";
 import { AuthContext } from "../auth/AuthContext";
 
 const defaultSession: Session = {
@@ -29,7 +24,6 @@ const defaultSession: Session = {
 
 const defaultSessionProps = {
   session: defaultSession,
-  optionSet: defaultSessionOptionSet,
   updateSession: (s: UpdateSessionParams) => {},
 };
 
@@ -37,9 +31,6 @@ export const SessionContext = createContext(defaultSessionProps);
 
 export const SessionContextProvider = ({ children }: any) => {
   const [session, setState] = useState<Session>(defaultSession);
-  const [optionSet, setOptionSet] = useState<SessionOptionSet>(
-    defaultSessionOptionSet
-  );
   const authContext = useContext(AuthContext);
   const { sessionId } = session;
 
@@ -49,14 +40,10 @@ export const SessionContextProvider = ({ children }: any) => {
       return;
     }
 
-    axios.get(`/api/session/createorget/${authContext.userId}`).then((res) => {
-      setState(res.data);
-    });
-
-    axios.get("/api/session/optionset").then((res) => {
-      setOptionSet(res.data);
-    });
-  }, [authContext, setState, setOptionSet]);
+    // axios.get(`/api/session/createorget/${authContext.userId}`).then((res) => {
+    //   setState(res.data);
+    // });
+  }, [authContext, setState]);
 
   const updateSession = useCallback(
     (s: UpdateSessionParams) => {
@@ -75,8 +62,8 @@ export const SessionContextProvider = ({ children }: any) => {
   );
 
   const value = useMemo(() => {
-    return { session, optionSet, updateSession };
-  }, [session, optionSet, updateSession]);
+    return { session, updateSession };
+  }, [session, updateSession]);
 
   return (
     <SessionContext.Provider value={value}>{children}</SessionContext.Provider>

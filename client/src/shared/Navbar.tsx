@@ -15,19 +15,16 @@ const NavbarMain = ({ launchTour }: Props) => {
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
-      <Navbar.Brand href="/">
-        <span className="d-none d-md-inline">LOGO | </span>Enrollment Scenario
-        Explorer
-      </Navbar.Brand>
+      <Navbar.Brand href="/">Template App</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto nav-links">
           <NavLink
             className="nav-link nav-intro"
             activeClassName="active"
-            to="/intro"
+            to="/foo"
           >
-            Introduction
+            Foo
           </NavLink>
           <NavLink
             className="nav-link nav-overview"
@@ -36,20 +33,6 @@ const NavbarMain = ({ launchTour }: Props) => {
             exact={true}
           >
             Overview
-          </NavLink>
-          <NavLink
-            className="nav-link nav-compare"
-            activeClassName="active"
-            to="/compare"
-          >
-            Compare Institutions
-          </NavLink>
-          <NavLink
-            className="nav-link nav-market"
-            activeClassName="active"
-            to="/market"
-          >
-            Market Analysis
           </NavLink>
         </Nav>
         <Nav className="ml-auto">
@@ -72,17 +55,7 @@ const NavbarMain = ({ launchTour }: Props) => {
             </NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item target="_blank" href="https://www.google.com">
-              Related Resource X
-            </NavDropdown.Item>
-            <NavDropdown.Item target="_blank" href="https://www.google.com">
-              Related Resource Y
-            </NavDropdown.Item>
-            <NavDropdown.Item target="_blank" href="https://www.google.com">
-              Related Resource Z
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item href="#action/logout_todo">
-              Sign Out
+              Foo
             </NavDropdown.Item>
           </NavDropdown>
         </Nav>
